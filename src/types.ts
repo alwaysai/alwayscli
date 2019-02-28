@@ -32,7 +32,6 @@ export type Branch = {
   commandType: typeof BRANCH;
   commandName: string;
   description?: string;
-  version?: string;
   subcommands: (Branch | Leaf<any>)[];
 };
 

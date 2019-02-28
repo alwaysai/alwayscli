@@ -7,7 +7,7 @@ type ExcludeCommandType<T extends { commandType: any }> = Pick<
   Exclude<keyof T, 'commandType'>
 >;
 
-export const createLeaf = <O extends AnyOptions>(
+export const createLeaf = <O extends AnyOptions = {}>(
   cmd: ExcludeCommandType<Leaf<O>>,
 ): Leaf<O> => ({
   ...cmd,

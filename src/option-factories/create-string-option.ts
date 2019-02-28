@@ -1,5 +1,5 @@
 import { Option } from '../types';
-import { checkArgvLength1 } from '../check-argv-length-1';
+import { checkHasValue, checkNotTooManyValues } from '../check-argv';
 
 export function createStringOption(config: { description?: string } = {}) {
   const option: Option<string | undefined> = {
@@ -7,7 +7,8 @@ export function createStringOption(config: { description?: string } = {}) {
       if (!argv) {
         return;
       }
-      checkArgvLength1(argv);
+      checkHasValue(argv);
+      checkNotTooManyValues(argv);
       return argv[0];
     },
     getDescription() {

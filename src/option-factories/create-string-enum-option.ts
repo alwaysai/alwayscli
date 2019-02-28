@@ -1,5 +1,5 @@
 import { Option } from '../types';
-import { checkArgvLength1 } from '../check-argv-length-1';
+import { checkHasValue, checkNotTooManyValues } from '../check-argv';
 import { UsageError } from '../usage-error';
 import { singleQuote, regularizeDescription } from '../util';
 
@@ -14,7 +14,8 @@ export function createStringEnumOption<U extends string[]>(config: {
       if (!argv) {
         return;
       }
-      checkArgvLength1(argv);
+      checkHasValue(argv);
+      checkNotTooManyValues(argv);
       if (!config.allowedValues.includes(argv[0])) {
         throw new UsageError(``);
       }

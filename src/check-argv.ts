@@ -1,10 +1,13 @@
 import { UsageError } from './usage-error';
 
-export function checkArgvLength1(argv: string[]) {
+export function checkHasValue(argv: string[]) {
   if (argv.length === 0) {
     throw new UsageError('No value was provided');
   }
-  if (argv.length > 1) {
+}
+
+export function checkNotTooManyValues(argv: string[], tooMany = 2) {
+  if (argv.length >= tooMany) {
     throw new UsageError('Too many values');
   }
 }

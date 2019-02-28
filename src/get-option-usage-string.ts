@@ -2,9 +2,9 @@ import { AnyOption } from './types';
 import redent = require('redent');
 import { regularizeDescription } from './util';
 
-export function getOptionString(optionName: string, option: AnyOption) {
+export function getOptionUsageString(optionName: string, option: AnyOption) {
   const { getDescription, placeholder } = option;
-  const description = getDescription && getDescription();
+  const description = getDescription();
   const descriptionLines = description
     ? regularizeDescription(description).split('\n')
     : [];

@@ -15,10 +15,8 @@
     "lint": "tslint --project tsconfig.build.json",
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run lint && npm run test:unit && npm run build && npm run example -- --message ok",
-    "test:unit": "jest src",
-    "test:unit:coverage": "npm run test:unit -- --coverage",
-    "test:unit:coverage:watch": "npm run test:unit -- --coverage --watch",
-    "test:unit:watch": "npm run test:unit -- --watch",
+    "test:unit": "jest --coverage src",
+    "test:watch": "npm run test:unit -- --watch",
     "preversion": "npm test && npm run build:clean",
     "postversion": "npm publish"
   },
@@ -47,11 +45,13 @@
     "typescript",
     "nodejs",
     "cli",
-    "command-line-interface"
+    "command",
+    "line",
+    "interface"
   ],
   "author": {
-    "name": "alwaysAI",
-    "email": "dev@alwaysai.co"
+    "name": "alwaysAI, Inc.",
+    "email": "contact@alwaysai.co"
   },
   "repository": {
     "type": "git",

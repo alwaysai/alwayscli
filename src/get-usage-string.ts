@@ -2,7 +2,7 @@ import redent = require('redent');
 
 import { Command } from './types';
 import { BRANCH, LEAF } from './constants';
-import { getOptionString } from './get-option-string';
+import { getOptionUsageString } from './get-option-usage-string';
 
 const indent = (strings: string[]) => redent(strings.join('\n'), 3);
 
@@ -36,7 +36,9 @@ export function getUsageString(commandStack: Command[], errorMessage?: string) {
         if (entries.length > 0) {
           usageParagraph += ' <options>';
           finalParagraphs.push('Options:');
-          finalParagraphs.push(indent(entries.map(pair => getOptionString(...pair))));
+          finalParagraphs.push(
+            indent(entries.map(pair => getOptionUsageString(...pair))),
+          );
         }
       }
       break;

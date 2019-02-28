@@ -7,4 +7,8 @@ describe(accumulateArgv.name, () => {
       'bar',
     ]);
   });
+
+  it('throws "provided twice" if option is provided twice', () => {
+    expect(() => accumulateArgv(['--baz', '--baz'])).toThrow('provided twice');
+  });
 });

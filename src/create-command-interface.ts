@@ -37,8 +37,15 @@ export function createCommandInterface(rootCommand: Branch | Leaf<any>) {
         for (const [optionName, option] of Object.entries(options)) {
           const rawValues = restRawNamedArgs[optionName];
           delete restRawNamedArgs[optionName];
-          const optionValue = await (option as AnyOption).getValue(rawValues);
-          namedArgs[optionName] = optionValue;
+          try {
+            const optionValue = await (option as AnyOption).getValue(rawValues);
+            namedArgs[optionName] = optionValue;
+          } catch (ex) {
+            if (ex.code === 'USAGE') {
+              ex.message = `--${optionName}: ${ex.message}`;
+              throw ex;
+            }
+          }
         }
       }
       const restOptionNames = Object.keys(restRawNamedArgs);
