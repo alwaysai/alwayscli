@@ -26,7 +26,7 @@
     "redent": "2.0.0"
   },
   "devDependencies": {
-    "@carnesen/tsconfig": "0.1.0",
+    "@alwaysai/tsconfig": "0.0.0",
     "@carnesen/tslint-config": "0.1.2",
     "@types/jest": "23.3.13",
     "@types/node": "10.12.19",

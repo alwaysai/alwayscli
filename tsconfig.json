@@ -1,5 +1,5 @@
 {
-  "extends": "@carnesen/tsconfig/nodejs/tsconfig.json",
+  "extends": "@alwaysai/tsconfig/nodejs/tsconfig.json",
   "include": [
     "src",
     "src/types/.ts"
