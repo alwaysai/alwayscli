@@ -1,0 +1,11 @@
+{
+  "extends": "@carnesen/tsconfig/nodejs/tsconfig.json",
+  "include": [
+    "src",
+    "src/types/.ts"
+  ],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./lib"
+  }
+}

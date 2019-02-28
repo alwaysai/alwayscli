@@ -1,0 +1,65 @@
+{
+  "name": "@alwaysai/always-cli",
+  "description": "A library for building Node.js command-line interfaces",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "build:clean": "rimraf lib && npm run build",
+    "build:watch": "tsc --project . --watch",
+    "example": "ts-node src/examples/echo.ts",
+    "lint": "tslint --project tsconfig.build.json",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "npm run lint && npm run test:unit && npm run build && npm run example -- --message ok",
+    "test:unit": "jest src",
+    "test:unit:coverage": "npm run test:unit -- --coverage",
+    "test:unit:coverage:watch": "npm run test:unit -- --coverage --watch",
+    "test:unit:watch": "npm run test:unit -- --watch",
+    "preversion": "npm test && npm run build:clean",
+    "postversion": "npm publish"
+  },
+  "dependencies": {
+    "@carnesen/run-and-exit": "0.2.0",
+    "@types/redent": "2.0.0",
+    "redent": "2.0.0"
+  },
+  "devDependencies": {
+    "@carnesen/tsconfig": "0.1.0",
+    "@carnesen/tslint-config": "0.1.2",
+    "@types/jest": "23.3.13",
+    "@types/node": "10.12.19",
+    "jest": "24.0.0",
+    "rimraf": "2.6.3",
+    "ts-jest": "23.10.5",
+    "ts-node": "8.0.2",
+    "tslint": "5.12.1",
+    "typescript": "3.3.1"
+  },
+  "files": [
+    "src",
+    "lib"
+  ],
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "cli",
+    "command-line-interface"
+  ],
+  "author": {
+    "name": "alwaysAI",
+    "email": "dev@alwaysai.co"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alwaysai/always-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alwaysai/always-cli/issues"
+  },
+  "homepage": "https://github.com/alwaysai/always-cli#readme",
+  "license": "MIT"
+}
