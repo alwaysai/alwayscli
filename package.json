@@ -28,14 +28,14 @@
   "devDependencies": {
     "@alwaysai/tsconfig": "0.0.0",
     "@alwaysai/tslint-config": "0.0.0",
-    "@types/jest": "23.3.13",
-    "@types/node": "10.12.19",
-    "jest": "24.0.0",
+    "@types/jest": "24.0.9",
+    "@types/node": "11.10.4",
+    "jest": "24.1.0",
     "rimraf": "2.6.3",
-    "ts-jest": "23.10.5",
+    "ts-jest": "24.0.0",
     "ts-node": "8.0.2",
-    "tslint": "5.12.1",
-    "typescript": "3.3.1"
+    "tslint": "5.13.1",
+    "typescript": "3.3.3333"
   },
   "files": [
     "src",
