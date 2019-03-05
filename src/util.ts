@@ -14,7 +14,7 @@ export function convertToNumber(rawValue: string) {
     value = Number(rawValue);
   }
   if (isNaN(value)) {
-    throw new UsageError(`Could not convert "${rawValue}" to a number`);
+    throw new UsageError(`"${rawValue}" is not a number`);
   }
   return value;
 }

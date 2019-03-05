@@ -8,7 +8,7 @@ import {
   createBranch,
   createNumberArrayOption,
   createFlagOption,
-  makeOptionRequired,
+  withRequired,
   UsageError,
   createCommandLineInterface,
 } from '..';
@@ -18,7 +18,7 @@ export const multiply = createLeaf({
   commandName: 'multiply',
   description: 'Multiply numbers',
   options: {
-    numbers: makeOptionRequired(createNumberArrayOption()),
+    numbers: withRequired(createNumberArrayOption()),
     squareTheResult: createFlagOption(),
   },
   action({ numbers, squareTheResult }) {
@@ -34,7 +34,7 @@ export const cat = createLeaf({
   commandName: 'cat',
   description: 'Print the contents of a file',
   options: {
-    filePath: makeOptionRequired(
+    filePath: withRequired(
       createStringOption({
         description: 'An absolute path',
       }),
@@ -52,7 +52,7 @@ export const cat = createLeaf({
 // A "branch" command is a container for subcommands which can
 // themselves be either "branch" commands or "leaf" commands
 export const root = createBranch({
-  commandName: 'readme-cli',
+  commandName: 'readme',
   description: `
     This is an example command-line interface (CLI).
     Its only purpose is to demonstrate features.`,

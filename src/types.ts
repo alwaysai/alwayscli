@@ -8,13 +8,13 @@ type AnyGetValue = GetValue<any>;
 
 export type Option<T> = {
   getValue: GetValue<T>;
-  getDescription: () => string | undefined;
+  getDescription?: () => string | undefined;
   placeholder: string;
 };
 
 export type AnyOption = Option<any>;
 
-type Value<T extends AnyGetValue> = T extends GetValueAsync<infer U>
+export type Result<T extends AnyGetValue> = T extends GetValueAsync<infer U>
   ? U
   : T extends GetValueSync<infer U>
   ? U
@@ -24,7 +24,9 @@ export type AnyOptions = {
   [optionName: string]: AnyOption;
 };
 
-export type NamedArgs<O extends AnyOptions> = { [K in keyof O]: Value<O[K]['getValue']> };
+export type NamedArgs<O extends AnyOptions> = {
+  [K in keyof O]: Result<O[K]['getValue']>
+};
 
 export type Command = Branch | Leaf<AnyOptions>;
 

@@ -1,7 +1,7 @@
-import { Option } from './types';
-import { UsageError } from './usage-error';
+import { Option } from '../types';
+import { UsageError } from '../usage-error';
 
-export function makeOptionRequired<T>(option: Option<T>) {
+export function withRequired<T>(option: Option<T>) {
   type NextT = Exclude<T, undefined>;
   const nextOption: Option<NextT> = {
     ...option,

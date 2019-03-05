@@ -4,7 +4,7 @@ import { regularizeDescription } from './util';
 
 export function getOptionUsageString(optionName: string, option: AnyOption) {
   const { getDescription, placeholder } = option;
-  const description = getDescription();
+  const description = getDescription && getDescription();
   const descriptionLines = description
     ? regularizeDescription(description).split('\n')
     : [];

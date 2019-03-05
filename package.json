@@ -53,13 +53,7 @@
     "name": "alwaysAI, Inc.",
     "email": "contact@alwaysai.co"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/alwaysai/always-cli.git"
-  },
-  "bugs": {
-    "url": "https://github.com/alwaysai/always-cli/issues"
-  },
+  "repository": "github:alwaysai/always-cli",
   "homepage": "https://github.com/alwaysai/always-cli#readme",
   "license": "MIT"
 }
