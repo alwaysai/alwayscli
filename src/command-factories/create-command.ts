@@ -1,5 +1,5 @@
-import { AnyOptions, Leaf, Branch } from './types';
-import { BRANCH, LEAF } from './constants';
+import { AnyOptions, Leaf, Branch } from '../types';
+import { BRANCH, LEAF } from '../constants';
 
 // The "commandType" field is assigned internally by the framework
 type ExcludeCommandType<T extends { commandType: any }> = Pick<

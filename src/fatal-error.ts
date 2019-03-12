@@ -1,10 +1,10 @@
-export const USAGE = 'USAGE';
+export const FATAL = 'FATAL';
 
-export class UsageError extends Error {
-  public readonly code: 'USAGE';
+export class FatalError extends Error {
+  public readonly code: 'FATAL';
   constructor(message?: string) {
     super(message);
-    this.code = 'USAGE';
+    this.code = 'FATAL';
     if (typeof this.stack === 'string') {
       this.stack = `${this.stack}\n`;
     }

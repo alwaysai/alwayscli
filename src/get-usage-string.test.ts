@@ -1,5 +1,5 @@
 import { getUsageString } from './get-usage-string';
-import { createLeaf, createBranch } from './create-command';
+import { createLeaf, createBranch } from './command-factories/create-command';
 import { createStringOption } from './option-factories/create-string-option';
 import { Leaf } from './types';
 

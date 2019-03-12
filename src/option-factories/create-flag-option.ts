@@ -1,5 +1,5 @@
 import { Option } from '../types';
-import { checkNotTooManyValues } from '../check-argv';
+import { checkArgvLengthLessThan } from '../check-argv';
 
 export function createFlagOption(config: { description?: string } = {}) {
   const option: Option<boolean> = {
@@ -7,7 +7,7 @@ export function createFlagOption(config: { description?: string } = {}) {
       if (!argv) {
         return false;
       }
-      checkNotTooManyValues(argv, 1);
+      checkArgvLengthLessThan(argv, 1);
       return true;
     },
     getDescription() {

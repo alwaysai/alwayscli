@@ -1,5 +1,5 @@
 import { Option } from '../types';
-import { checkHasValue } from '../check-argv';
+import { checkArgvHasValue } from '../check-argv';
 
 export function createStringArrayOption(config: { description?: string } = {}) {
   const option: Option<string[] | undefined> = {
@@ -7,7 +7,7 @@ export function createStringArrayOption(config: { description?: string } = {}) {
       if (!argv) {
         return;
       }
-      checkHasValue(argv);
+      checkArgvHasValue(argv);
       return argv;
     },
     getDescription() {

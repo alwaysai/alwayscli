@@ -1,5 +1,5 @@
 import { accumulateCommandStack } from './accumulate-command-stack';
-import { createLeaf, createBranch } from './create-command';
+import { createLeaf, createBranch } from './command-factories/create-command';
 
 const leaf = createLeaf({
   commandName: 'echo',

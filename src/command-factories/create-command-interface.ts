@@ -1,9 +1,10 @@
-import { Leaf, Branch, AnyOptions, NamedArgs, AnyOption } from './types';
-import { accumulateArgv } from './accumulate-argv';
-import { accumulateCommandStack } from './accumulate-command-stack';
-import { getUsageString } from './get-usage-string';
-import { LEAF } from './constants';
-import { UsageError } from './usage-error';
+import { Leaf, Branch, AnyOptions, NamedArgs, AnyOption } from '../types';
+import { accumulateArgv } from '../accumulate-argv';
+import { accumulateCommandStack } from '../accumulate-command-stack';
+import { getUsageString } from '../get-usage-string';
+import { LEAF } from '../constants';
+import { UsageError, USAGE } from '../usage-error';
+import { FATAL } from '../fatal-error';
 
 export function createCommandInterface(rootCommand: Branch | Leaf<any>) {
   return async function commandInterface(argv: string[]) {
@@ -55,8 +56,11 @@ export function createCommandInterface(rootCommand: Branch | Leaf<any>) {
       const result = await action(namedArgs);
       return result;
     } catch (ex) {
-      if (ex && ex.code === 'USAGE') {
+      if (ex.code === USAGE) {
         throw getUsageString(commandStack, ex.message);
+      }
+      if (ex.code === FATAL) {
+        throw `Error: ${ex.message || 'No message available'}`;
       }
       throw ex;
     }

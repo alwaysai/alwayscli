@@ -1,5 +1,5 @@
 import { Option } from '../types';
-import { checkHasValue } from '../check-argv';
+import { checkArgvHasValue } from '../check-argv';
 import { convertToNumber } from '../util';
 
 export function createNumberArrayOption(config: { description?: string } = {}) {
@@ -8,7 +8,7 @@ export function createNumberArrayOption(config: { description?: string } = {}) {
       if (!argv) {
         return;
       }
-      checkHasValue(argv);
+      checkArgvHasValue(argv);
       return argv.map(convertToNumber);
     },
     getDescription() {

@@ -1,6 +1,4 @@
-import { createLeaf } from '../create-command';
-import { createStringOption } from '../option-factories/create-string-option';
-import { createCommandLineInterface } from '../create-command-line-interface';
+import { createLeaf, createStringOption, createCommandLineInterface } from '..';
 
 export const echo = createLeaf({
   commandName: 'echo',

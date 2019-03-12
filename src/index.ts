@@ -13,14 +13,22 @@ export { withRequired } from './option-enhancers/with-required';
 export { withDefaultValue } from './option-enhancers/with-default-value';
 
 // Command factories:
-export { createLeaf, createBranch } from './create-command';
+export { createLeaf, createBranch } from './command-factories/create-command';
 
 // Command interface factories (mostly for unit testing):
-export { createCommandInterface } from './create-command-interface';
-export { createCaughtCommandInterface } from './create-caught-command-interface';
+export { createCommandInterface } from './command-factories/create-command-interface';
+export {
+  createCaughtCommandInterface,
+} from './command-factories/create-caught-command-interface';
 
 // Command-line interface factory:
-export { createCommandLineInterface } from './create-command-line-interface';
+export {
+  createCommandLineInterface,
+} from './command-factories/create-command-line-interface';
 
-// Other
+// Checks
+export { checkArgvHasValue, checkArgvLengthLessThan } from './check-argv';
+
+// Error constructors
 export { UsageError } from './usage-error';
+export { FatalError } from './fatal-error';

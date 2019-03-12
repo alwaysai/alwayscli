@@ -1,13 +1,13 @@
-import { checkHasValue, checkNotTooManyValues } from './check-argv';
+import { checkArgvHasValue, checkArgvLengthLessThan } from './check-argv';
 
-describe(checkHasValue.name, () => {
+describe(checkArgvHasValue.name, () => {
   it('throws "no value" if no value is provided', () => {
-    expect(() => checkHasValue([])).toThrow(/no value/i);
+    expect(() => checkArgvHasValue([])).toThrow(/no value/i);
   });
 });
 
-describe(checkNotTooManyValues.name, () => {
+describe(checkArgvLengthLessThan.name, () => {
   it('throws "Too many" if more than one value is provided', () => {
-    expect(() => checkNotTooManyValues(['a', 'b'])).toThrow(/too many/i);
+    expect(() => checkArgvLengthLessThan(['a', 'b'])).toThrow(/too many/i);
   });
 });
