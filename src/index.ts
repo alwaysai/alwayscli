@@ -1,5 +1,6 @@
 // Option factories:
 export { createFlagOption } from './option-factories/create-flag-option';
+export { createJsonOption } from './option-factories/create-json-option';
 export { createNumberArrayOption } from './option-factories/create-number-array-option';
 export { createStringArrayOption } from './option-factories/create-string-array-option';
 export { createStringEnumOption } from './option-factories/create-string-enum-option';
