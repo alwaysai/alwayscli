@@ -1,13 +1,13 @@
-import { Leaf, Branch, AnyOptions, NamedArgs, AnyOption } from '../types';
-import { accumulateArgv } from '../accumulate-argv';
-import { accumulateCommandStack } from '../accumulate-command-stack';
-import { getUsageString } from '../get-usage-string';
-import { LEAF } from '../constants';
-import { UsageError, USAGE } from '../usage-error';
-import { FATAL } from '../fatal-error';
+import { Leaf, Branch, AnyOptions, NamedArgs, AnyOption } from './types';
+import { accumulateArgv } from './accumulate-argv';
+import { accumulateCommandStack } from './accumulate-command-stack';
+import { getUsageString } from './get-usage-string';
+import { LEAF } from './constants';
+import { UsageError, USAGE } from './usage-error';
+import { FATAL } from './fatal-error';
 
-export function createCommandInterface(rootCommand: Branch | Leaf<any>) {
-  return async function commandInterface(argv: string[]) {
+export function createCli(rootCommand: Branch | Leaf<any>) {
+  return async function cli(...argv: string[]) {
     const commandStack = [rootCommand];
     try {
       const { maybeCommandNames, rawNamedArgs } = accumulateArgv(argv);
@@ -35,18 +35,16 @@ export function createCommandInterface(rootCommand: Branch | Leaf<any>) {
       const namedArgs: NamedArgs<AnyOptions> = {};
       const restRawNamedArgs = { ...rawNamedArgs };
       if (options) {
-        for (const [optionName, option] of Object.entries(options)) {
+        for (const [optionName, option] of Object.entries(options as {
+          [optionName: string]: AnyOption;
+        })) {
           const rawValues = restRawNamedArgs[optionName];
           delete restRawNamedArgs[optionName];
-          try {
-            const optionValue = await (option as AnyOption).getValue(rawValues);
-            namedArgs[optionName] = optionValue;
-          } catch (ex) {
-            if (ex.code === 'USAGE') {
-              ex.message = `--${optionName}: ${ex.message}`;
-              throw ex;
-            }
+          if (option.required && typeof rawValues === 'undefined') {
+            throw `Error: "--${optionName} ${option.placeholder}" is required`;
           }
+          const optionValue = await (option as AnyOption).getValue(rawValues);
+          namedArgs[optionName] = optionValue;
         }
       }
       const restOptionNames = Object.keys(restRawNamedArgs);

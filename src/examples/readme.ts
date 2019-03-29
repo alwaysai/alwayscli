@@ -8,17 +8,17 @@ import {
   createBranch,
   createNumberArrayOption,
   createFlagOption,
-  withRequired,
-  UsageError,
-  createCommandLineInterface,
+  FatalError,
+  createCli,
 } from '..';
+import { runAndExit } from '@carnesen/run-and-exit';
 
 // A "leaf" command defines an "action" function
 export const multiply = createLeaf({
   commandName: 'multiply',
   description: 'Multiply numbers',
   options: {
-    numbers: withRequired(createNumberArrayOption()),
+    numbers: createNumberArrayOption({ required: true }),
     squareTheResult: createFlagOption(),
   },
   action({ numbers, squareTheResult }) {
@@ -34,15 +34,14 @@ export const cat = createLeaf({
   commandName: 'cat',
   description: 'Print the contents of a file',
   options: {
-    filePath: withRequired(
-      createStringOption({
-        description: 'An absolute path',
-      }),
-    ),
+    filePath: createStringOption({
+      description: 'An absolute path',
+      required: true,
+    }),
   },
   async action({ filePath }) {
     if (!isAbsolute(filePath)) {
-      throw new UsageError('filePath must be absolute');
+      throw new FatalError('"--filePath" must be absolute');
     }
     const contents = await promisify(readFile)(filePath, { encoding: 'utf8' });
     return contents;
@@ -59,8 +58,8 @@ export const root = createBranch({
   subcommands: [multiply, cat],
 });
 
-const commandLineInterface = createCommandLineInterface(root);
+const cli = createCli(root);
 
 if (require.main === module) {
-  commandLineInterface();
+  runAndExit(cli, ...process.argv.slice(2));
 }

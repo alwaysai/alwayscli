@@ -1,8 +1,7 @@
 {
   "extends": "@alwaysai/tsconfig/nodejs/tsconfig.json",
   "include": [
-    "src",
-    "src/types/.ts"
+    "src"
   ],
   "compilerOptions": {
     "rootDir": "./src",

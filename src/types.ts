@@ -1,22 +1,25 @@
 import { BRANCH, LEAF } from './constants';
 
-type GetValueSync<T> = (argv?: string[]) => T;
-type GetValueAsync<T> = (argv?: string[]) => Promise<T>;
-type GetValue<T> = GetValueSync<T> | GetValueAsync<T>;
+export type Argv<R extends boolean> = R extends true ? string[] : (string[] | undefined);
 
-type AnyGetValue = GetValue<any>;
+type GetValueSync<V, R extends boolean> = (argv: Argv<R>) => V;
+type GetValueAsync<V, R extends boolean> = (argv: Argv<R>) => Promise<V>;
+type GetValue<V, R extends boolean> = GetValueSync<V, R> | GetValueAsync<V, R>;
 
-export type Option<T> = {
-  getValue: GetValue<T>;
+type AnyGetValue = GetValue<any, any>;
+
+export type Option<V, R extends boolean = boolean> = {
+  required?: R;
+  getValue: GetValue<V, R>;
   getDescription?: () => string | undefined;
   placeholder: string;
 };
 
 export type AnyOption = Option<any>;
 
-export type Result<T extends AnyGetValue> = T extends GetValueAsync<infer U>
+export type Value<T extends AnyGetValue> = T extends GetValueAsync<infer U, any>
   ? U
-  : T extends GetValueSync<infer U>
+  : T extends GetValueSync<infer U, any>
   ? U
   : never;
 
@@ -24,9 +27,7 @@ export type AnyOptions = {
   [optionName: string]: AnyOption;
 };
 
-export type NamedArgs<O extends AnyOptions> = {
-  [K in keyof O]: Result<O[K]['getValue']>
-};
+export type NamedArgs<O extends AnyOptions> = { [K in keyof O]: Value<O[K]['getValue']> };
 
 export type Command = Branch | Leaf<AnyOptions>;
 
@@ -44,3 +45,9 @@ export type Leaf<O extends AnyOptions> = {
   options?: O;
   action: (namedArgs: NamedArgs<O>) => any;
 };
+
+// The "commandType" field is assigned internally by the framework
+export type ExcludeCommandType<T extends { commandType: any }> = Pick<
+  T,
+  Exclude<keyof T, 'commandType'>
+>;

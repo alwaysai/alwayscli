@@ -1,4 +1,4 @@
-import { Result } from '../types';
+import { Value } from '../types';
 import { createFlagOption } from './create-flag-option';
 
 const option = createFlagOption({ description: 'foo bar baz' });
@@ -14,7 +14,7 @@ describe(createFlagOption.name, () => {
 
   it('getValue result type is boolean', () => {
     // $ExpectType boolean
-    true as Result<typeof option.getValue>;
+    true as Value<typeof option.getValue>;
   });
 
   it('getDescription returns description', () => {

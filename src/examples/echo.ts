@@ -1,11 +1,14 @@
-import { createLeaf, createStringOption, createCommandLineInterface } from '..';
+import { createLeaf, createStringOption } from '..';
+import { createCli } from '../create-cli';
+import { runAndExit } from '@carnesen/run-and-exit';
 
-export const echo = createLeaf({
+export const root = createLeaf({
   commandName: 'echo',
   description: 'Print messages to the console',
   options: {
     message: createStringOption({
       description: 'A message',
+      required: true,
     }),
   },
   action({ message }) {
@@ -13,6 +16,8 @@ export const echo = createLeaf({
   },
 });
 
+const cli = createCli(root);
+
 if (module === require.main) {
-  createCommandLineInterface(echo)();
+  runAndExit(cli, ...process.argv.slice(2));
 }
