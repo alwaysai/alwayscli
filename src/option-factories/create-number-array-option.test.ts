@@ -1,4 +1,4 @@
-import { Result } from '../types';
+import { Value } from '../types';
 import { createNumberArrayOption } from './create-number-array-option';
 
 const option = createNumberArrayOption({ description: 'foo bar baz' });
@@ -14,7 +14,7 @@ describe(createNumberArrayOption.name, () => {
 
   it('getValue result type is number[] | undefined', () => {
     // $ExpectType number[] | undefined
-    [] as Result<typeof option.getValue>;
+    [] as Value<typeof option.getValue>;
   });
 
   it('getDescription returns description', () => {

@@ -1,7 +1,8 @@
 import { getUsageString } from './get-usage-string';
-import { createLeaf, createBranch } from './command-factories/create-command';
+import { createBranch } from './create-branch';
 import { createStringOption } from './option-factories/create-string-option';
 import { Leaf } from './types';
+import { createLeaf } from './create-leaf';
 
 const leaf = createLeaf({
   commandName: 'echo',

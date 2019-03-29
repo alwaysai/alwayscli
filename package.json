@@ -21,8 +21,11 @@
     "postversion": "npm publish"
   },
   "dependencies": {
+    "@carnesen/run-and-catch": "0.0.0-0",
     "@carnesen/run-and-exit": "0.2.0",
+    "@types/parse-json": "4.0.0",
     "@types/redent": "2.0.0",
+    "parse-json": "4.0.0",
     "redent": "2.0.0"
   },
   "devDependencies": {

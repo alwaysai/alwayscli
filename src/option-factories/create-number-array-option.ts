@@ -1,20 +1,38 @@
 import { Option } from '../types';
-import { checkArgvHasValue } from '../check-argv';
 import { convertToNumber } from '../util';
+import { FatalError } from '../fatal-error';
 
-export function createNumberArrayOption(config: { description?: string } = {}) {
+const placeholder = '<num0> [...]';
+
+type Config = Partial<{
+  description: string;
+  required: boolean;
+}>;
+
+export { createNumberArrayOption };
+function createNumberArrayOption(
+  config: Config & { required: true },
+): Option<number[], true>;
+function createNumberArrayOption(config?: Config): Option<number[] | undefined, boolean>;
+function createNumberArrayOption(config: Config = {}) {
+  const { required, description } = config;
   const option: Option<number[] | undefined> = {
+    required,
     getValue(argv) {
       if (!argv) {
-        return;
+        return undefined;
       }
-      checkArgvHasValue(argv);
+
+      if (argv.length === 0) {
+        throw new FatalError(`Expected one or more values ${placeholder}`);
+      }
+
       return argv.map(convertToNumber);
     },
     getDescription() {
-      return config.description;
+      return description;
     },
-    placeholder: '<num0> [...]',
+    placeholder,
   };
   return option;
 }

@@ -1,20 +1,44 @@
 import { Option } from '../types';
-import { checkArgvHasValue, checkArgvLengthLessThan } from '../check-argv';
+import { FatalError } from '../fatal-error';
 
-export function createStringOption(config: { description?: string } = {}) {
+type BaseConfig = Partial<{
+  description: string;
+  required: boolean;
+  defaultValue: string;
+}>;
+const placeholder = '<str>';
+
+export { createStringOption };
+function createStringOption(
+  config: BaseConfig & { defaultValue: string },
+): Option<string, false>;
+function createStringOption(
+  config: BaseConfig & { required: true },
+): Option<string, true>;
+function createStringOption(config?: BaseConfig): Option<string | undefined, false>;
+function createStringOption(config: BaseConfig = {}) {
+  const { defaultValue, required, description } = config;
   const option: Option<string | undefined> = {
     getValue(argv) {
       if (!argv) {
-        return;
+        return typeof defaultValue === 'string' ? defaultValue : undefined;
       }
-      checkArgvHasValue(argv);
-      checkArgvLengthLessThan(argv);
+
+      if (argv.length > 1) {
+        throw new FatalError(`Expected just one ${placeholder}`);
+      }
+
+      if (argv.length !== 1) {
+        throw new FatalError(`Expected a ${placeholder}`);
+      }
+
       return argv[0];
     },
     getDescription() {
-      return config.description;
+      return description;
     },
-    placeholder: '<str>',
+    placeholder,
+    required,
   };
   return option;
 }

@@ -1,19 +1,37 @@
 import { Option } from '../types';
-import { checkArgvHasValue } from '../check-argv';
+import { FatalError } from '../fatal-error';
 
-export function createStringArrayOption(config: { description?: string } = {}) {
+const placeholder = '<str0> [...]';
+
+type Config = Partial<{
+  description: string;
+  required: boolean;
+}>;
+
+export { createStringArrayOption };
+function createStringArrayOption(
+  config: Config & { required: true },
+): Option<string[], true>;
+function createStringArrayOption(config?: Config): Option<string[] | undefined, boolean>;
+function createStringArrayOption(config: Config = {}) {
+  const { required, description } = config;
   const option: Option<string[] | undefined> = {
+    required,
     getValue(argv) {
       if (!argv) {
-        return;
+        return undefined;
       }
-      checkArgvHasValue(argv);
+
+      if (argv.length === 0) {
+        throw new FatalError(`Expected one or more values ${placeholder}`);
+      }
+
       return argv;
     },
     getDescription() {
-      return config.description;
+      return description;
     },
-    placeholder: '<str0> [...]',
+    placeholder,
   };
   return option;
 }
