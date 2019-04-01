@@ -25,12 +25,14 @@
     "@carnesen/run-and-exit": "0.2.0",
     "@types/parse-json": "4.0.0",
     "@types/redent": "2.0.0",
+    "chalk": "2.4.2",
     "parse-json": "4.0.0",
     "redent": "2.0.0"
   },
   "devDependencies": {
     "@alwaysai/tsconfig": "0.0.0",
     "@alwaysai/tslint-config": "0.0.0",
+    "@carnesen/coded-error": "0.1.0",
     "@types/jest": "24.0.9",
     "@types/node": "11.10.4",
     "jest": "24.1.0",

@@ -1,7 +1,11 @@
 import { UsageError } from './usage-error';
 
-export function singleQuote(str: string) {
+export function wrapInSingleQuotes(str: string) {
   return `'${str}'`;
+}
+
+export function wrapInSquareBrackets(str: string) {
+  return `[${str}]`;
 }
 
 export function regularizeDescription(str: string) {

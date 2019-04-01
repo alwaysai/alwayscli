@@ -1,13 +1,13 @@
 import { getUsageString } from './get-usage-string';
 import { createBranch } from './create-branch';
-import { createStringOption } from './option-factories/create-string-option';
+import { createStringInput } from './input-factories/create-string-input';
 import { Leaf } from './types';
 import { createLeaf } from './create-leaf';
 
 const leaf = createLeaf({
   commandName: 'echo',
-  options: {
-    message: createStringOption({ description: 'A message' }),
+  namedInputs: {
+    message: createStringInput({ description: 'A message' }),
   },
   action(foo) {
     return foo;

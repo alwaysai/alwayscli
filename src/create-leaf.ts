@@ -1,7 +1,7 @@
-import { AnyOptions, Leaf, ExcludeCommandType } from './types';
+import { AnyNamedInputs, Leaf, ExcludeCommandType } from './types';
 import { LEAF } from './constants';
 
-export const createLeaf = <O extends AnyOptions = {}>(
+export const createLeaf = <O extends AnyNamedInputs = {}>(
   cmd: ExcludeCommandType<Leaf<O>>,
 ): Leaf<O> => ({
   ...cmd,

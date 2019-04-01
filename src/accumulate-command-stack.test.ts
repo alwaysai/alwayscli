@@ -1,6 +1,8 @@
 import { accumulateCommandStack } from './accumulate-command-stack';
 import { createBranch } from './create-branch';
 import { createLeaf } from './create-leaf';
+import { runAndCatch } from '@carnesen/run-and-catch';
+import { Command } from './types';
 
 const leaf = createLeaf({
   commandName: 'echo',
@@ -16,42 +18,28 @@ const root = createBranch({
 
 describe(accumulateCommandStack.name, () => {
   it('accumulates commands into commandStack based on passed maybe command names', () => {
-    const commandStack = [root];
-    accumulateCommandStack(commandStack, ['echo']);
-    expect(commandStack[0]).toBe(root);
-    expect(commandStack[1]).toBe(leaf);
+    const { commandStack, badCommand, positionalArgs } = accumulateCommandStack(root, [
+      'echo',
+      'foo',
+    ]);
+    expect(commandStack.branches[0]).toBe(root);
+    expect(commandStack.leaf).toBe(leaf);
+    expect(badCommand).toBe(undefined);
+    expect(positionalArgs).toEqual(['foo']);
   });
 
-  it('throws UsageError "Bad command" if bad command name is provided', () => {
-    try {
-      const commandStack = [root];
-      accumulateCommandStack(commandStack, ['eco']);
-      throw new Error('This line should not be reached');
-    } catch (ex) {
-      expect(ex.code).toEqual('USAGE');
-      expect(ex.message).toMatch(/bad command/i);
-    }
+  it('returns badCommand if bad command name is provided', () => {
+    const { commandStack, badCommand } = accumulateCommandStack(root, ['eco']);
+    expect(badCommand).toEqual('eco');
+    expect(commandStack.branches).toEqual([root]);
   });
 
-  it('throws UsageError "does not have subcommands" if too many commands are given', () => {
-    try {
-      const commandStack = [root];
-      accumulateCommandStack(commandStack, ['echo', 'foo']);
-      throw new Error('This line should not be reached');
-    } catch (ex) {
-      expect(ex.code).toEqual('USAGE');
-      expect(ex.message).toMatch(/does not have subcommands/i);
-    }
-  });
-
-  it('throws "unexpected command type" if passed an unexpected command type', () => {
-    try {
-      const badRoot = { ...root, commandType: 'bogus' };
-      const commandStack = [badRoot as typeof root];
-      accumulateCommandStack(commandStack, ['echo', 'foo']);
-      throw new Error('This line should not be reached');
-    } catch (ex) {
-      expect(ex.message).toMatch(/unexpected command type/i);
-    }
+  it('throws "unexpected command type" if passed an unexpected command type', async () => {
+    const badRoot = { ...root, commandType: 'bogus' };
+    const ex = await runAndCatch(accumulateCommandStack, badRoot as Command, [
+      'echo',
+      'foo',
+    ]);
+    expect(ex.message).toMatch(/unexpected command type/i);
   });
 });

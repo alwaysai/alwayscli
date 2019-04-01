@@ -14,6 +14,6 @@ exports[`getUsageString Creates a usage string for a leaf 1`] = `
 
 Options:
 
-   --message <str> : A message
+   [--message <str>] : A message
 "
 `;

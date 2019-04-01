@@ -1,10 +1,10 @@
-import { getOptionUsageString } from './get-option-usage-string';
-import { Option } from './types';
+import { getNamedInputUsageString } from './get-named-input-usage-string';
+import { Input } from './types';
 import redent = require('redent');
 
-describe(getOptionUsageString.name, () => {
-  it('creates a usage string for the provided option', () => {
-    const option: Option<string> = {
+describe(getNamedInputUsageString.name, () => {
+  it('creates a usage string for the provided input', () => {
+    const input: Input<string> = {
       getValue() {
         return 'foo';
       },
@@ -14,16 +14,16 @@ describe(getOptionUsageString.name, () => {
       },
       placeholder: '<foo>',
     };
-    const firstPart = '--optionName <foo> : ';
+    const firstPart = '[--inputName <foo>] : ';
     const firstLine = `${firstPart}blah blah`;
     const secondLine = redent('more blah', firstPart.length);
-    expect(getOptionUsageString('optionName', option)).toBe(
+    expect(getNamedInputUsageString('inputName', input)).toBe(
       `${firstLine}\n${secondLine}`,
     );
   });
 
   it('does ok if getDescription returns undefined', () => {
-    const option: Option<string> = {
+    const input: Input<string> = {
       getValue() {
         return 'foo';
       },
@@ -32,7 +32,7 @@ describe(getOptionUsageString.name, () => {
       },
       placeholder: '<bar>',
     };
-    const firstPart = '--optionName <bar>';
-    expect(getOptionUsageString('optionName', option)).toBe(firstPart);
+    const firstPart = '[--name <bar>]';
+    expect(getNamedInputUsageString('name', input)).toBe(firstPart);
   });
 });

@@ -1,12 +1,12 @@
-import { createLeaf, createStringOption } from '..';
+import { createLeaf, createStringInput } from '..';
 import { createCli } from '../create-cli';
 import { runAndExit } from '@carnesen/run-and-exit';
 
 export const root = createLeaf({
   commandName: 'echo',
   description: 'Print messages to the console',
-  options: {
-    message: createStringOption({
+  namedInputs: {
+    message: createStringInput({
       description: 'A message',
       required: true,
     }),

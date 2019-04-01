@@ -1,20 +1,21 @@
 import redent = require('redent');
+import chalk from 'chalk';
 
 import { Command } from './types';
 import { BRANCH, LEAF } from './constants';
-import { getOptionUsageString } from './get-option-usage-string';
+import { getNamedInputUsageString } from './get-named-input-usage-string';
 
 const indent = (strings: string[]) => redent(strings.join('\n'), 3);
 
-export function getUsageString(commandStack: Command[], errorMessage?: string) {
-  const command = commandStack.slice(-1)[0];
+const RED_ERROR = chalk.red('Error:');
+
+export function getUsageString(commands: Command[], errorMessage?: string) {
+  const command = commands.slice(-1)[0];
   // ^^ Last command on the stack
 
-  const errorParagraphs = errorMessage ? [`Error: ${errorMessage}`] : [];
+  const errorParagraphs = errorMessage ? [`${RED_ERROR} ${errorMessage}`] : [];
 
-  let usageParagraph = `Usage: ${commandStack
-    .map(command => command.commandName)
-    .join(' ')}`;
+  let usageParagraph = `Usage: ${commands.map(command => command.commandName).join(' ')}`;
 
   const leadingNewlineRegExp = /^\r?\n/;
   const descriptionParagraphs = command.description
@@ -31,13 +32,13 @@ export function getUsageString(commandStack: Command[], errorMessage?: string) {
       );
       break;
     case LEAF:
-      if (command.options) {
-        const entries = Object.entries(command.options);
+      if (command.namedInputs) {
+        const entries = Object.entries(command.namedInputs);
         if (entries.length > 0) {
           usageParagraph += ' <options>';
           finalParagraphs.push('Options:');
           finalParagraphs.push(
-            indent(entries.map(pair => getOptionUsageString(...pair))),
+            indent(entries.map(pair => getNamedInputUsageString(...pair))),
           );
         }
       }
