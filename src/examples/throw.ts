@@ -5,6 +5,7 @@ import { CodedError } from '@carnesen/coded-error';
 import { createJsonInput } from '../input-factories/create-json-input';
 import { USAGE } from '../usage-error';
 import { TERSE } from '../terse-error';
+import { createOneOfInput } from '../input-factories/create-one-of-input';
 
 export const root = createLeaf({
   commandName: 'throw',
@@ -14,8 +15,9 @@ export const root = createLeaf({
       description: 'A message',
       required: true,
     }),
-    code: createStringInput({
-      description: `A string "code" attached to the error. Try "${USAGE}" and "${TERSE}"`,
+    code: createOneOfInput({
+      values: [USAGE, TERSE],
+      description: `A string "code" attached to the error.`,
     }),
     data: createJsonInput({
       description: 'An arbitrary "data" field on the error object',

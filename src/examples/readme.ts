@@ -49,7 +49,8 @@ export const root = createBranch({
   commandName: 'readme',
   description: `
     This is an example command-line interface (CLI).
-    Its only purpose is to demonstrate features.`,
+    Its only purpose is to demonstrate features.
+    `,
   subcommands: [multiply, cat],
 });
 

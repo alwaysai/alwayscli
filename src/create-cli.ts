@@ -1,5 +1,5 @@
 import { Leaf, Branch, Command } from './types';
-import { getUsageString } from './get-usage-string';
+import { getUsage } from './get-usage';
 import { accumulateCommandStack } from './accumulate-command-stack';
 import { accumulateDashDashArgs } from './accumulate-dash-dash-args';
 import { accumulateNamedValues } from './accumulate-named-values';
@@ -23,7 +23,7 @@ export function createCli(rootCommand: Branch | Leaf<any>) {
       if (leaf) {
         commands.push(leaf);
       }
-      return getUsageString(commands, message);
+      return getUsage(commands, message);
     };
 
     if (foundHelp || !leaf) {
@@ -51,11 +51,12 @@ export function createCli(rootCommand: Branch | Leaf<any>) {
       }
       if (missingInputNames.length > 0) {
         const inputName = missingInputNames[0];
-        throw new UsageError(`"--${inputName} is required`);
+        throw new UsageError(`"--${inputName}" is required`);
       }
       for (const [inputName, ex] of Object.entries(exceptionsRunningGetValue)) {
         if (ex && typeof ex.message === 'string') {
-          ex.message = `Option "--${inputName}": ${ex.message}`;
+          ex.message = ` "--${inputName}": ${ex.message ||
+            'Problem getting option value'}`;
         }
         throw ex;
       }

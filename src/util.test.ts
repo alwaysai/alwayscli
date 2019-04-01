@@ -1,4 +1,4 @@
-import { convertToNumber } from './util';
+import { convertToNumber, regularizeText } from './util';
 
 describe(convertToNumber.name, () => {
   it('converts the provided string to a number', () => {
@@ -13,5 +13,11 @@ describe(convertToNumber.name, () => {
       expect(ex.code).toBe('USAGE');
       expect(ex.message).toMatch('not a number');
     }
+  });
+});
+
+describe(regularizeText.name, () => {
+  it('strips out a leading newline, trailing whitespace', () => {
+    expect(regularizeText('\n   foo\n      bar\n   ')).toBe('foo\n   bar');
   });
 });

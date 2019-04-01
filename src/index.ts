@@ -13,6 +13,7 @@ export { createFlagInput } from './input-factories/create-flag-input';
 export { createJsonInput } from './input-factories/create-json-input';
 export { createNumberArrayInput } from './input-factories/create-number-array-input';
 export { createNumberInput } from './input-factories/create-number-input';
+export { createOneOfInput } from './input-factories/create-one-of-input';
 export { createStringArrayInput } from './input-factories/create-string-array-input';
 export { createStringInput } from './input-factories/create-string-input';
 

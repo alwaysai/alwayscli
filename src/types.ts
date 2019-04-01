@@ -45,7 +45,7 @@ export type Leaf<T extends AnyNamedInputs> = {
   commandName: string;
   description?: string;
   namedInputs?: T;
-  action: (namedArgs: NamedValues<T>) => any;
+  action: (namedValues: NamedValues<T>) => any;
 };
 
 // The "commandType" field is assigned internally by the framework.
