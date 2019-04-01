@@ -1,6 +1,6 @@
-import { Option } from '../types';
+import { Input } from '../types';
 import { convertToNumber } from '../util';
-import { FatalError } from '../fatal-error';
+import { UsageError } from '../usage-error';
 
 const placeholder = '<num0> [...]';
 
@@ -9,14 +9,14 @@ type Config = Partial<{
   required: boolean;
 }>;
 
-export { createNumberArrayOption };
-function createNumberArrayOption(
+export { createNumberArrayInput };
+function createNumberArrayInput(
   config: Config & { required: true },
-): Option<number[], true>;
-function createNumberArrayOption(config?: Config): Option<number[] | undefined, boolean>;
-function createNumberArrayOption(config: Config = {}) {
+): Input<number[], true>;
+function createNumberArrayInput(config?: Config): Input<number[] | undefined, boolean>;
+function createNumberArrayInput(config: Config = {}) {
   const { required, description } = config;
-  const option: Option<number[] | undefined> = {
+  const input: Input<number[] | undefined> = {
     required,
     getValue(argv) {
       if (!argv) {
@@ -24,7 +24,7 @@ function createNumberArrayOption(config: Config = {}) {
       }
 
       if (argv.length === 0) {
-        throw new FatalError(`Expected one or more values ${placeholder}`);
+        throw new UsageError(`Expected one or more values ${placeholder}`);
       }
 
       return argv.map(convertToNumber);
@@ -34,5 +34,5 @@ function createNumberArrayOption(config: Config = {}) {
     },
     placeholder,
   };
-  return option;
+  return input;
 }

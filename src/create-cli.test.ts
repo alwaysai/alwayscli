@@ -1,19 +1,19 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 import { createBranch } from './create-branch';
-import { createStringOption } from './option-factories/create-string-option';
-import { FatalError } from './fatal-error';
+import { createStringInput } from './input-factories/create-string-input';
+import { TerseError, TERSE } from './terse-error';
 import { createCli } from './create-cli';
 import { createLeaf } from './create-leaf';
 
 const ERROR_MESSAGE = 'something very bad has happened';
 const leaf = createLeaf({
   commandName: 'echo',
-  options: {
-    message: createStringOption({ description: 'A message' }),
+  namedInputs: {
+    message: createStringInput({ description: 'A message' }),
   },
   action({ message }) {
     if (message === 'fatal') {
-      throw new FatalError(ERROR_MESSAGE);
+      throw new TerseError(ERROR_MESSAGE);
     }
     return message;
   },
@@ -27,12 +27,12 @@ const root = createBranch({
 const cli = createCli(root);
 
 describe(createCli.name, () => {
-  it('throws usage string "unknown option" if an unknown option is provided', async () => {
-    const usageString = await runAndCatch(cli, 'echo', '--unknown-option');
-    expect(usageString.includes('Error: Unknown option "--unknown-option"')).toBe(true);
+  it('throws usage string "unknown option name" if an unknown input is provided', async () => {
+    const usageString = await runAndCatch(cli, 'echo', '--unknown');
+    expect(usageString).toMatch(/unknown option name "--unknown"/im);
   });
 
-  it('throws string message if a FATAL error is thrown', async () => {
+  it(`throws string message if a "${TERSE}" error is thrown`, async () => {
     const usageString = await runAndCatch(cli, 'echo', '--message', 'fatal');
     expect(usageString).toBe(`Error: ${ERROR_MESSAGE}`);
   });

@@ -1,63 +1,72 @@
-import { Leaf, Branch, AnyOptions, NamedArgs, AnyOption } from './types';
-import { accumulateArgv } from './accumulate-argv';
+import { Leaf, Branch, Command } from './types';
+import { getUsage } from './get-usage';
 import { accumulateCommandStack } from './accumulate-command-stack';
-import { getUsageString } from './get-usage-string';
-import { LEAF } from './constants';
-import { UsageError, USAGE } from './usage-error';
-import { FATAL } from './fatal-error';
+import { accumulateDashDashArgs } from './accumulate-dash-dash-args';
+import { accumulateNamedValues } from './accumulate-named-values';
+import { accumulateNonHelpArgs } from './accumulate-non-help-args';
+
+import { USAGE, UsageError } from './usage-error';
+import { TERSE } from './terse-error';
 
 export function createCli(rootCommand: Branch | Leaf<any>) {
-  return async function cli(...argv: string[]) {
-    const commandStack = [rootCommand];
+  return async function cli(...args: string[]) {
+    const { nonHelpArgs, foundHelp } = accumulateNonHelpArgs(...args);
+    const { dashDashArgs, nonDashDashArgs } = accumulateDashDashArgs(...nonHelpArgs);
+    const {
+      commandStack: { branches, leaf },
+      badCommand,
+      positionalArgs,
+    } = accumulateCommandStack(rootCommand, nonDashDashArgs);
+
+    const usage = (message?: string) => {
+      const commands: Command[] = [...branches];
+      if (leaf) {
+        commands.push(leaf);
+      }
+      return getUsage(commands, message);
+    };
+
+    if (foundHelp || !leaf) {
+      throw usage();
+    }
+
+    if (badCommand) {
+      throw usage(`Bad command "${badCommand}"`);
+    }
+
+    if (positionalArgs.length > 0) {
+      throw usage(`Command "${leaf.commandName}" does not allow positional args`);
+    }
+
     try {
-      const { maybeCommandNames, rawNamedArgs } = accumulateArgv(argv);
-      let foundHelp = false;
-      let slicedCommandNames = maybeCommandNames;
-      for (const h of ['help', '-h', 'h']) {
-        const indexOfH = maybeCommandNames.indexOf(h);
-        if (indexOfH > -1) {
-          foundHelp = true;
-          slicedCommandNames = slicedCommandNames.slice(0, indexOfH);
+      const {
+        namedValues,
+        unusedInputNames,
+        missingInputNames,
+        exceptionsRunningGetValue,
+      } = await accumulateNamedValues(leaf, dashDashArgs);
+      if (unusedInputNames.length > 0) {
+        const inputName = unusedInputNames[0];
+        throw new UsageError(`Unknown option name "--${inputName}"`);
+      }
+      if (missingInputNames.length > 0) {
+        const inputName = missingInputNames[0];
+        throw new UsageError(`"--${inputName}" is required`);
+      }
+      for (const [inputName, ex] of Object.entries(exceptionsRunningGetValue)) {
+        if (ex && typeof ex.message === 'string') {
+          ex.message = ` "--${inputName}": ${ex.message ||
+            'Problem getting option value'}`;
         }
+        throw ex;
       }
-      if (rawNamedArgs['help']) {
-        foundHelp = true;
-      }
-      accumulateCommandStack(commandStack, slicedCommandNames);
-      // ^^ This mutates commandStack
-
-      const command = commandStack.slice(-1)[0];
-      if (foundHelp || command.commandType !== LEAF) {
-        throw getUsageString(commandStack);
-      }
-
-      const { action, options } = command;
-      const namedArgs: NamedArgs<AnyOptions> = {};
-      const restRawNamedArgs = { ...rawNamedArgs };
-      if (options) {
-        for (const [optionName, option] of Object.entries(options as {
-          [optionName: string]: AnyOption;
-        })) {
-          const rawValues = restRawNamedArgs[optionName];
-          delete restRawNamedArgs[optionName];
-          if (option.required && typeof rawValues === 'undefined') {
-            throw `Error: "--${optionName} ${option.placeholder}" is required`;
-          }
-          const optionValue = await (option as AnyOption).getValue(rawValues);
-          namedArgs[optionName] = optionValue;
-        }
-      }
-      const restOptionNames = Object.keys(restRawNamedArgs);
-      if (restOptionNames.length > 0) {
-        throw new UsageError(`Unknown option "--${restOptionNames[0]}"`);
-      }
-      const result = await action(namedArgs);
+      const result = await leaf.action(namedValues);
       return result;
     } catch (ex) {
       if (ex.code === USAGE) {
-        throw getUsageString(commandStack, ex.message);
+        throw usage(ex.message);
       }
-      if (ex.code === FATAL) {
+      if (ex.code === TERSE) {
         throw `Error: ${ex.message || 'No message available'}`;
       }
       throw ex;

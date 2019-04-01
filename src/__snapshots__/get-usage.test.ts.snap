@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getUsageString Creates a usage string for a branch 1`] = `
+exports[`getUsage Creates a usage string for a branch 1`] = `
 "Usage: cli <subcommand> <options>
 
 Subcommands:
@@ -9,7 +9,7 @@ Subcommands:
 "
 `;
 
-exports[`getUsageString Creates a usage string for a leaf 1`] = `
+exports[`getUsage Creates a usage string for a leaf 1`] = `
 "Usage: cli echo <options>
 
 Options:

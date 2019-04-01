@@ -1,13 +1,13 @@
-import { getUsageString } from './get-usage-string';
+import { getUsage } from './get-usage';
 import { createBranch } from './create-branch';
-import { createStringOption } from './option-factories/create-string-option';
+import { createStringInput } from './input-factories/create-string-input';
 import { Leaf } from './types';
 import { createLeaf } from './create-leaf';
 
 const leaf = createLeaf({
   commandName: 'echo',
-  options: {
-    message: createStringOption({ description: 'A message' }),
+  namedInputs: {
+    message: createStringInput({ description: 'A message' }),
   },
   action(foo) {
     return foo;
@@ -19,14 +19,14 @@ const root = createBranch({
   subcommands: [leaf],
 });
 
-describe(getUsageString.name, () => {
+describe(getUsage.name, () => {
   it('Creates a usage string for a branch', () => {
-    const usageString = getUsageString([root]);
+    const usageString = getUsage([root]);
     expect(usageString).toMatchSnapshot();
   });
 
   it('Creates a usage string for a leaf', () => {
-    const usageString = getUsageString([root, leaf as Leaf<any>]);
+    const usageString = getUsage([root, leaf as Leaf<any>]);
     expect(usageString).toMatchSnapshot();
   });
 });

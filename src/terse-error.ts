@@ -1,10 +1,10 @@
-export const FATAL = 'FATAL';
+export const TERSE = 'TERSE';
 
-export class FatalError extends Error {
-  public readonly code: 'FATAL';
+export class TerseError extends Error {
+  public readonly code: typeof TERSE;
   constructor(message?: string) {
     super(message);
-    this.code = 'FATAL';
+    this.code = TERSE;
     if (typeof this.stack === 'string') {
       this.stack = `${this.stack}\n`;
     }
