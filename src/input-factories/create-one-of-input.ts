@@ -33,14 +33,14 @@ function createOneOfInput(config: Config<string[]>) {
   const input: Input<string | undefined> = {
     required: config.required,
     placeholder: config.placeholder || '<value>',
-    getValue(args) {
-      if (!args) {
+    getValue(argv) {
+      if (!argv) {
         return;
       }
-      if (!config.values.includes(args[0])) {
+      if (!config.values.includes(argv[0])) {
         throw new UsageError(`Expected value to be one of ${valuesString}`);
       }
-      return args[0];
+      return argv[0];
     },
     getDescription() {
       let description = regularizeText(config.description);

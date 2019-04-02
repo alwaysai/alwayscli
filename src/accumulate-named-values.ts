@@ -1,14 +1,17 @@
-import { Leaf, AnyNamedInputs, NamedValues, AnyInput } from './types';
+import { Leaf, AnyOptions, NamedValues, AnyInput } from './types';
 import { DashDashArgs } from './accumulate-dash-dash-args';
 
-export async function accumulateNamedValues(leaf: Leaf<any>, dashDashArgs: DashDashArgs) {
-  const { namedInputs } = leaf;
-  let namedValues: NamedValues<AnyNamedInputs> = {};
+export async function accumulateOptionsValues(
+  leaf: Leaf<any, any>,
+  dashDashArgs: DashDashArgs,
+) {
+  const { options } = leaf;
+  let optionsValues: NamedValues<AnyOptions> = {};
   const restDashDashArgs = { ...dashDashArgs };
   const missingInputNames: string[] = [];
   const exceptionsRunningGetValue: { [inputName: string]: any } = {};
-  if (namedInputs) {
-    for (const [inputName, input] of Object.entries(namedInputs as {
+  if (options) {
+    for (const [inputName, input] of Object.entries(options as {
       [inputName: string]: AnyInput;
     })) {
       const rawValues = restDashDashArgs[inputName];
@@ -18,9 +21,9 @@ export async function accumulateNamedValues(leaf: Leaf<any>, dashDashArgs: DashD
       }
       try {
         const inputValue = await (input as AnyInput).getValue(rawValues);
-        namedValues[inputName] = inputValue;
+        optionsValues[inputName] = inputValue;
       } catch (ex) {
-        namedValues = {};
+        optionsValues = {};
         exceptionsRunningGetValue[inputName] = ex;
         break;
       }
@@ -28,7 +31,7 @@ export async function accumulateNamedValues(leaf: Leaf<any>, dashDashArgs: DashD
   }
   const unusedInputNames = Object.keys(restDashDashArgs);
   return {
-    namedValues,
+    optionsValues,
     unusedInputNames,
     missingInputNames,
     exceptionsRunningGetValue,

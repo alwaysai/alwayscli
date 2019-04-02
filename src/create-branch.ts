@@ -1,9 +1,12 @@
-import { Branch, ExcludeCommandType } from './types';
+import { Branch, ExcludeUnderscoreType } from './types';
 import { BRANCH } from './constants';
-import { regularizeText } from './util';
 
-export const createBranch = (cmd: ExcludeCommandType<Branch>): Branch => ({
-  ...cmd,
-  commandType: BRANCH,
-  description: regularizeText(cmd.description),
-});
+type Config = ExcludeUnderscoreType<Branch>;
+
+export function createBranch(config: Config) {
+  const branch: Branch = {
+    ...config,
+    _type: BRANCH,
+  };
+  return branch;
+}

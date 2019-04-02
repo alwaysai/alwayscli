@@ -2,11 +2,10 @@ import { Input } from '../types';
 import { convertToNumber } from '../util';
 import { UsageError } from '../usage-error';
 
-const placeholder = '<num0> [...]';
-
 type Config = Partial<{
   description: string;
   required: boolean;
+  placeholder?: string;
 }>;
 
 export { createNumberArrayInput };
@@ -15,7 +14,7 @@ function createNumberArrayInput(
 ): Input<number[], true>;
 function createNumberArrayInput(config?: Config): Input<number[] | undefined, boolean>;
 function createNumberArrayInput(config: Config = {}) {
-  const { required, description } = config;
+  const { required, description, placeholder = '<num0> [...]' } = config;
   const input: Input<number[] | undefined> = {
     required,
     getValue(argv) {

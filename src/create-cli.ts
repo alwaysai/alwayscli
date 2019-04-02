@@ -2,15 +2,16 @@ import { Leaf, Branch, Command } from './types';
 import { getUsage } from './get-usage';
 import { accumulateCommandStack } from './accumulate-command-stack';
 import { accumulateDashDashArgs } from './accumulate-dash-dash-args';
-import { accumulateNamedValues } from './accumulate-named-values';
-import { accumulateNonHelpArgs } from './accumulate-non-help-args';
+import { accumulateOptionsValues } from './accumulate-named-values';
+import { accumulateNonHelpArgv } from './accumulate-non-help-argv';
 
 import { USAGE, UsageError } from './usage-error';
 import { TERSE } from './terse-error';
+import { accumulateArgsValue } from './accumulate-args-value';
 
-export function createCli(rootCommand: Branch | Leaf<any>) {
+export function createCli(rootCommand: Branch | Leaf<any, any>) {
   return async function cli(...args: string[]) {
-    const { nonHelpArgs, foundHelp } = accumulateNonHelpArgs(...args);
+    const { nonHelpArgv: nonHelpArgs, foundHelp } = accumulateNonHelpArgv(...args);
     const { dashDashArgs, nonDashDashArgs } = accumulateDashDashArgs(...nonHelpArgs);
     const {
       commandStack: { branches, leaf },
@@ -34,17 +35,17 @@ export function createCli(rootCommand: Branch | Leaf<any>) {
       throw usage(`Bad command "${badCommand}"`);
     }
 
-    if (positionalArgs.length > 0) {
-      throw usage(`Command "${leaf.commandName}" does not allow positional args`);
-    }
-
     try {
+      const { argsValue, errorMessage } = await accumulateArgsValue(leaf, positionalArgs);
+      if (errorMessage) {
+        throw usage(errorMessage);
+      }
       const {
-        namedValues,
+        optionsValues,
         unusedInputNames,
         missingInputNames,
         exceptionsRunningGetValue,
-      } = await accumulateNamedValues(leaf, dashDashArgs);
+      } = await accumulateOptionsValues(leaf, dashDashArgs);
       if (unusedInputNames.length > 0) {
         const inputName = unusedInputNames[0];
         throw new UsageError(`Unknown option name "--${inputName}"`);
@@ -60,7 +61,7 @@ export function createCli(rootCommand: Branch | Leaf<any>) {
         }
         throw ex;
       }
-      const result = await leaf.action(namedValues);
+      const result = await leaf.action(argsValue, optionsValues);
       return result;
     } catch (ex) {
       if (ex.code === USAGE) {

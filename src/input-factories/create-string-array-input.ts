@@ -1,11 +1,12 @@
 import { Input } from '../types';
 import { UsageError } from '../usage-error';
 
-const placeholder = '<str0> [...]';
+const PLACEHOLDER = '<str0> [...]';
 
 type Config = Partial<{
   description: string;
   required: boolean;
+  placeholder?: string;
 }>;
 
 export { createStringArrayInput };
@@ -14,16 +15,17 @@ function createStringArrayInput(
 ): Input<string[], true>;
 function createStringArrayInput(config?: Config): Input<string[] | undefined, boolean>;
 function createStringArrayInput(config: Config = {}) {
-  const { required, description } = config;
+  const { required, description, placeholder = PLACEHOLDER } = config;
   const input: Input<string[] | undefined> = {
     required,
+    placeholder,
     getValue(argv) {
       if (!argv) {
         return undefined;
       }
 
       if (argv.length === 0) {
-        throw new UsageError(`Expected one or more values ${placeholder}`);
+        throw new UsageError(`Expected one or more values ${PLACEHOLDER}`);
       }
 
       return argv;
@@ -31,7 +33,6 @@ function createStringArrayInput(config: Config = {}) {
     getDescription() {
       return description;
     },
-    placeholder,
   };
   return input;
 }
