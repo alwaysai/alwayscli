@@ -11,7 +11,7 @@ const leaf = createLeaf({
   options: {
     message: createStringInput({ description: 'A message' }),
   },
-  action({ message }) {
+  action(_, { message }) {
     if (message === 'fatal') {
       throw new TerseError(ERROR_MESSAGE);
     }
