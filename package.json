@@ -1,7 +1,7 @@
 {
   "name": "@alwaysai/always-cli",
   "description": "A library for building command-line interfaces",
-  "version": "0.0.0-4",
+  "version": "0.0.0-5",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
