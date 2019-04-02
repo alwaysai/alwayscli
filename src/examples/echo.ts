@@ -1,22 +1,16 @@
-import { createLeaf, createStringInput } from '..';
-import { createCli } from '../create-cli';
-import { runAndExit } from '@carnesen/run-and-exit';
+import { createCli, createLeaf, createStringArrayInput, runAndExit } from '..';
 
-export const root = createLeaf({
-  commandName: 'echo',
+export const echo = createLeaf({
+  name: 'echo',
   description: 'Print messages to the console',
-  namedInputs: {
-    message: createStringInput({
-      description: 'A message',
-      required: true,
-    }),
-  },
-  action({ message }) {
-    return message;
+  options: {},
+  args: createStringArrayInput({ required: true }),
+  action(messages) {
+    return messages.join(' ');
   },
 });
 
-const cli = createCli(root);
+const cli = createCli(echo);
 
 if (module === require.main) {
   runAndExit(cli, ...process.argv.slice(2));

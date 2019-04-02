@@ -5,14 +5,14 @@ import { runAndCatch } from '@carnesen/run-and-catch';
 import { Command } from './types';
 
 const leaf = createLeaf({
-  commandName: 'echo',
+  name: 'echo',
   action(foo) {
     return foo;
   },
 });
 
 const root = createBranch({
-  commandName: 'cli',
+  name: 'cli',
   subcommands: [leaf],
 });
 
@@ -35,7 +35,7 @@ describe(accumulateCommandStack.name, () => {
   });
 
   it('throws "unexpected command type" if passed an unexpected command type', async () => {
-    const badRoot = { ...root, commandType: 'bogus' };
+    const badRoot = { ...root, _type: 'bogus' };
     const ex = await runAndCatch(accumulateCommandStack, badRoot as Command, [
       'echo',
       'foo',

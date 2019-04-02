@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@alwaysai/tsconfig": "0.0.0",
-    "@alwaysai/tslint-config": "0.0.1",
+    "@alwaysai/tslint-config": "0.0.2",
     "@carnesen/coded-error": "0.1.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.0",

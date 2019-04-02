@@ -7,8 +7,8 @@ import { createLeaf } from './create-leaf';
 
 const ERROR_MESSAGE = 'something very bad has happened';
 const leaf = createLeaf({
-  commandName: 'echo',
-  namedInputs: {
+  name: 'echo',
+  options: {
     message: createStringInput({ description: 'A message' }),
   },
   action({ message }) {
@@ -20,7 +20,7 @@ const leaf = createLeaf({
 });
 
 const root = createBranch({
-  commandName: 'cli',
+  name: 'cli',
   subcommands: [leaf],
 });
 

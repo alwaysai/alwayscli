@@ -23,39 +23,40 @@ export type InputValue<T extends AnyGetValue> = T extends GetValueAsync<infer U,
   ? U
   : never;
 
-export type AnyNamedInputs = {
+export type AnyOptions = {
   [argName: string]: AnyInput;
 };
 
-export type NamedValues<T extends AnyNamedInputs> = {
+export type NamedValues<T extends AnyOptions> = {
   [K in keyof T]: InputValue<T[K]['getValue']>
 };
 
-export type Command = Branch | Leaf<AnyNamedInputs>;
+export type Command = Branch | Leaf<AnyInput, AnyOptions>;
 
 export type Branch = {
-  commandType: typeof BRANCH;
-  commandName: string;
+  _type: typeof BRANCH;
+  name: string;
   description?: string;
-  subcommands: (Branch | Leaf<any>)[];
+  subcommands: (Branch | Leaf<any, any>)[];
 };
 
-export type Leaf<T extends AnyNamedInputs> = {
-  commandType: typeof LEAF;
-  commandName: string;
+export type Leaf<T extends AnyInput, U extends AnyOptions> = {
+  _type: typeof LEAF;
+  name: string;
   description?: string;
-  namedInputs?: T;
-  action: (namedValues: NamedValues<T>) => any;
+  args?: T;
+  options?: U;
+  action: (args: InputValue<T['getValue']>, options: NamedValues<U>) => any;
 };
 
 // The "commandType" field is assigned internally by the framework.
 // This helper function is used to remove that field for user use.
-export type ExcludeCommandType<T extends { commandType: any }> = Pick<
+export type ExcludeUnderscoreType<T extends { _type: any }> = Pick<
   T,
-  Exclude<keyof T, 'commandType'>
+  Exclude<keyof T, '_type'>
 >;
 
 export type CommandStack = {
   branches: Branch[];
-  leaf?: Leaf<any>;
+  leaf?: Leaf<AnyInput, any>;
 };

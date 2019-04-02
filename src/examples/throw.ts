@@ -7,10 +7,10 @@ import { USAGE } from '../usage-error';
 import { TERSE } from '../terse-error';
 import { createOneOfInput } from '../input-factories/create-one-of-input';
 
-export const root = createLeaf({
-  commandName: 'throw',
-  description: 'Print messages to the console',
-  namedInputs: {
+export const throw_ = createLeaf({
+  name: 'throw',
+  description: 'Throw a CodedError in the "action" function',
+  options: {
     message: createStringInput({
       description: 'A message',
       required: true,
@@ -28,7 +28,7 @@ export const root = createLeaf({
   },
 });
 
-const cli = createCli(root);
+const cli = createCli(throw_);
 
 if (module === require.main) {
   runAndExit(cli, ...process.argv.slice(2));

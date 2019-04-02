@@ -8,7 +8,7 @@ export function accumulateCommandStack(rootCommand: Command, nonDashDashArgs: st
   };
 
   function addToCommandStack(command: Command) {
-    switch (command.commandType) {
+    switch (command._type) {
       case BRANCH:
         commandStack.branches.push(command);
         break;
@@ -33,7 +33,7 @@ export function accumulateCommandStack(rootCommand: Command, nonDashDashArgs: st
     index = index + 1;
     const branch = commandStack.branches.slice(-1)[0];
     const nextCommand = branch.subcommands.find(
-      subcommand => subcommand.commandName === nonDashDashArg,
+      subcommand => subcommand.name === nonDashDashArg,
     );
     if (!nextCommand) {
       badCommand = nonDashDashArg;
