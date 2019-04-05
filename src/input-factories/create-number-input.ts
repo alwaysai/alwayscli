@@ -9,6 +9,7 @@ type Config = Partial<{
   description: string;
   defaultValue: Value;
   placeholder?: string;
+  hidden?: boolean;
 }>;
 
 export { createNumberInput };
@@ -18,9 +19,16 @@ function createNumberInput(
 function createNumberInput(config: Config & { required: true }): Input<Value, true>;
 function createNumberInput(config?: Config): Input<Value | undefined, boolean>;
 function createNumberInput(config: Config = {}) {
-  const { required, description, defaultValue, placeholder = '<num0> [...]' } = config;
+  const {
+    required,
+    description,
+    defaultValue,
+    placeholder = '<num0> [...]',
+    hidden,
+  } = config;
   const input: Input<Value | undefined> = {
     required,
+    hidden,
     getValue(argv) {
       if (!argv) {
         return typeof defaultValue === 'number' ? defaultValue : undefined;

@@ -5,6 +5,7 @@ type Config = Partial<{
   required: boolean;
   description: string;
   defaultValue: string;
+  hidden?: boolean;
   placeholder?: string;
 }>;
 
@@ -17,8 +18,17 @@ function createStringInput(
 function createStringInput(config: Config & { required: true }): Input<string, true>;
 function createStringInput(config?: Config): Input<string | undefined, false>;
 function createStringInput(config: Config = {}) {
-  const { defaultValue, required, description, placeholder = PLACEHOLDER } = config;
+  const {
+    defaultValue,
+    required,
+    description,
+    placeholder = PLACEHOLDER,
+    hidden,
+  } = config;
   const input: Input<string | undefined> = {
+    hidden,
+    placeholder,
+    required,
     getValue(argv) {
       if (!argv) {
         return typeof defaultValue === 'string' ? defaultValue : undefined;
@@ -37,8 +47,6 @@ function createStringInput(config: Config = {}) {
     getDescription() {
       return description;
     },
-    placeholder,
-    required,
   };
   return input;
 }

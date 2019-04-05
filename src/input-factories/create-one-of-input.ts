@@ -7,6 +7,7 @@ type Config<U extends string[]> = {
   required?: boolean;
   description?: string;
   placeholder?: string;
+  hidden?: boolean;
 };
 
 export { createOneOfInput };
@@ -33,6 +34,7 @@ function createOneOfInput(config: Config<string[]>) {
   const input: Input<string | undefined> = {
     required: config.required,
     placeholder: config.placeholder || '<value>',
+    hidden: config.hidden,
     getValue(argv) {
       if (!argv) {
         return;

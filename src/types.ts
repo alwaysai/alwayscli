@@ -9,10 +9,11 @@ type GetValue<V, R extends boolean> = GetValueSync<V, R> | GetValueAsync<V, R>;
 type AnyGetValue = GetValue<any, any>;
 
 export type Input<V, R extends boolean = boolean> = {
+  placeholder: string;
   required?: R;
+  hidden?: boolean;
   getValue: GetValue<V, R>;
   getDescription?: () => string | undefined;
-  placeholder: string;
 };
 
 export type AnyInput = Input<any>;
@@ -37,6 +38,7 @@ export type Branch = {
   _type: typeof BRANCH;
   name: string;
   description?: string;
+  hidden?: boolean;
   subcommands: (Branch | Leaf<any, any>)[];
 };
 
@@ -44,6 +46,7 @@ export type Leaf<T extends AnyInput, U extends AnyOptions> = {
   _type: typeof LEAF;
   name: string;
   description?: string;
+  hidden?: boolean;
   args?: T;
   options?: U;
   action: (args: InputValue<T['getValue']>, options: NamedValues<U>) => any;

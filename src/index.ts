@@ -18,8 +18,8 @@ export { createStringArrayInput } from './input-factories/create-string-array-in
 export { createStringInput } from './input-factories/create-string-input';
 
 // Error constructors
-export { UsageError } from './usage-error';
-export { TerseError } from './terse-error';
+export { TerseError, TERSE } from './terse-error';
+export { UsageError, USAGE } from './usage-error';
 
 // Re-export for convenience
 export { runAndCatch } from '@carnesen/run-and-catch';

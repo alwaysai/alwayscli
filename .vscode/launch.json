@@ -19,9 +19,8 @@
       "name": "Launch example",
       "program": "${workspaceFolder}/node_modules/.bin/ts-node",
       "args": [
-        "src/example.ts",
-        "get-foo",
-        "--help"
+        "src/examples/index.ts",
+        "asdf"
       ],
     },
   ]

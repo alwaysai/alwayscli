@@ -21,7 +21,10 @@ export function getUsage(commands: Command[], errorMessage?: string) {
     case BRANCH:
       firstParagraph += ' <subcommand> ...';
       otherParagraphs.push('Subcommands:');
-      const items: Parameters<typeof createTextList> = command.subcommands.map(
+      const filteredSubcommands = command.subcommands.filter(
+        subcommand => !subcommand.hidden,
+      );
+      const items: Parameters<typeof createTextList> = filteredSubcommands.map(
         ({ name, description }) => ({
           name,
           text: description,
@@ -32,7 +35,7 @@ export function getUsage(commands: Command[], errorMessage?: string) {
       break;
     case LEAF:
       const { args: positionalInput, options: namedInputs } = command;
-      if (positionalInput) {
+      if (positionalInput && !positionalInput.hidden) {
         const { placeholder, getDescription, required } = positionalInput;
         firstParagraph += ` ${
           required ? placeholder : wrapInSquareBrackets(placeholder)
@@ -44,7 +47,7 @@ export function getUsage(commands: Command[], errorMessage?: string) {
         }
       }
       if (namedInputs) {
-        const entries = Object.entries(namedInputs);
+        const entries = Object.entries(namedInputs).filter(([_, input]) => !input.hidden);
         if (entries.length > 0) {
           const optionsNotRequired = entries.every(
             ([_, namedInput]) => !namedInput.required,

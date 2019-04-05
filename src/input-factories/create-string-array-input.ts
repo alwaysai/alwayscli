@@ -6,6 +6,7 @@ const PLACEHOLDER = '<str0> [...]';
 type Config = Partial<{
   description: string;
   required: boolean;
+  hidden?: boolean;
   placeholder?: string;
 }>;
 
@@ -15,9 +16,10 @@ function createStringArrayInput(
 ): Input<string[], true>;
 function createStringArrayInput(config?: Config): Input<string[] | undefined, boolean>;
 function createStringArrayInput(config: Config = {}) {
-  const { required, description, placeholder = PLACEHOLDER } = config;
+  const { required, description, placeholder = PLACEHOLDER, hidden } = config;
   const input: Input<string[] | undefined> = {
     required,
+    hidden,
     placeholder,
     getValue(argv) {
       if (!argv) {

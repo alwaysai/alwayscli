@@ -6,6 +6,7 @@ type Config = Partial<{
   description: string;
   required: boolean;
   placeholder?: string;
+  hidden?: boolean;
 }>;
 
 export { createNumberArrayInput };
@@ -14,9 +15,10 @@ function createNumberArrayInput(
 ): Input<number[], true>;
 function createNumberArrayInput(config?: Config): Input<number[] | undefined, boolean>;
 function createNumberArrayInput(config: Config = {}) {
-  const { required, description, placeholder = '<num0> [...]' } = config;
+  const { required, description, placeholder = '<num0> [...]', hidden } = config;
   const input: Input<number[] | undefined> = {
     required,
+    hidden,
     getValue(argv) {
       if (!argv) {
         return undefined;

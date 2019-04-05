@@ -27,12 +27,16 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       return getUsage(commands, message);
     };
 
-    if (foundHelp || !leaf) {
+    if (foundHelp) {
       throw usage();
     }
 
     if (badCommand) {
       throw usage(`Bad command "${badCommand}"`);
+    }
+
+    if (!leaf) {
+      throw usage();
     }
 
     try {
