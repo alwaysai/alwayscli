@@ -14,7 +14,7 @@ describe(createFlagInput.name, () => {
 
   it('getValue result type is boolean', () => {
     // $ExpectType boolean
-    true as InputValue<typeof input.getValue>;
+    true as InputValue<typeof input>;
   });
 
   it('getDescription returns description', () => {

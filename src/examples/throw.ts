@@ -1,11 +1,14 @@
-import { createLeaf, createStringInput } from '..';
-import { createCli } from '../create-cli';
+import {
+  createCli,
+  createLeaf,
+  createStringInput,
+  createJsonInput,
+  createOneOfInput,
+  USAGE,
+  TERSE,
+} from '..';
 import { runAndExit } from '@carnesen/run-and-exit';
 import { CodedError } from '@carnesen/coded-error';
-import { createJsonInput } from '../input-factories/create-json-input';
-import { USAGE } from '../usage-error';
-import { TERSE } from '../terse-error';
-import { createOneOfInput } from '../input-factories/create-one-of-input';
 
 export const throw_ = createLeaf({
   name: 'throw',
@@ -23,7 +26,7 @@ export const throw_ = createLeaf({
       description: 'An arbitrary "data" field on the error object',
     }),
   },
-  action({ message, code, data }) {
+  action(_, { message, code, data }) {
     throw new CodedError(message, code, data);
   },
 });

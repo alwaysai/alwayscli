@@ -1,7 +1,7 @@
-import { Branch, ExcludeUnderscoreType } from './types';
+import { Branch, ExcludeInternallyAssigned } from './types';
 import { BRANCH } from './constants';
 
-type Config = ExcludeUnderscoreType<Branch>;
+type Config = ExcludeInternallyAssigned<Branch>;
 
 export function createBranch(config: Config) {
   const branch: Branch = {

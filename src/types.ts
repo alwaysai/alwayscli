@@ -2,37 +2,27 @@ import { BRANCH, LEAF } from './constants';
 
 export type Argv<R extends boolean> = R extends true ? string[] : (string[] | undefined);
 
-type GetValueSync<V, R extends boolean> = (argv: Argv<R>) => V;
-type GetValueAsync<V, R extends boolean> = (argv: Argv<R>) => Promise<V>;
-type GetValue<V, R extends boolean> = GetValueSync<V, R> | GetValueAsync<V, R>;
-
-type AnyGetValue = GetValue<any, any>;
-
 export type Input<V, R extends boolean = boolean> = {
   placeholder: string;
   required?: R;
   hidden?: boolean;
-  getValue: GetValue<V, R>;
+  getValue: ((argv: Argv<R>) => V) | ((argv: Argv<R>) => Promise<V>);
   getDescription?: () => string | undefined;
 };
 
 export type AnyInput = Input<any>;
 
-export type InputValue<T extends AnyGetValue> = T extends GetValueAsync<infer U, any>
-  ? U
-  : T extends GetValueSync<infer U, any>
-  ? U
-  : never;
+export type InputValue<T> = T extends Input<infer U, any> ? U : never;
 
-export type AnyOptions = {
+export type AnyNamedInputs = {
   [argName: string]: AnyInput;
 };
 
-export type NamedValues<T extends AnyOptions> = {
-  [K in keyof T]: InputValue<T[K]['getValue']>
+export type NamedInputValues<T extends AnyNamedInputs> = {
+  [K in keyof T]: InputValue<T[K]>
 };
 
-export type Command = Branch | Leaf<AnyInput, AnyOptions>;
+export type Command = Branch | Leaf<AnyInput, AnyNamedInputs>;
 
 export type Branch = {
   _type: typeof BRANCH;
@@ -42,19 +32,20 @@ export type Branch = {
   subcommands: (Branch | Leaf<any, any>)[];
 };
 
-export type Leaf<T extends AnyInput, U extends AnyOptions> = {
+export type Leaf<T extends AnyInput, U extends AnyNamedInputs> = {
   _type: typeof LEAF;
   name: string;
   description?: string;
   hidden?: boolean;
   args?: T;
   options?: U;
-  action: (args: InputValue<T['getValue']>, options: NamedValues<U>) => any;
+  action: (args: InputValue<T>, options: NamedInputValues<U>) => any;
 };
 
-// The "commandType" field is assigned internally by the framework.
-// This helper function is used to remove that field for user use.
-export type ExcludeUnderscoreType<T extends { _type: any }> = Pick<
+// The "_type" field is assigned internally by the framework.
+// This helper function is used to remove that field for the input
+// type of the createLeaf and createBranch factories.
+export type ExcludeInternallyAssigned<T extends { _type: any }> = Pick<
   T,
   Exclude<keyof T, '_type'>
 >;

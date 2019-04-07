@@ -14,7 +14,7 @@ describe(createNumberArrayInput.name, () => {
 
   it('getValue result type is number[] | undefined', () => {
     // $ExpectType number[] | undefined
-    [] as InputValue<typeof input.getValue>;
+    [] as InputValue<typeof input>;
   });
 
   it('getDescription returns description', () => {

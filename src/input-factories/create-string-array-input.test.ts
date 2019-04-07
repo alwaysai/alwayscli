@@ -22,7 +22,7 @@ describe(createStringArrayInput.name, () => {
 
   it('getValue result type is string[] | undefined', () => {
     // $ExpectType string[] | undefined
-    [] as InputValue<typeof input.getValue>;
+    [] as InputValue<typeof input>;
   });
 
   it('getDescription returns description', () => {

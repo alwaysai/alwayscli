@@ -1,16 +1,18 @@
 import { accumulateArgsValue } from './accumulate-args-value';
 import { createLeaf } from './create-leaf';
+import { Input } from './types';
 
 describe(accumulateArgsValue.name, () => {
   it('returns ', async () => {
+    const args: Input<string, false> = {
+      placeholder: '<foo>',
+      getValue() {
+        return 'carl';
+      },
+    };
     const leaf = createLeaf({
       name: 'foo',
-      args: {
-        placeholder: '<foo>',
-        getValue() {
-          return 'carl';
-        },
-      },
+      args,
       action(_) {},
     });
     const { argsValue, errorMessage } = await accumulateArgsValue(leaf, ['foo']);

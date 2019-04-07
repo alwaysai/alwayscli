@@ -1,9 +1,16 @@
-import { AnyOptions, Leaf, ExcludeUnderscoreType, AnyInput } from './types';
+import {
+  AnyNamedInputs,
+  Leaf,
+  ExcludeInternallyAssigned,
+  AnyInput,
+  Input,
+} from './types';
 import { LEAF } from './constants';
 
-export function createLeaf<T extends AnyInput = AnyInput, U extends AnyOptions = {}>(
-  config: ExcludeUnderscoreType<Leaf<T, U>>,
-) {
+export function createLeaf<
+  T extends AnyInput = Input<never, false>,
+  U extends AnyNamedInputs = {}
+>(config: ExcludeInternallyAssigned<Leaf<T, U>>) {
   const leaf: Leaf<T, U> = {
     ...config,
     _type: LEAF,
