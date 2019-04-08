@@ -16,7 +16,7 @@ export async function accumulateArgsValue(leaf: Leaf<AnyInput, any>, argv: strin
       argsValue = await leaf.args.getValue(argv);
     }
   } else {
-    // !leaf.leaf.args
+    // !leaf.args
     if (argv.length > 0) {
       errorMessage = `Unexpected argument "${argv[0]}"`;
     }

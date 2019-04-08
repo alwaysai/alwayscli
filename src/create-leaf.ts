@@ -8,7 +8,7 @@ import {
 import { LEAF } from './constants';
 
 export function createLeaf<
-  T extends AnyInput = Input<never, false>,
+  T extends AnyInput = Input<undefined, false>,
   U extends AnyNamedInputs = {}
 >(config: ExcludeInternallyAssigned<Leaf<T, U>>) {
   const leaf: Leaf<T, U> = {
