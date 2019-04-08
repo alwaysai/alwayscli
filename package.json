@@ -31,16 +31,16 @@
   },
   "devDependencies": {
     "@alwaysai/tsconfig": "0.0.0",
-    "@alwaysai/tslint-config": "0.0.2",
+    "@alwaysai/tslint-config": "0.0.3",
     "@carnesen/coded-error": "0.1.0",
     "@types/jest": "24.0.11",
-    "@types/node": "11.13.0",
-    "jest": "24.5.0",
+    "@types/node": "11.13.2",
+    "jest": "24.7.1",
     "rimraf": "2.6.3",
-    "ts-jest": "24.0.1",
+    "ts-jest": "24.0.2",
     "ts-node": "8.0.3",
-    "tslint": "5.14.0",
-    "typescript": "3.4.1"
+    "tslint": "5.15.0",
+    "typescript": "3.4.2"
   },
   "files": [
     "src",
