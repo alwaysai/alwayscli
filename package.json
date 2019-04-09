@@ -24,9 +24,11 @@
     "@carnesen/run-and-catch": "0.0.0-0",
     "@carnesen/run-and-exit": "0.2.0",
     "@types/parse-json": "4.0.0",
+    "@types/read-pkg-up": "3.0.1",
     "@types/redent": "2.0.0",
     "chalk": "2.4.2",
     "parse-json": "4.0.0",
+    "read-pkg-up": "5.0.0",
     "redent": "2.0.0"
   },
   "devDependencies": {

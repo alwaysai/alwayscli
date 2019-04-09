@@ -8,9 +8,28 @@ import { accumulateNonHelpArgv } from './accumulate-non-help-argv';
 import { USAGE, UsageError } from './usage-error';
 import { TERSE } from './terse-error';
 import { accumulateArgsValue } from './accumulate-args-value';
+import readPkgUp = require('read-pkg-up');
+import { RED_ERROR as RED_ERROR_COLON } from './constants';
+import { parentDir } from './index';
 
 export function createCli(rootCommand: Branch | Leaf<any, any>) {
   return async function cli(...args: string[]) {
+    if (['-v', '--version'].includes(args[0])) {
+      if (rootCommand.version) {
+        return rootCommand.version;
+      }
+      // An explicit version was not provided with root command.
+      // Let's try to find a version string in a package.json
+      const pkg =
+        readPkgUp.sync({
+          cwd: parentDir,
+          normalize: false,
+        }).pkg || {};
+      if (pkg.version) {
+        return pkg.version;
+      }
+      throw `${RED_ERROR_COLON} Failed to find a CLI "version"`;
+    }
     const { nonHelpArgv: nonHelpArgs, foundHelp } = accumulateNonHelpArgv(...args);
     const { dashDashArgs, nonDashDashArgs } = accumulateDashDashArgs(...nonHelpArgs);
     const {

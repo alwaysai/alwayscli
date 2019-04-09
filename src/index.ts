@@ -1,3 +1,5 @@
+import { dirname } from 'path';
+
 // Arg type for custom arg types
 export { Input } from './types';
 
@@ -24,3 +26,8 @@ export { UsageError, USAGE } from './usage-error';
 // Re-export for convenience
 export { runAndCatch } from '@carnesen/run-and-catch';
 export { runAndExit } from '@carnesen/run-and-exit';
+
+// Prevent caching of this module so module.parent is always accurate
+delete require.cache[__filename];
+export const parentDir = dirname(module.parent!.filename);
+// ^^ This is the directory of the module that is `require`ing this one.

@@ -1,14 +1,11 @@
 import redent = require('redent');
-import chalk from 'chalk';
 
 import { Command } from './types';
-import { BRANCH, LEAF } from './constants';
+import { BRANCH, LEAF, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
 
 const INDENT_SIZE = 3;
-
-const RED_ERROR = chalk.red('Error:');
 
 export function getUsage(commands: Command[], errorMessage?: string) {
   const command = commands.slice(-1)[0];
