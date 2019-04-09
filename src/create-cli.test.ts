@@ -36,4 +36,10 @@ describe(createCli.name, () => {
     const usageString = await runAndCatch(cli, 'echo', '--message', 'fatal');
     expect(usageString).toBe(`Error: ${ERROR_MESSAGE}`);
   });
+
+  it('returns version string from package.json if "-v" or "--version" is passed', async () => {
+    const version = require('../package.json').version;
+    expect(await cli('-v')).toBe(version);
+    expect(await cli('--version')).toBe(version);
+  });
 });

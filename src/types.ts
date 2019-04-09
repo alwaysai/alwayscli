@@ -30,6 +30,7 @@ export type Branch = {
   description?: string;
   hidden?: boolean;
   subcommands: (Branch | Leaf<any, any>)[];
+  version?: string;
 };
 
 export type Leaf<T extends AnyInput, U extends AnyNamedInputs> = {
@@ -40,6 +41,7 @@ export type Leaf<T extends AnyInput, U extends AnyNamedInputs> = {
   args?: T;
   options?: U;
   action: (args: InputValue<T>, options: NamedInputValues<U>) => any;
+  version?: string;
 };
 
 // The "_type" field is assigned internally by the framework.
