@@ -10,7 +10,7 @@ import { TERSE } from './terse-error';
 import { accumulateArgsValue } from './accumulate-args-value';
 import readPkgUp = require('read-pkg-up');
 import { RED_ERROR as RED_ERROR_COLON } from './constants';
-import { parentDir } from './index';
+import { dirname } from 'path';
 
 export function createCli(rootCommand: Branch | Leaf<any, any>) {
   return async function cli(...args: string[]) {
@@ -20,13 +20,17 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       }
       // An explicit version was not provided with root command.
       // Let's try to find a version string in a package.json
-      const pkg =
-        readPkgUp.sync({
-          cwd: parentDir,
-          normalize: false,
-        }).pkg || {};
-      if (pkg.version) {
-        return pkg.version;
+      const mainModule = require.main;
+      if (mainModule) {
+        const pkg =
+          readPkgUp.sync({
+            cwd: dirname(mainModule.filename),
+            normalize: false,
+          }).pkg || {};
+
+        if (pkg.version) {
+          return pkg.version;
+        }
       }
       throw `${RED_ERROR_COLON} Failed to find a CLI "version"`;
     }
