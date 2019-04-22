@@ -1,4 +1,4 @@
-# alwaysCLI [![Build Status](https://travis-ci.com/alwaysai/always-cli.svg?branch=master)](https://travis-ci.com/alwaysai/always-cli)
+# `alwaysCLI` [![Build Status](https://travis-ci.com/alwaysai/always-cli.svg?branch=master)](https://travis-ci.com/alwaysai/always-cli)
 
 A framework for building command-line interfaces (CLIs) in Node.js. This package includes runtime JavaScript files suitable for Node.js >=8 as well as the corresponding TypeScript type declarations.
 
@@ -8,7 +8,7 @@ A framework for building command-line interfaces (CLIs) in Node.js. This package
 npm install @alwaysai/always-cli
 ```
 
-In an alwaysCLI CLI, commands are organized into a "tree". Each "leaf" represents an action that the CLI can perform. "Branches" collect and organize leaves. For example, in the CLI command "alwaysai user logIn", "alwaysai" is the "root" command, "user" is a branch of commands related to user authentication and "logIn" is the specific action (leaf command). Your CLI need not have branches. Here is a simple CLI that has a leaf as its root:
+In an `alwaysCLI` CLI, commands are organized into a tree. Each "leaf" represents an action whereas "branches" collect and organize leaves. For example, in the command `alwaysai user logIn`, `alwaysai` is the "root" command, `user` is a branch of commands related to user authentication and `logIn` is the specific action (leaf command). Your CLI need not have branches. Here is a simple CLI that has a leaf as its root:
 ```ts
 import {
   createCli,
@@ -43,9 +43,9 @@ if (require.main === module) {
 }
 ```
 
-Here `cli` is a function that takes command-line arguments (strings) as input and returns a `Promise` representing the execution of those arguments. We export `cli` so that we can unit test it [like so](src/examples/__tests__/readme.test.ts). The `if (require.main === module)` snippet near the end is idiomatic Node.js for "if this module is the entrypoint", which is `true` when you do `node readme.ts`, but not when you do `require('./readme.ts')`, for example in a unit test. The `runAndExit` helper just runs the provided function with the provided arguments, `console.log`s the result, then `process.exit`'s.
+`cli` is a function that takes command-line arguments (strings) as input and returns a `Promise` representing the execution of the arguments. We export `cli` so that we can unit test it [like so](src/examples/__tests__/readme.test.ts). The `if (require.main === module)` snippet near the end is idiomatic Node.js for "if this module is the entrypoint", which is `true` when you do `node readme.ts`, but not when you do `require('./readme.ts')`, for example in a unit test. The `runAndExit` helper just runs the provided function with the provided arguments, `console.log`s the result, then `process.exit`'s.
 
-Here's how that behaves as a CLI. If no arguments are passed, alwaysCLI prints the top-level command usage and an error message indicating that the "args" are required:
+Here's how that behaves as a CLI. Absent any arguments, `alwaysCLI` prints the top-level command usage and an error message indicating that the positional arguments are required (i.e. the `args` property of the leaf has `required` set to `true`):
 ```
 Usage: multiply <num0> [...] [<options>]
 
@@ -66,11 +66,11 @@ $ multiply 1 2 3 --squared
 36 
 ```
 
-More generally the usage of an alwaysCLI CLI is:
+More generally the usage of an `alwaysCLI` CLI is:
 ```
-<root> [<branch0> ...] [<arg0> [...]] [--option0 <val0> ...] [...]
+<program> [<branch0> ...] [leaf] [<arg0> [...]] [--option0 <val0> ...] [...]
 ```
-Starting from the root command, to invoke an action the user provides (in order):
+To invoke an action the user provides (in order):
 - zero or more branch names
 - a leaf name
 - zero or more positional args
@@ -122,7 +122,7 @@ If this "branch" is not the root command, `name` is the string that the user wil
 (Optional) A string that will be included in `Usage:` if present.
 
 #### subcommands
-An array of `branch` and/or `leaf` objects.
+An array of `Branch` and/or `Leaf` objects.
 
 #### hidden
 (Optional) `boolean`
