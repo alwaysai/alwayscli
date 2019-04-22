@@ -45,8 +45,9 @@ if (require.main === module) {
 
 `cli` is a function that takes command-line arguments (strings) as input and returns a `Promise` representing the execution of the arguments. We export `cli` so that we can unit test it [like so](src/examples/__tests__/readme.test.ts). The `if (require.main === module)` snippet near the end is idiomatic Node.js for "if this module is the entrypoint", which is `true` when you do `node readme.ts`, but not when you do `require('./readme.ts')`, for example in a unit test. The `runAndExit` helper just runs the provided function with the provided arguments, `console.log`s the result, then `process.exit`'s.
 
-Here's how that behaves as a CLI. Absent any arguments, `alwaysCLI` prints the top-level command usage and an error message indicating that the positional arguments are required (i.e. the `args` property of the leaf has `required` set to `true`):
+Here's how that behaves as a CLI. In this case since the `args` property of the leaf has `required` set to `true`, `alwaysCLI` will print the top-level command usage and an error message if no positional arguments are provided:
 ```
+$ multiply
 Usage: multiply <num0> [...] [<options>]
 
    Multiply numbers and print the result
