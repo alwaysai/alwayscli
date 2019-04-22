@@ -1,7 +1,7 @@
 import { createCli, runAndExit, createBranch } from '..';
-import { echo } from './echo';
-import { readme } from './readme';
-import { throw_ } from './throw';
+import { root as echo } from './echo';
+import { root as readme } from './readme';
+import { root as throw_ } from './throw';
 
 const pkg = require('../../package.json');
 

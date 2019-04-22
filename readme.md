@@ -1,160 +1,122 @@
-# @alwaysai/always-cli [![Build Status](https://travis-ci.com/alwaysai/always-cli.svg?branch=master)](https://travis-ci.com/alwaysai/always-cli)
+# alwaysCLI [![Build Status](https://travis-ci.com/alwaysai/always-cli.svg?branch=master)](https://travis-ci.com/alwaysai/always-cli)
 
-A library for building Node.js command-line interfaces (CLIs). This package includes runtime JavaScript files suitable for Node.js >=8 as well as the corresponding TypeScript type declarations.
+A framework for building command-line interfaces (CLIs) in Node.js. This package includes runtime JavaScript files suitable for Node.js >=8 as well as the corresponding TypeScript type declarations.
 
 ## Usage
 
-Here is an example of a Node.js CLI written in TypeScript:
+```
+npm install @alwaysai/always-cli
+```
 
+In an alwaysCLI CLI, commands are organized into a "tree". Each "leaf" represents an action that the CLI can perform. "Branches" collect and organize leaves. For example, in the CLI command "alwaysai user logIn", "alwaysai" is the "root" command, "user" is a branch of commands related to user authentication and "logIn" is the specific action (leaf command). Your CLI need not have branches. Here is a simple CLI that has a leaf as its root:
 ```ts
 import {
+  createCli,
   createLeaf,
-  createStringOption,
-  createBranch,
-  createNumberArrayOption,
-  createFlagOption,
-  createCommandLineInterface,
-  makeOptionRequired,
-  UsageError,
+  createFlagInput,
+  createNumberArrayInput,
+  runAndExit,
 } from '@alwaysai/always-cli';
 
-import { promisify } from 'util';
-import { readFile } from 'fs';
-import { isAbsolute } from 'path';
-
-// A "leaf" command defines an "action" function
-export const multiply = createLeaf({
-  commandName: 'multiply',
-  description: 'Multiply numbers',
+const root = createLeaf({
+  name: 'multiply',
+  description: 'Multiply numbers and print the result',
+  args: createNumberArrayInput({ required: true }),
   options: {
-    numbers: makeOptionRequired(createNumberArrayOption()),
-    squareTheResult: createFlagOption(),
+    squared: createFlagInput({
+      description: 'Square the result before printing it',
+    }),
   },
-  action({ numbers, squareTheResult }) {
-    const multiplied = numbers.reduce((a, b) => a * b, 1);
-    if (squareTheResult) {
+  action(args, { squared }) {
+    const multiplied = args.reduce((a, b) => a * b, 1);
+    if (squared) {
       return multiplied * multiplied;
     }
     return multiplied;
   },
 });
 
-export const cat = createLeaf({
-  commandName: 'cat',
-  description: 'Print the contents of a file',
-  options: {
-    filePath: makeOptionRequired(
-      createStringOption({
-        description: 'An absolute path',
-      }),
-    ),
-  },
-  async action({ filePath }) {
-    if (!isAbsolute(filePath)) {
-      throw new UsageError('filePath must be absolute');
-    }
-    const contents = await promisify(readFile)(filePath, { encoding: 'utf8' });
-    return contents;
-  },
-});
-
-// A "branch" command is a container for subcommands which can
-// themselves be either "branch" commands or "leaf" commands
-export const root = createBranch({
-  commandName: 'readme-cli',
-  description: `
-    This is an example command-line interface (CLI).
-    Its only purpose is to demonstrate features.`,
-  subcommands: [multiply, cat],
-});
-
-const commandLineInterface = createCommandLineInterface(root);
+export const cli = createCli(root);
 
 if (require.main === module) {
-  commandLineInterface();
+  runAndExit(cli, ...process.argv.slice(2));
 }
 ```
-The `commandLineInterface()` statement near the end is the one that does the heavy lifting of parsing the command-line arguments and running the appropriate command. It's wrapped in the `require.main === module` conditional so that it will only be called [if this file has been run directly](https://nodejs.org/api/modules.html). That makes it easier to unit test the exported leaf commands separately.
 
-Here's how that behaves as a CLI. If no arguments are passed, it prints the top-level usage:
+Here `cli` is a function that takes command-line arguments (strings) as input and returns a `Promise` representing the execution of those arguments. We export `cli` so that we can unit test it [like so](src/examples/__tests__/readme.test.ts). The `if (require.main === module)` snippet near the end is idiomatic Node.js for "if this module is the entrypoint", which is `true` when you do `node readme.ts`, but not when you do `require('./readme.ts')`, for example in a unit test. The `runAndExit` helper just runs the provided function with the provided arguments, `console.log`s the result, then `process.exit`'s.
+
+Here's how that behaves as a CLI. If no arguments are passed, alwaysCLI prints the top-level command usage and an error message indicating that the "args" are required:
 ```
-$ readme-cli
-Usage: readme-cli <subcommand> <options>
+Usage: multiply <num0> [...] [<options>]
 
-   This is an example command-line interface (CLI).
-   Its only purpose is to demonstrate features.
-
-Subcommands:
-
-   multiply, cat
-```
-The usage of a `@alwaysai/always-cli` CLI is always:
-```
-<program> [<subcommand0> ...] [--option0 <val0> ...] [...]
-```
-The CLI arguments up to the first one starting with `--` are command/subcommand names. Starting with the first `--` argument, all remaining arguments are either option names or option values.
-
-If a subcommand is invoked without its required arguments, the CLI prints usage for the subcommand:
-```
-$ readme-cli multiply
-Error: option "numbers" is required
-
-Usage: readme-cli multiply <options>
-
-   Multiply numbers
+   Multiply numbers and print the result
 
 Options:
 
-   --numbers <num0> [...]
-   --squareTheResult
-```
-Here is an example of successful invocation of a command with a synchronous `action`:
-```
-$ readme-cli multiply --numbers 1 2 3 --squareTheResult
-36
-```
-All `flag` options default to `false` and can be enabled (set to `true`) as in the example above.
+   [--squared] : Square the result before printing it
 
-Here's an example of a command with an asynchronous `action` and an option with a `defaultValue`:
+Error: "<num0> [...]": Value is required
 ```
-$ readme-cli cat $(pwd)/readme-cli.ts
-import {
-  createLeaf,
-  createStringOption,
-...
+
+With arguments:
 ```
+$ multiply 1 2 3
+6
+$ multiply 1 2 3 --squared
+36 
+```
+
+More generally the usage of an alwaysCLI CLI is:
+```
+<root> [<branch0> ...] [<arg0> [...]] [--option0 <val0> ...] [...]
+```
+Starting from the root command, to invoke an action the user provides (in order):
+- zero or more branch names
+- a leaf name
+- zero or more positional args
+- zero or more "options" (inputs of the form `--foo bar`)
+
 ## API
-### createLeaf({commandName, description?, options?, action})
-A factory for creating commands that comprise a CLI. It returns the passed object with an additional property `commandType` set to a unique identifier. The `commandType` property is used internally to discriminate between "leaf" and "branch" commands. See the [advanced TypeScript docs](https://www.typescriptlang.org/docs/handbook/advanced-types.html) for more information on discriminated unions.
+### Input<T, U>
+TODO
 
-#### commandName
-If this "leaf" is a subcommand, `commandName` is the string that the user will pass as the "subcommand" argument to invoke this action. If this "leaf" is the root command (i.e. the thing passed into `cli`), `commandName` should be the CLI's name.
+### createLeaf({name, description?, args?, options?, action, hidden?, version?})
+A factory for creating "action" commands. Returns the newly-created `leaf`.
+
+#### name
+If this "leaf" is a subcommand, `name` is the string that the user will pass as the "subcommand" argument to invoke this action. If this "leaf" is the root command, `name` should be the CLI's name.
 
 #### description
 (Optional) A string that will be included in `Usage:` if present.
 
+#### args
+(Optional) An `Input` for 
+
 #### options 
-(Optional) An object whose keys option names and whose values are created by the `option` factory, for example:
+(Optional) An object of named `Input`s, for example:
 ```ts
 const options = {
-  filePath: createStringOption({
+  path: createStringInput({
     description: 'An absolute or relative path',
   }),
 }
 ```
-The `options` property is used to derive the type of the `namedArgs` passed into the `action` function. In this example, `namedArgs` would look like
-```ts
-{ filePath: string | undefined }
-```
+The `args` and `options` properties define how the command-line arguments get parsed and transformed before being passed into the `action` function.
 
-#### action
-A function that defines your command logic. `action` can return a value synchronously like in the "multiply" example above, or it can be an `async` function that returns a `Promise` like in the `cat` example. If `action` returns/resolves a value, that value is `console.log`ged before the CLI exits. If `action` throws/rejects, the exception is `console.log`ged before the CLI exits. That means that if you don't want the user to see a stack trace, your `action` should throw a `string` instead of an `Error` object.
+#### action(args, options)
+The function that defines your command logic. `action` can return a value synchronously like in the "multiply" example above, or it can be an `async` function that returns a `Promise`. If `action` returns/resolves a value, that value is `console.log`ged before the CLI exits. If `action` throws/rejects, the exception is `console.log`ged before the CLI exits. That means that if you don't want the user to see a stack trace, your `action` should throw a `string` instead of an `Error` object. The type of the `args` argument received by `action` is derived by the `args` property of the leaf. Similarly, the `options` argument type is derived from `leaf.options`.
 
-### createBranch({commandName, description, subcommands})
-A factory function similar to `createLeaf`. Returns the passed object with an additional property `commandType` set to a unique identifier.
+#### hidden
+(Optional) `boolean`
 
-#### commandName
-If this "branch" is not the root command, `commandName` is the string that the user will pass as the "subcommand" argument to invoke actions in this part of the command tree. If this "branch" command is the root command, `commandName` should be the CLI's name.
+#### version
+(Optional) `string`. If provided, this string will be printed when the user does `cli --version` or `cli -v`. If this value is not provided, alwaysCLI will attempt to find a version string in your package.json file.
+
+### createBranch({name, description, subcommands, hidden?})
+A factory function similar to `createLeaf`. Returns the newly-created `Branch` object.
+
+#### name
+If this "branch" is not the root command, `name` is the string that the user will pass as the "subcommand" argument to invoke actions in this part of the command tree. If this "branch" command is the root command, `name` should be the CLI's name.
 
 #### description
 (Optional) A string that will be included in `Usage:` if present.
@@ -162,20 +124,14 @@ If this "branch" is not the root command, `commandName` is the string that the u
 #### subcommands
 An array of `branch` and/or `leaf` objects.
 
-### createCommandLineInterface(root): asyncFunc
-Returns a function that invokes an `action`, `console.log`s the result, and exits
+#### hidden
+(Optional) `boolean`
+
+### createCli(root)
+Returns a function of the form `(...args: string[]) => Promise<any>` that can be invoked as e.g. `cli('foo', 'bar')` for unit tests or as `cli(process.argv.slice(2))` in an executable CLI script.
 
 #### root
-A `leaf` or `branch`
-
-#### asyncFunc
-`(argv?) => Promise<void>`: Typically `cli` and the function it returns are invoked all in one line as `cli(root)()`.
-
-##### argv
-(Optional) A `string[]` array of command-line arguments. Defaults to `process.argv.slice(2)`.
-
-### createCommandInterface(root)
-The function `createCommandLineInterface` just calls `runAndExit` on the thing returned by `createCommandInterface`.
+A `Leaf` or `Branch`
 
 ## More information
 This library has a couple dozen unit tests with >90% coverage. If you want to see more examples of how things works, check out the `.test.ts` files in the [src](src) directory. Also check out [src/examples](src/examples). If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on this project's repository on GitHub.

@@ -10,7 +10,7 @@ import {
 import { runAndExit } from '@carnesen/run-and-exit';
 import { CodedError } from '@carnesen/coded-error';
 
-export const throw_ = createLeaf({
+export const root = createLeaf({
   name: 'throw',
   description: 'Throw a CodedError in the "action" function',
   options: {
@@ -31,7 +31,7 @@ export const throw_ = createLeaf({
   },
 });
 
-const cli = createCli(throw_);
+export const cli = createCli(root);
 
 if (module === require.main) {
   runAndExit(cli, ...process.argv.slice(2));
