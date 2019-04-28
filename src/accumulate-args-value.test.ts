@@ -9,6 +9,7 @@ describe(accumulateArgsValue.name, () => {
       getValue() {
         return 'carl';
       },
+      getDescription: () => '',
     };
     const leaf = createLeaf({
       name: 'foo',

@@ -23,26 +23,24 @@
   "dependencies": {
     "@carnesen/run-and-catch": "0.0.0-0",
     "@carnesen/run-and-exit": "0.2.0",
-    "@types/parse-json": "4.0.0",
     "@types/read-pkg-up": "3.0.1",
-    "@types/redent": "2.0.0",
     "chalk": "2.4.2",
     "parse-json": "4.0.0",
     "read-pkg-up": "5.0.0",
-    "redent": "2.0.0"
+    "redent": "3.0.0"
   },
   "devDependencies": {
     "@alwaysai/tsconfig": "0.0.0",
     "@alwaysai/tslint-config": "0.0.3",
     "@carnesen/coded-error": "0.1.0",
     "@types/jest": "24.0.11",
-    "@types/node": "11.13.2",
+    "@types/node": "11.13.8",
     "jest": "24.7.1",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
-    "ts-node": "8.0.3",
-    "tslint": "5.15.0",
-    "typescript": "3.4.2"
+    "ts-node": "8.1.0",
+    "tslint": "5.16.0",
+    "typescript": "3.4.5"
   },
   "files": [
     "src",

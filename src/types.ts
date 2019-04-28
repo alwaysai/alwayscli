@@ -7,7 +7,7 @@ export type Input<V, R extends boolean = boolean> = {
   required?: R;
   hidden?: boolean;
   getValue: ((argv: Argv<R>) => V) | ((argv: Argv<R>) => Promise<V>);
-  getDescription?: () => string | undefined;
+  getDescription: () => string | undefined;
 };
 
 export type AnyInput = Input<any>;

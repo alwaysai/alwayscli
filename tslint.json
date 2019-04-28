@@ -1,3 +1,6 @@
 {
-  "extends": "@alwaysai/tslint-config/nodejs/tslint.json"
+  "extends": "@alwaysai/tslint-config/nodejs/tslint.json",
+  "rules": {
+    "expect": false
+  }
 }
