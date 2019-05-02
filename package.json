@@ -1,5 +1,5 @@
 {
-  "name": "@alwaysai/always-cli",
+  "name": "@alwaysai/alwayscli",
   "description": "A library for building command-line interfaces",
   "version": "0.0.0-11",
   "main": "lib/index.js",
@@ -59,7 +59,7 @@
     "name": "alwaysAI, Inc.",
     "email": "contact@alwaysai.co"
   },
-  "repository": "github:alwaysai/always-cli",
-  "homepage": "https://github.com/alwaysai/always-cli#readme",
+  "repository": "github:alwaysai/alwayscli",
+  "homepage": "https://github.com/alwaysai/alwayscli#readme",
   "license": "MIT"
 }

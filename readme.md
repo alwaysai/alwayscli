@@ -1,11 +1,11 @@
-# `alwaysCLI` [![Build Status](https://travis-ci.com/alwaysai/always-cli.svg?branch=master)](https://travis-ci.com/alwaysai/always-cli)
+# `alwaysCLI` [![Build Status](https://travis-ci.com/alwaysai/alwayscli.svg?branch=master)](https://travis-ci.com/alwaysai/alwayscli)
 
 A framework for building command-line interfaces (CLIs) in Node.js. This package includes runtime JavaScript files suitable for Node.js >=8 as well as the corresponding TypeScript type declarations.
 
 ## Usage
 
 ```
-npm install @alwaysai/always-cli
+npm install @alwaysai/alwayscli
 ```
 
 In an `alwaysCLI` CLI, commands are organized into a tree. Each "leaf" represents an action whereas "branches" collect and organize leaves. For example, in the command `alwaysai user logIn`, `alwaysai` is the "root" command, `user` is a branch of commands related to user authentication and `logIn` is the specific action (leaf command). Your CLI need not have branches. Here is a simple CLI that has a leaf as its root:
@@ -16,7 +16,7 @@ import {
   createFlagInput,
   createNumberArrayInput,
   runAndExit,
-} from '@alwaysai/always-cli';
+} from '@alwaysai/alwayscli';
 
 const root = createLeaf({
   name: 'multiply',
