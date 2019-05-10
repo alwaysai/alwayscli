@@ -92,7 +92,7 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       return result;
     } catch (ex) {
       if (!ex) {
-        throw new Error(`Encountered non-truthy exception "${ex}"`);
+        throw ex;
       }
       if (ex.code === USAGE) {
         throw usage(ex.message);
