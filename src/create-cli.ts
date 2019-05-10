@@ -92,7 +92,9 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       return result;
     } catch (ex) {
       if (!ex) {
-        throw ex;
+        throw `${RED_ERROR} Encountered non-truthy exception "${ex}". Please contact the author of ${
+          require.main!.filename
+        }`;
       }
       if (ex.code === USAGE) {
         throw usage(ex.message);
