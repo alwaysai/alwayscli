@@ -9,7 +9,7 @@ import { USAGE, UsageError } from './usage-error';
 import { TERSE } from './terse-error';
 import { accumulateArgsValue } from './accumulate-args-value';
 import readPkgUp = require('read-pkg-up');
-import { RED_ERROR as RED_ERROR_COLON } from './constants';
+import { RED_ERROR } from './constants';
 import { dirname } from 'path';
 
 export function createCli(rootCommand: Branch | Leaf<any, any>) {
@@ -32,7 +32,7 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
           return pkg.version;
         }
       }
-      throw `${RED_ERROR_COLON} Failed to find a CLI "version"`;
+      throw `${RED_ERROR} Failed to find a CLI "version"`;
     }
     const { nonHelpArgv: nonHelpArgs, foundHelp } = accumulateNonHelpArgv(...args);
     const { dashDashArgs, nonDashDashArgs } = accumulateDashDashArgs(...nonHelpArgs);
@@ -91,11 +91,16 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       const result = await leaf.action(argsValue, optionsValues);
       return result;
     } catch (ex) {
+      if (!ex) {
+        throw `${RED_ERROR} Encountered non-truthy exception "${ex}". Please contact the author of ${
+          require.main!.filename
+        }`;
+      }
       if (ex.code === USAGE) {
         throw usage(ex.message);
       }
       if (ex.code === TERSE) {
-        throw `Error: ${ex.message || 'No message available'}`;
+        throw `${RED_ERROR} ${ex.message || 'No message available'}`;
       }
       throw ex;
     }
