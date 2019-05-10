@@ -4,6 +4,7 @@ import { createStringInput } from './input-factories/create-string-input';
 import { TerseError, TERSE } from './terse-error';
 import { createCli } from './create-cli';
 import { createLeaf } from './create-leaf';
+import { RED_ERROR } from './constants';
 
 const ERROR_MESSAGE = 'something very bad has happened';
 const leaf = createLeaf({
@@ -34,7 +35,7 @@ describe(createCli.name, () => {
 
   it(`throws string message if a "${TERSE}" error is thrown`, async () => {
     const usageString = await runAndCatch(cli, 'echo', '--message', 'fatal');
-    expect(usageString).toBe(`Error: ${ERROR_MESSAGE}`);
+    expect(usageString).toBe(`${RED_ERROR} ${ERROR_MESSAGE}`);
   });
 
   it('returns version string from package.json if "-v" or "--version" is passed', async () => {

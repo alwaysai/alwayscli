@@ -91,11 +91,14 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       const result = await leaf.action(argsValue, optionsValues);
       return result;
     } catch (ex) {
+      if (!ex) {
+        throw new Error(`Encountered non-truthy exception "${ex}"`);
+      }
       if (ex.code === USAGE) {
         throw usage(ex.message);
       }
       if (ex.code === TERSE) {
-        throw `Error: ${ex.message || 'No message available'}`;
+        throw `${RED_ERROR_COLON} ${ex.message || 'No message available'}`;
       }
       throw ex;
     }
