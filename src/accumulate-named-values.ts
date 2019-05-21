@@ -9,7 +9,7 @@ export async function accumulateOptionsValues(
   let optionsValues: NamedInputValues<AnyNamedInputs> = {};
   const restDashDashArgs = { ...dashDashArgs };
   const missingInputNames: string[] = [];
-  const exceptionsRunningGetValue: { [inputName: string]: any } = {};
+  const exceptionsRunningGetValue: [string, any][] = [];
   if (options) {
     for (const [inputName, input] of Object.entries(options as {
       [inputName: string]: AnyInput;
@@ -24,7 +24,7 @@ export async function accumulateOptionsValues(
         optionsValues[inputName] = inputValue;
       } catch (ex) {
         optionsValues = {};
-        exceptionsRunningGetValue[inputName] = ex;
+        exceptionsRunningGetValue.push([inputName, ex]);
         break;
       }
     }
