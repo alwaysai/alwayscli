@@ -8,9 +8,8 @@ import { accumulateNonHelpArgv } from './accumulate-non-help-argv';
 import { USAGE, UsageError } from './usage-error';
 import { TERSE, TerseError } from './terse-error';
 import { accumulateArgsValue } from './accumulate-args-value';
-import readPkgUp = require('read-pkg-up');
 import { RED_ERROR } from './constants';
-import { dirname } from 'path';
+import { findVersion } from './find-version';
 
 export function createCli(rootCommand: Branch | Leaf<any, any>) {
   return async function cli(...args: string[]) {
@@ -18,19 +17,9 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       if (rootCommand.version) {
         return rootCommand.version;
       }
-      // An explicit version was not provided with root command.
-      // Let's try to find a version string in a package.json
-      const mainModule = require.main;
-      if (mainModule) {
-        const pkg =
-          readPkgUp.sync({
-            cwd: dirname(mainModule.filename),
-            normalize: false,
-          }).pkg || {};
-
-        if (pkg.version) {
-          return pkg.version;
-        }
+      const foundVersion = await findVersion();
+      if (foundVersion) {
+        return foundVersion;
       }
       throw `${RED_ERROR} Failed to find a CLI "version"`;
     }
