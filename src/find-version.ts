@@ -14,8 +14,8 @@ export async function findVersion() {
     return;
   }
 
-  if (!found.package.version) {
+  if (!found.packageJson.version) {
     return;
   }
-  return found.package.version;
+  return found.packageJson.version;
 }
