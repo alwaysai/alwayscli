@@ -4,6 +4,7 @@ import { Command } from './types';
 import { BRANCH, LEAF, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
+import { getPathAndDescriptionOfLeaves } from './get-path-and-description-of-leaves';
 
 const INDENT_SIZE = 3;
 
@@ -18,12 +19,10 @@ export function getUsage(commands: Command[], errorMessage?: string) {
     case BRANCH:
       firstParagraph += ' <subcommand> ...';
       otherParagraphs.push('Subcommands:');
-      const filteredSubcommands = command.subcommands.filter(
-        subcommand => !subcommand.hidden,
-      );
-      const items: Parameters<typeof createTextList> = filteredSubcommands.map(
-        ({ name, description }) => ({
-          name,
+      const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(command, []);
+      const items: Parameters<typeof createTextList> = nameAndDescriptionOfLeaves.map(
+        ({ path, description }) => ({
+          name: path.join(' '),
           text: description,
         }),
       );
