@@ -10,7 +10,10 @@ export function getPathAndDescriptionOfLeaves(
   command: Command,
   path: string[],
 ): PathAndDescription[] {
-  if (command.hidden) {
+  if (command.hidden && path.length > 0) {
+    // ^^ conditional on path.length > 0 because we don't want to hide the usage
+    // for the current node, e.g. if a user does `cli hidden-command` it should
+    // show the leaves underneath "hidden-command".
     return [];
   }
   if (command._type === LEAF) {

@@ -22,11 +22,11 @@ export const root = createLeaf({
     appear in the command's usage documentation. Hidden options might be "easter eggs" 
     like in this example or experimental features, for example.`,
   options: { pizza: createFlagInput({ hidden: true }) },
-  action(messages, { pizza }) {
+  action(messages, { pizza }, escaped) {
     if (pizza) {
       return PIZZA_MESSAGE;
     }
-    return echoCommand.action(messages, {});
+    return echoCommand.action(messages, {}, escaped);
   },
 });
 

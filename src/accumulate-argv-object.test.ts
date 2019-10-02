@@ -1,24 +1,80 @@
 import { accumulateArgvObject } from './accumulate-argv-object';
 
+type Datum = {
+  argv: string[];
+  result: ReturnType<typeof accumulateArgvObject>;
+};
+
+const data: Datum[] = [
+  {
+    argv: ['foo', 'bar', '--baz', 'jane', 'doe'],
+    result: {
+      commandNameAndArgsArgv: ['foo', 'bar'],
+      foundHelp: false,
+      optionsArgvObject: { baz: ['jane', 'doe'] },
+      escapedArgv: undefined,
+    },
+  },
+  {
+    argv: ['foo', 'bar', '--baz', 'jane', '--baz', 'doe'],
+    result: {
+      commandNameAndArgsArgv: ['foo', 'bar'],
+      foundHelp: false,
+      optionsArgvObject: { baz: ['jane', 'doe'] },
+      escapedArgv: undefined,
+    },
+  },
+  {
+    argv: ['--', '--foo', '--bar'],
+    result: {
+      commandNameAndArgsArgv: [],
+      foundHelp: false,
+      optionsArgvObject: {},
+      escapedArgv: ['--foo', '--bar'],
+    },
+  },
+  {
+    argv: ['--'],
+    result: {
+      commandNameAndArgsArgv: [],
+      foundHelp: false,
+      optionsArgvObject: {},
+      escapedArgv: [],
+    },
+  },
+  {
+    argv: ['--foo'],
+    result: {
+      commandNameAndArgsArgv: [],
+      foundHelp: false,
+      optionsArgvObject: { foo: [] },
+      escapedArgv: undefined,
+    },
+  },
+  {
+    argv: ['foo', 'bar', '--help', 'baz'],
+    result: {
+      commandNameAndArgsArgv: ['foo', 'bar', 'baz'],
+      foundHelp: true,
+      optionsArgvObject: {},
+      escapedArgv: undefined,
+    },
+  },
+  {
+    argv: ['--', '--help', 'baz'],
+    result: {
+      commandNameAndArgsArgv: [],
+      foundHelp: false,
+      optionsArgvObject: {},
+      escapedArgv: ['--help', 'baz'],
+    },
+  },
+];
+
 describe(accumulateArgvObject.name, () => {
-  it('accumulates as "dashDashArgs" all the args of the form "--name [value0 [...]]"', () => {
-    expect(
-      accumulateArgvObject('foo', 'bar', '--baz', 'jane', 'doe').optionsArgvObject,
-    ).toEqual({
-      baz: ['jane', 'doe'],
+  for (const { argv, result } of data) {
+    it(`${argv.join(' ')}`, () => {
+      expect(accumulateArgvObject(...argv)).toEqual(result);
     });
-  });
-
-  it('accumulates as "nonDashDashArgs" everything up to the first "--whatever"', () => {
-    expect(accumulateArgvObject('foo', 'bar', '--baz').commandNameAndArgsArgv).toEqual([
-      'foo',
-      'bar',
-    ]);
-  });
-
-  it('combines values if a dash dash arg is provided twice', () => {
-    expect(
-      accumulateArgvObject('--baz', 'foo', '--baz', 'bar').optionsArgvObject.baz,
-    ).toEqual(['foo', 'bar']);
-  });
+  }
 });

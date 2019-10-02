@@ -2,7 +2,7 @@ import { Leaf, AnyNamedInputs, NamedInputValues, AnyInput } from './types';
 import { OptionsArgvObject } from './accumulate-argv-object';
 
 export async function accumulateOptionsValues(
-  leaf: Leaf<any, any>,
+  leaf: Leaf<any, any, any>,
   optionsArgvObject: OptionsArgvObject,
 ) {
   const { options } = leaf;

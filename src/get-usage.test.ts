@@ -26,7 +26,7 @@ describe(getUsage.name, () => {
   });
 
   it('Creates a usage string for a leaf', () => {
-    const usageString = getUsage([root, leaf as Leaf<any, any>]);
+    const usageString = getUsage([root, leaf as Leaf<any, any, any>]);
     expect(usageString).toMatchSnapshot();
   });
 });

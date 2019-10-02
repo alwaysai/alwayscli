@@ -6,11 +6,11 @@ import { accumulateOptionsValues } from './accumulate-options-values';
 
 import { USAGE, UsageError } from './usage-error';
 import { TERSE, TerseError } from './terse-error';
-import { accumulateArgsValue } from './accumulate-args-value';
 import { RED_ERROR } from './constants';
 import { findVersion } from './find-version';
+import { callGetValue } from './call-get-value';
 
-export function createCli(rootCommand: Branch | Leaf<any, any>) {
+export function createCli(rootCommand: Branch | Leaf<any, any, any>) {
   return async function cli(...argv: string[]) {
     if (['-v', '--version'].includes(argv[0])) {
       if (rootCommand.version) {
@@ -30,8 +30,8 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
     } = accumulateArgvObject(...argv);
     const {
       commandStack: { branches, leaf },
-      badCommand,
-      positionalArgs,
+      badCommandName,
+      argsArgv,
     } = accumulateCommandStack(rootCommand, commandNameAndArgsArgv);
 
     const usage = (message?: string) => {
@@ -46,8 +46,8 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       throw usage();
     }
 
-    if (badCommand) {
-      throw usage(`Bad command "${badCommand}"`);
+    if (badCommandName) {
+      throw usage(`Bad command "${badCommandName}"`);
     }
 
     if (!leaf) {
@@ -55,10 +55,14 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
     }
 
     try {
-      const { argsValue, errorMessage } = await accumulateArgsValue(leaf, positionalArgs);
-      if (errorMessage) {
-        throw usage(errorMessage);
+      const { value: argsValue, errorMessage: argsErrorMessage } = await callGetValue(
+        leaf.args,
+        argsArgv,
+      );
+      if (argsErrorMessage) {
+        throw usage(argsErrorMessage);
       }
+
       const {
         optionsValues,
         unusedInputNames,
@@ -82,7 +86,17 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
         const inputName = missingInputNames[0];
         throw new UsageError(`"--${inputName}" is required`);
       }
-      const result = await leaf.action(argsValue, optionsValues);
+
+      const {
+        value: escapedValue,
+        errorMessage: escapedErrorMessage,
+      } = await callGetValue(leaf.escaped, escapedArgv);
+
+      if (escapedErrorMessage) {
+        throw usage(escapedErrorMessage);
+      }
+
+      const result = await leaf.action(argsValue, optionsValues, escapedValue);
       return result;
     } catch (ex) {
       if (!ex) {
