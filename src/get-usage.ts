@@ -1,6 +1,6 @@
 import redent = require('redent');
 
-import { Command } from './types';
+import { Command, AnyInput } from './types';
 import { BRANCH, LEAF, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
@@ -15,6 +15,22 @@ export function getUsage(commands: Command[], errorMessage?: string) {
   let firstParagraph = `Usage: ${commands.map(command => command.name).join(' ')}`;
 
   const otherParagraphs: string[] = [];
+
+  function appendInputUsage(input?: AnyInput, prefix?: string) {
+    if (input && !input.hidden) {
+      const { placeholder, getDescription, required } = input;
+      if (prefix) {
+        firstParagraph += ` ${prefix}`;
+      }
+      firstParagraph += ` ${required ? placeholder : wrapInSquareBrackets(placeholder)}`;
+      const description = getDescription && getDescription();
+      if (description) {
+        otherParagraphs.push(`${placeholder}:`);
+        otherParagraphs.push(redent(regularizeText(description), INDENT_SIZE));
+      }
+    }
+  }
+
   switch (command._type) {
     case BRANCH:
       firstParagraph += ' <subcommand> ...';
@@ -30,20 +46,12 @@ export function getUsage(commands: Command[], errorMessage?: string) {
       otherParagraphs.push(subcommandsParagraph);
       break;
     case LEAF:
-      const { args: positionalInput, options: namedInputs } = command;
-      if (positionalInput && !positionalInput.hidden) {
-        const { placeholder, getDescription, required } = positionalInput;
-        firstParagraph += ` ${
-          required ? placeholder : wrapInSquareBrackets(placeholder)
-        }`;
-        const description = getDescription && getDescription();
-        if (description) {
-          otherParagraphs.push(`${placeholder}:`);
-          otherParagraphs.push(redent(regularizeText(description), INDENT_SIZE));
-        }
-      }
-      if (namedInputs) {
-        const entries = Object.entries(namedInputs).filter(([_, input]) => !input.hidden);
+      const { args, options, escaped } = command;
+
+      appendInputUsage(args);
+
+      if (options) {
+        const entries = Object.entries(options).filter(([_, input]) => !input.hidden);
         if (entries.length > 0) {
           const optionsNotRequired = entries.every(
             ([_, namedInput]) => !namedInput.required,
@@ -67,6 +75,8 @@ export function getUsage(commands: Command[], errorMessage?: string) {
           otherParagraphs.push(optionsParagraph);
         }
       }
+
+      appendInputUsage(escaped, '--');
       break;
     default:
       throw new Error('Unexpected command type');

@@ -1,7 +1,10 @@
 import { Command, CommandStack } from './types';
 import { LEAF, BRANCH } from './constants';
 
-export function accumulateCommandStack(rootCommand: Command, nonDashDashArgs: string[]) {
+export function accumulateCommandStack(
+  rootCommand: Command,
+  commandNameAndArgsArgv: string[],
+) {
   const commandStack: CommandStack = {
     branches: [],
     leaf: undefined,
@@ -22,29 +25,29 @@ export function accumulateCommandStack(rootCommand: Command, nonDashDashArgs: st
 
   addToCommandStack(rootCommand);
 
-  let badCommand: string | undefined = undefined;
+  let badCommandName: string | undefined = undefined;
   let index = 0;
   while (
-    typeof badCommand === 'undefined' &&
+    typeof badCommandName === 'undefined' &&
     !commandStack.leaf &&
-    index < nonDashDashArgs.length
+    index < commandNameAndArgsArgv.length
   ) {
-    const nonDashDashArg = nonDashDashArgs[index];
+    const maybeCommandName = commandNameAndArgsArgv[index];
     index = index + 1;
     const branch = commandStack.branches.slice(-1)[0];
     const nextCommand = branch.subcommands.find(
-      subcommand => subcommand.name === nonDashDashArg,
+      subcommand => subcommand.name === maybeCommandName,
     );
     if (!nextCommand) {
-      badCommand = nonDashDashArg;
+      badCommandName = maybeCommandName;
       break;
     }
     addToCommandStack(nextCommand);
   }
-  const positionalArgs = nonDashDashArgs.slice(index);
+  const argsArgv = commandNameAndArgsArgv.slice(index);
   return {
     commandStack,
-    positionalArgs,
-    badCommand,
+    argsArgv,
+    badCommandName,
   };
 }

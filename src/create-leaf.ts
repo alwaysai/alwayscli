@@ -9,9 +9,10 @@ import { LEAF } from './constants';
 
 export function createLeaf<
   T extends AnyInput = Input<undefined, false>,
-  U extends AnyNamedInputs = {}
->(config: ExcludeInternallyAssigned<Leaf<T, U>>) {
-  const leaf: Leaf<T, U> = {
+  U extends AnyNamedInputs = {},
+  V extends AnyInput = Input<undefined, false>
+>(config: ExcludeInternallyAssigned<Leaf<T, U, V>>) {
+  const leaf: Leaf<T, U, V> = {
     ...config,
     _type: LEAF,
   };

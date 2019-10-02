@@ -1,13 +1,13 @@
 import { Leaf, AnyNamedInputs, NamedInputValues, AnyInput } from './types';
-import { DashDashArgs } from './accumulate-dash-dash-args';
+import { OptionsArgvObject } from './accumulate-argv-object';
 
 export async function accumulateOptionsValues(
-  leaf: Leaf<any, any>,
-  dashDashArgs: DashDashArgs,
+  leaf: Leaf<any, any, any>,
+  optionsArgvObject: OptionsArgvObject,
 ) {
   const { options } = leaf;
   let optionsValues: NamedInputValues<AnyNamedInputs> = {};
-  const restDashDashArgs = { ...dashDashArgs };
+  const restDashDashArgs = { ...optionsArgvObject };
   const missingInputNames: string[] = [];
   const exceptionsRunningGetValue: [string, any][] = [];
   if (options) {

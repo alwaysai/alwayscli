@@ -22,25 +22,30 @@ export type NamedInputValues<T extends AnyNamedInputs> = {
   [K in keyof T]: InputValue<T[K]>
 };
 
-export type Command = Branch | Leaf<AnyInput, AnyNamedInputs>;
+export type Command = Branch | Leaf<AnyInput, AnyNamedInputs, AnyInput>;
 
 export type Branch = {
   _type: typeof BRANCH;
   name: string;
   description?: string;
   hidden?: boolean;
-  subcommands: (Branch | Leaf<any, any>)[];
+  subcommands: (Branch | Leaf<any, any, any>)[];
   version?: string;
 };
 
-export type Leaf<T extends AnyInput, U extends AnyNamedInputs> = {
+export type Leaf<T extends AnyInput, U extends AnyNamedInputs, V extends AnyInput> = {
   _type: typeof LEAF;
   name: string;
   description?: string;
   hidden?: boolean;
   args?: T;
   options?: U;
-  action: (args: InputValue<T>, options: NamedInputValues<U>) => any;
+  escaped?: V;
+  action: (
+    args: InputValue<T>,
+    options: NamedInputValues<U>,
+    escaped: InputValue<V>,
+  ) => any;
   version?: string;
 };
 
@@ -54,5 +59,5 @@ export type ExcludeInternallyAssigned<T extends { _type: any }> = Pick<
 
 export type CommandStack = {
   branches: Branch[];
-  leaf?: Leaf<AnyInput, any>;
+  leaf?: Leaf<AnyInput, any, AnyInput>;
 };
