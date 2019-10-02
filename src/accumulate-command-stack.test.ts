@@ -18,10 +18,11 @@ const root = createBranch({
 
 describe(accumulateCommandStack.name, () => {
   it('accumulates commands into commandStack based on passed maybe command names', () => {
-    const { commandStack, badCommandName: badCommand, argsArgv: positionalArgs } = accumulateCommandStack(root, [
-      'echo',
-      'foo',
-    ]);
+    const {
+      commandStack,
+      badCommandName: badCommand,
+      argsArgv: positionalArgs,
+    } = accumulateCommandStack(root, ['echo', 'foo']);
     expect(commandStack.branches[0]).toBe(root);
     expect(commandStack.leaf).toBe(leaf);
     expect(badCommand).toBe(undefined);
@@ -29,7 +30,9 @@ describe(accumulateCommandStack.name, () => {
   });
 
   it('returns badCommand if bad command name is provided', () => {
-    const { commandStack, badCommandName: badCommand } = accumulateCommandStack(root, ['eco']);
+    const { commandStack, badCommandName: badCommand } = accumulateCommandStack(root, [
+      'eco',
+    ]);
     expect(badCommand).toEqual('eco');
     expect(commandStack.branches).toEqual([root]);
   });

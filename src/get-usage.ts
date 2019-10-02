@@ -16,9 +16,12 @@ export function getUsage(commands: Command[], errorMessage?: string) {
 
   const otherParagraphs: string[] = [];
 
-  function appendInputUsage(input?: AnyInput) {
+  function appendInputUsage(input?: AnyInput, prefix?: string) {
     if (input && !input.hidden) {
       const { placeholder, getDescription, required } = input;
+      if (prefix) {
+        firstParagraph += ` ${prefix}`;
+      }
       firstParagraph += ` ${required ? placeholder : wrapInSquareBrackets(placeholder)}`;
       const description = getDescription && getDescription();
       if (description) {
@@ -73,7 +76,7 @@ export function getUsage(commands: Command[], errorMessage?: string) {
         }
       }
 
-      appendInputUsage(escaped);
+      appendInputUsage(escaped, '--');
       break;
     default:
       throw new Error('Unexpected command type');

@@ -1,4 +1,4 @@
-import { Leaf, AnyInput } from './types';
+import { AnyInput } from './types';
 
 export async function callGetValue(input?: AnyInput, argv?: string[]) {
   let value: any = undefined;
