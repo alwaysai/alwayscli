@@ -1,6 +1,6 @@
 import { Leaf, AnyInput } from './types';
 
-export async function accumulateArgsValue(leaf: Leaf<AnyInput, any>, argv: string[]) {
+export async function accumulateEscapedValue(leaf: Leaf<AnyInput, any>, argv: string[]) {
   let argsValue: any = undefined;
   let errorMessage: string | undefined = undefined;
   if (leaf.args) {

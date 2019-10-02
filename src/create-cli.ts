@@ -1,9 +1,8 @@
 import { Leaf, Branch, Command } from './types';
 import { getUsage } from './get-usage';
 import { accumulateCommandStack } from './accumulate-command-stack';
-import { accumulateDashDashArgs } from './accumulate-dash-dash-args';
-import { accumulateOptionsValues } from './accumulate-named-values';
-import { accumulateNonHelpArgv } from './accumulate-non-help-argv';
+import { accumulateArgvObject } from './accumulate-argv-object';
+import { accumulateOptionsValues } from './accumulate-options-values';
 
 import { USAGE, UsageError } from './usage-error';
 import { TERSE, TerseError } from './terse-error';
@@ -12,8 +11,8 @@ import { RED_ERROR } from './constants';
 import { findVersion } from './find-version';
 
 export function createCli(rootCommand: Branch | Leaf<any, any>) {
-  return async function cli(...args: string[]) {
-    if (['-v', '--version'].includes(args[0])) {
+  return async function cli(...argv: string[]) {
+    if (['-v', '--version'].includes(argv[0])) {
       if (rootCommand.version) {
         return rootCommand.version;
       }
@@ -23,13 +22,17 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
       }
       throw `${RED_ERROR} Failed to find a CLI "version"`;
     }
-    const { nonHelpArgv: nonHelpArgs, foundHelp } = accumulateNonHelpArgv(...args);
-    const { dashDashArgs, nonDashDashArgs } = accumulateDashDashArgs(...nonHelpArgs);
+    const {
+      foundHelp,
+      commandNameAndArgsArgv,
+      optionsArgvObject,
+      escapedArgv,
+    } = accumulateArgvObject(...argv);
     const {
       commandStack: { branches, leaf },
       badCommand,
       positionalArgs,
-    } = accumulateCommandStack(rootCommand, nonDashDashArgs);
+    } = accumulateCommandStack(rootCommand, commandNameAndArgsArgv);
 
     const usage = (message?: string) => {
       const commands: Command[] = [...branches];
@@ -61,7 +64,7 @@ export function createCli(rootCommand: Branch | Leaf<any, any>) {
         unusedInputNames,
         missingInputNames,
         exceptionsRunningGetValue,
-      } = await accumulateOptionsValues(leaf, dashDashArgs);
+      } = await accumulateOptionsValues(leaf, optionsArgvObject);
       if (exceptionsRunningGetValue.length > 0) {
         const [inputName, ex] = exceptionsRunningGetValue[0];
         const message =

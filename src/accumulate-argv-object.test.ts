@@ -1,16 +1,16 @@
-import { accumulateDashDashArgs } from './accumulate-dash-dash-args';
+import { accumulateArgvObject } from './accumulate-argv-object';
 
-describe(accumulateDashDashArgs.name, () => {
+describe(accumulateArgvObject.name, () => {
   it('accumulates as "dashDashArgs" all the args of the form "--name [value0 [...]]"', () => {
     expect(
-      accumulateDashDashArgs('foo', 'bar', '--baz', 'jane', 'doe').dashDashArgs,
+      accumulateArgvObject('foo', 'bar', '--baz', 'jane', 'doe').optionsArgvObject,
     ).toEqual({
       baz: ['jane', 'doe'],
     });
   });
 
   it('accumulates as "nonDashDashArgs" everything up to the first "--whatever"', () => {
-    expect(accumulateDashDashArgs('foo', 'bar', '--baz').nonDashDashArgs).toEqual([
+    expect(accumulateArgvObject('foo', 'bar', '--baz').commandNameAndArgsArgv).toEqual([
       'foo',
       'bar',
     ]);
@@ -18,7 +18,7 @@ describe(accumulateDashDashArgs.name, () => {
 
   it('combines values if a dash dash arg is provided twice', () => {
     expect(
-      accumulateDashDashArgs('--baz', 'foo', '--baz', 'bar').dashDashArgs.baz,
+      accumulateArgvObject('--baz', 'foo', '--baz', 'bar').optionsArgvObject.baz,
     ).toEqual(['foo', 'bar']);
   });
 });
