@@ -34,7 +34,7 @@
     "@alwaysai/tslint-config": "0.0.3",
     "@carnesen/coded-error": "0.1.0",
     "@types/jest": "24.0.18",
-    "@types/node": "12.7.8",
+    "@types/node": "12.7.9",
     "jest": "24.9.0",
     "rimraf": "3.0.0",
     "ts-jest": "24.1.0",
