@@ -1,8 +1,8 @@
 import { getUsage } from './get-usage';
 import { createBranch } from './create-branch';
 import { createStringInput } from './input-factories/create-string-input';
-import { Leaf } from './types';
 import { createLeaf } from './create-leaf';
+import { Command } from './types';
 
 const leaf = createLeaf({
   name: 'echo',
@@ -21,12 +21,19 @@ const root = createBranch({
 
 describe(getUsage.name, () => {
   it('Creates a usage string for a branch', () => {
-    const usageString = getUsage([root]);
+    root.next = undefined;
+    const usageString = getUsage(root);
     expect(usageString).toMatchSnapshot();
   });
 
   it('Creates a usage string for a leaf', () => {
-    const usageString = getUsage([root, leaf as Leaf<any, any, any>]);
+    root.next = leaf;
+    const usageString = getUsage(root);
+    expect(usageString).toMatchSnapshot();
+  });
+
+  it('Creates a usage string for a leaf without a parent branch', () => {
+    const usageString = getUsage(leaf as Command);
     expect(usageString).toMatchSnapshot();
   });
 });

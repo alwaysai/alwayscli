@@ -5,15 +5,16 @@ import { BRANCH, LEAF, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
 import { getPathAndDescriptionOfLeaves } from './get-path-and-description-of-leaves';
+import { LastCommand } from './last-command';
+import { mapCommand } from './map-command';
 
 const INDENT_SIZE = 3;
 
-export function getUsage(commands: Command[], errorMessage?: string) {
-  const command = commands.slice(-1)[0];
-  // ^^ Last command on the stack. Could be leaf or branch.
+export function getUsage(rootCommand: Command, errorMessage?: string) {
+  const lastCommand = LastCommand(rootCommand);
 
-  let firstParagraph = `Usage: ${commands.map(command => command.name).join(' ')}`;
-
+  const commandPathString = mapCommand(rootCommand, command => command.name).join(' ');
+  let firstParagraph = `Usage: ${commandPathString}`;
   const otherParagraphs: string[] = [];
 
   function appendInputUsage(input?: AnyInput, prefix?: string) {
@@ -31,11 +32,11 @@ export function getUsage(commands: Command[], errorMessage?: string) {
     }
   }
 
-  switch (command._type) {
+  switch (lastCommand._type) {
     case BRANCH:
       firstParagraph += ' <subcommand> ...';
       otherParagraphs.push('Subcommands:');
-      const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(command, []);
+      const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(lastCommand, []);
       const items: Parameters<typeof createTextList> = nameAndDescriptionOfLeaves.map(
         ({ path, description }) => ({
           name: path.join(' '),
@@ -46,7 +47,7 @@ export function getUsage(commands: Command[], errorMessage?: string) {
       otherParagraphs.push(subcommandsParagraph);
       break;
     case LEAF:
-      const { args, options, escaped } = command;
+      const { args, options, escaped } = lastCommand;
 
       appendInputUsage(args);
 
@@ -84,7 +85,7 @@ export function getUsage(commands: Command[], errorMessage?: string) {
 
   const paragraphs = [firstParagraph];
 
-  const regularizedDescription = regularizeText(command.description);
+  const regularizedDescription = regularizeText(lastCommand.description);
   if (regularizedDescription) {
     paragraphs.push(redent(regularizedDescription, INDENT_SIZE));
   }

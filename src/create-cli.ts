@@ -6,9 +6,10 @@ import { accumulateOptionsValues } from './accumulate-options-values';
 
 import { USAGE, UsageError } from './usage-error';
 import { TERSE, TerseError } from './terse-error';
-import { RED_ERROR } from './constants';
+import { RED_ERROR, BRANCH } from './constants';
 import { findVersion } from './find-version';
 import { callGetValue } from './call-get-value';
+import { LastCommand } from './last-command';
 
 export function createCli(rootCommand: Branch | Leaf<any, any, any>) {
   return async function cli(...argv: string[]) {
@@ -28,35 +29,28 @@ export function createCli(rootCommand: Branch | Leaf<any, any, any>) {
       optionsArgvObject,
       escapedArgv,
     } = accumulateArgvObject(...argv);
-    const {
-      commandStack: { branches, leaf },
-      badCommandName,
-      argsArgv,
-    } = accumulateCommandStack(rootCommand, commandNameAndArgsArgv);
+    const argsArgv = accumulateCommandStack(rootCommand, commandNameAndArgsArgv);
 
-    const usage = (message?: string) => {
-      const commands: Command[] = [...branches];
-      if (leaf) {
-        commands.push(leaf);
-      }
-      return getUsage(commands, message);
-    };
+    function usage(message?: string) {
+      return getUsage(rootCommand, message);
+    }
 
     if (foundHelp) {
       throw usage();
     }
 
-    if (badCommandName) {
-      throw usage(`Bad command "${badCommandName}"`);
-    }
+    const lastCommand = LastCommand(rootCommand);
 
-    if (!leaf) {
+    if (lastCommand._type === BRANCH) {
+      if (argsArgv[0]) {
+        throw usage(`Bad command "${argsArgv[0]}"`);
+      }
       throw usage();
     }
 
     try {
       const { value: argsValue, errorMessage: argsErrorMessage } = await callGetValue(
-        leaf.args,
+        lastCommand.args,
         argsArgv,
       );
       if (argsErrorMessage) {
@@ -68,7 +62,7 @@ export function createCli(rootCommand: Branch | Leaf<any, any, any>) {
         unusedInputNames,
         missingInputNames,
         exceptionsRunningGetValue,
-      } = await accumulateOptionsValues(leaf, optionsArgvObject);
+      } = await accumulateOptionsValues(lastCommand, optionsArgvObject);
       if (exceptionsRunningGetValue.length > 0) {
         const [inputName, ex] = exceptionsRunningGetValue[0];
         const message =
@@ -90,13 +84,13 @@ export function createCli(rootCommand: Branch | Leaf<any, any, any>) {
       const {
         value: escapedValue,
         errorMessage: escapedErrorMessage,
-      } = await callGetValue(leaf.escaped, escapedArgv);
+      } = await callGetValue(lastCommand.escaped, escapedArgv);
 
       if (escapedErrorMessage) {
         throw usage(escapedErrorMessage);
       }
 
-      const result = await leaf.action(argsValue, optionsValues, escapedValue);
+      const result = await lastCommand.action(argsValue, optionsValues, escapedValue);
       return result;
     } catch (ex) {
       if (!ex) {

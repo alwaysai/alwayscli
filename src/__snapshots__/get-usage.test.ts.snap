@@ -15,3 +15,11 @@ Options:
 
    [--message <str>] : A message"
 `;
+
+exports[`getUsage Creates a usage string for a leaf without a parent branch 1`] = `
+"Usage: echo [<options>]
+
+Options:
+
+   [--message <str>] : A message"
+`;
