@@ -31,6 +31,7 @@ export type Branch = {
   hidden?: boolean;
   subcommands: (Branch | Leaf<any, any, any>)[];
   version?: string;
+  next?: Branch | Leaf<any, any, any>;
 };
 
 export type Leaf<T extends AnyInput, U extends AnyNamedInputs, V extends AnyInput> = {
@@ -56,8 +57,3 @@ export type ExcludeInternallyAssigned<T extends { _type: any }> = Pick<
   T,
   Exclude<keyof T, '_type'>
 >;
-
-export type CommandStack = {
-  branches: Branch[];
-  leaf?: Leaf<AnyInput, any, AnyInput>;
-};

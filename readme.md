@@ -8,7 +8,7 @@ A framework for building command-line interfaces (CLIs) in Node.js. This package
 npm install @alwaysai/alwayscli
 ```
 
-In an `alwaysCLI` CLI, commands are organized into a tree. Each "leaf" represents an action whereas "branches" collect and organize leaves. For example, in the command `alwaysai user logIn`, `alwaysai` is the "root" command, `user` is a branch of commands related to user authentication and `logIn` is the specific action (leaf command). Your CLI need not have branches. Here is a simple CLI that has a leaf as its root:
+In an `alwaysCLI` program, commands are organized into a tree. Each "leaf" represents an action whereas "branches" collect and organize leaves. For example, in the command `alwaysai user login`, `alwaysai` is the "root" command, `user` is a branch of commands related to user authentication and `login` is the action. Your CLI need not have branches. Here is a simple CLI that has a leaf as its root:
 ```ts
 import {
   createCli,
