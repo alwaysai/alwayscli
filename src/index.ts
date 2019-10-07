@@ -6,7 +6,7 @@ export { createBranch } from './create-branch';
 export { createLeaf } from './create-leaf';
 
 // Command-line interface factory
-export { createCli } from './create-cli';
+export { createCommandLineInterface as createCli } from './create-command-line-interface';
 
 // Option factories:
 export { createFlagInput } from './input-factories/create-flag-input';

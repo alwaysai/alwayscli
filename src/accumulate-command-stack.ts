@@ -1,19 +1,24 @@
 import { Command } from './types';
 import { LEAF } from './constants';
 
-export function accumulateCommandStack(command: Command, argv: string[]): string[] {
+export function accumulateCommandStack(
+  command: Command,
+  restCommandNamesAndPositionalArgv: string[],
+): string[] {
   if (command._type === LEAF) {
-    return argv;
+    return restCommandNamesAndPositionalArgv;
   }
 
-  const found = command.subcommands.find(subcommand => subcommand.name === argv[0]);
+  const found = command.subcommands.find(
+    subcommand => subcommand.name === restCommandNamesAndPositionalArgv[0],
+  );
 
   if (!found) {
     command.next = undefined;
-    return argv;
+    return restCommandNamesAndPositionalArgv;
   }
 
   command.next = found;
 
-  return accumulateCommandStack(found, argv.slice(1));
+  return accumulateCommandStack(found, restCommandNamesAndPositionalArgv.slice(1));
 }

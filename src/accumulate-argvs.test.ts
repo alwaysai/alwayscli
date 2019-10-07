@@ -1,80 +1,80 @@
-import { accumulateArgvObject } from './accumulate-argv-object';
+import { accumulateArgvs } from './accumulate-argvs';
 
 type Datum = {
   argv: string[];
-  result: ReturnType<typeof accumulateArgvObject>;
+  result: ReturnType<typeof accumulateArgvs>;
 };
 
 const data: Datum[] = [
   {
     argv: ['foo', 'bar', '--baz', 'jane', 'doe'],
     result: {
-      commandNameAndArgsArgv: ['foo', 'bar'],
+      commandNamesAndPositionalArgv: ['foo', 'bar'],
       foundHelp: false,
-      optionsArgvObject: { baz: ['jane', 'doe'] },
+      namedArgvs: { baz: ['jane', 'doe'] },
       escapedArgv: undefined,
     },
   },
   {
     argv: ['foo', 'bar', '--baz', 'jane', '--baz', 'doe'],
     result: {
-      commandNameAndArgsArgv: ['foo', 'bar'],
+      commandNamesAndPositionalArgv: ['foo', 'bar'],
       foundHelp: false,
-      optionsArgvObject: { baz: ['jane', 'doe'] },
+      namedArgvs: { baz: ['jane', 'doe'] },
       escapedArgv: undefined,
     },
   },
   {
     argv: ['--', '--foo', '--bar'],
     result: {
-      commandNameAndArgsArgv: [],
+      commandNamesAndPositionalArgv: [],
       foundHelp: false,
-      optionsArgvObject: {},
+      namedArgvs: {},
       escapedArgv: ['--foo', '--bar'],
     },
   },
   {
     argv: ['--'],
     result: {
-      commandNameAndArgsArgv: [],
+      commandNamesAndPositionalArgv: [],
       foundHelp: false,
-      optionsArgvObject: {},
+      namedArgvs: {},
       escapedArgv: [],
     },
   },
   {
     argv: ['--foo'],
     result: {
-      commandNameAndArgsArgv: [],
+      commandNamesAndPositionalArgv: [],
       foundHelp: false,
-      optionsArgvObject: { foo: [] },
+      namedArgvs: { foo: [] },
       escapedArgv: undefined,
     },
   },
   {
     argv: ['foo', 'bar', '--help', 'baz'],
     result: {
-      commandNameAndArgsArgv: ['foo', 'bar', 'baz'],
+      commandNamesAndPositionalArgv: ['foo', 'bar', 'baz'],
       foundHelp: true,
-      optionsArgvObject: {},
+      namedArgvs: {},
       escapedArgv: undefined,
     },
   },
   {
     argv: ['--', '--help', 'baz'],
     result: {
-      commandNameAndArgsArgv: [],
+      commandNamesAndPositionalArgv: [],
       foundHelp: false,
-      optionsArgvObject: {},
+      namedArgvs: {},
       escapedArgv: ['--help', 'baz'],
     },
   },
 ];
 
-describe(accumulateArgvObject.name, () => {
+describe(accumulateArgvs.name, () => {
   for (const { argv, result } of data) {
     it(`${argv.join(' ')}`, () => {
-      expect(accumulateArgvObject(...argv)).toEqual(result);
+      expect(accumulateArgvs(argv)).toEqual(result);
     });
   }
 });

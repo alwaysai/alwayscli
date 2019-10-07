@@ -1,4 +1,4 @@
-import { NamedInputValues } from '../types';
+import { NamedValues } from '../types';
 import { createOneOfInput } from './create-one-of-input';
 
 describe(createOneOfInput.name, () => {
@@ -18,7 +18,7 @@ describe(createOneOfInput.name, () => {
         values: ['foo' as 'foo', 'bar' as 'bar'],
       }),
     };
-    const namedArgs: NamedInputValues<typeof namedInputs> = {
+    const namedArgs: NamedValues<typeof namedInputs> = {
       oneOf: undefined,
     };
 
@@ -33,7 +33,7 @@ describe(createOneOfInput.name, () => {
         required: true,
       }),
     };
-    const namedArgs: NamedInputValues<typeof namedInputs> = {
+    const namedArgs: NamedValues<typeof namedInputs> = {
       oneOf: 'foo',
     };
 
