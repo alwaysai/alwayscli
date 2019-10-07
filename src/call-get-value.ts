@@ -1,12 +1,7 @@
 import { AnyInput } from './types';
 import { UsageError } from './usage-error';
 
-export async function callGetValue(props: {
-  input: AnyInput;
-  argv?: string[];
-  context?: string;
-}) {
-  const { input, argv, context } = props;
+export async function callGetValue(input: AnyInput, argv?: string[], context?: string) {
   const { required, placeholder, getValue } = input;
   let prefix = [context, placeholder].filter(Boolean).join(' ');
   if (prefix) {

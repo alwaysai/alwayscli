@@ -3,22 +3,22 @@ import { LEAF } from './constants';
 
 export function accumulateCommandStack(
   command: Command,
-  remainingCommandNameAndArgsArgv: string[],
+  restCommandNamesAndPositionalArgv: string[],
 ): string[] {
   if (command._type === LEAF) {
-    return remainingCommandNameAndArgsArgv;
+    return restCommandNamesAndPositionalArgv;
   }
 
   const found = command.subcommands.find(
-    subcommand => subcommand.name === remainingCommandNameAndArgsArgv[0],
+    subcommand => subcommand.name === restCommandNamesAndPositionalArgv[0],
   );
 
   if (!found) {
     command.next = undefined;
-    return remainingCommandNameAndArgsArgv;
+    return restCommandNamesAndPositionalArgv;
   }
 
   command.next = found;
 
-  return accumulateCommandStack(found, remainingCommandNameAndArgsArgv.slice(1));
+  return accumulateCommandStack(found, restCommandNamesAndPositionalArgv.slice(1));
 }
