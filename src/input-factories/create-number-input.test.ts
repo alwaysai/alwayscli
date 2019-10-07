@@ -1,4 +1,4 @@
-import { NamedInputValues } from '../types';
+import { NamedValues } from '../types';
 import { createNumberInput } from './create-number-input';
 
 describe(createNumberInput.name, () => {
@@ -21,7 +21,7 @@ describe(createNumberInput.name, () => {
     const namedInputs = {
       num: createNumberInput(),
     };
-    const namedValues: NamedInputValues<typeof namedInputs> = {
+    const namedValues: NamedValues<typeof namedInputs> = {
       num: undefined,
     };
     // $ExpectType number | undefined
@@ -32,7 +32,7 @@ describe(createNumberInput.name, () => {
     const namedInputs = {
       num: createNumberInput({ required: true }),
     };
-    const namedValues: NamedInputValues<typeof namedInputs> = {
+    const namedValues: NamedValues<typeof namedInputs> = {
       num: 1,
     };
     // $ExpectType number
@@ -43,7 +43,7 @@ describe(createNumberInput.name, () => {
     const namedInputs = {
       num: createNumberInput({ defaultValue: 1 }),
     };
-    const namedValues: NamedInputValues<typeof namedInputs> = {
+    const namedValues: NamedValues<typeof namedInputs> = {
       num: 2,
     };
     // $ExpectType number

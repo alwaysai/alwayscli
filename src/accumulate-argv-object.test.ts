@@ -1,8 +1,8 @@
-import { accumulateArgvObject } from './accumulate-argv-object';
+import { accumulateArgvs } from './accumulate-argvs';
 
 type Datum = {
   argv: string[];
-  result: ReturnType<typeof accumulateArgvObject>;
+  result: ReturnType<typeof accumulateArgvs>;
 };
 
 const data: Datum[] = [
@@ -71,10 +71,10 @@ const data: Datum[] = [
   },
 ];
 
-describe(accumulateArgvObject.name, () => {
+describe(accumulateArgvs.name, () => {
   for (const { argv, result } of data) {
     it(`${argv.join(' ')}`, () => {
-      expect(accumulateArgvObject(...argv)).toEqual(result);
+      expect(accumulateArgvs(...argv)).toEqual(result);
     });
   }
 });

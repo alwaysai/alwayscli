@@ -1,24 +1,26 @@
 import { AnyInput } from './types';
+import { UsageError } from './usage-error';
 
-export async function callGetValue(input?: AnyInput, argv?: string[]) {
-  let value: any = undefined;
-  let errorMessage: string | undefined = undefined;
-  if (input) {
-    const { required, placeholder, getValue } = input;
-    if (!argv || argv.length === 0) {
-      if (required) {
-        errorMessage = `"${placeholder}": Value is required`;
-      } else {
-        value = await getValue(undefined);
-      }
-    } else {
-      value = await getValue(argv);
-    }
-  } else {
-    // !input
-    if (argv && argv.length > 0) {
-      errorMessage = `Unexpected argument "${argv[0]}"`;
-    }
+export async function callGetValue(props: {
+  input: AnyInput;
+  argv?: string[];
+  context?: string;
+}) {
+  const { input, argv, context } = props;
+  const { required, placeholder, getValue } = input;
+  let prefix = [context, placeholder].filter(Boolean).join(' ');
+  if (prefix) {
+    prefix += ' : ';
   }
-  return { value, errorMessage };
+  if (required && (!argv || argv.length === 0)) {
+    throw new UsageError(`${prefix}Input is required`);
+  }
+  try {
+    return await getValue(argv);
+  } catch (exception) {
+    if (exception && typeof exception.message === 'string') {
+      exception.message = `${prefix}${exception.message}`;
+    }
+    throw exception;
+  }
 }

@@ -1,4 +1,4 @@
-import { NamedInputValues } from '../types';
+import { NamedValues } from '../types';
 import { createStringInput } from './create-string-input';
 
 describe(createStringInput.name, () => {
@@ -21,7 +21,7 @@ describe(createStringInput.name, () => {
     const namedInputs = {
       str: createStringInput(),
     };
-    const namedValues: NamedInputValues<typeof namedInputs> = {
+    const namedValues: NamedValues<typeof namedInputs> = {
       str: undefined,
     };
     // $ExpectType string | undefined
@@ -32,7 +32,7 @@ describe(createStringInput.name, () => {
     const namedInputs = {
       str: createStringInput({ required: true }),
     };
-    const namedValues: NamedInputValues<typeof namedInputs> = {
+    const namedValues: NamedValues<typeof namedInputs> = {
       str: 'foo',
     };
     // $ExpectType string
@@ -43,7 +43,7 @@ describe(createStringInput.name, () => {
     const namedInputs = {
       str: createStringInput({ defaultValue: 'foo' }),
     };
-    const namedValues: NamedInputValues<typeof namedInputs> = {
+    const namedValues: NamedValues<typeof namedInputs> = {
       str: 'bar',
     };
     // $ExpectType string

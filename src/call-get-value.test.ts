@@ -1,13 +1,26 @@
 import { Input } from './types';
 import { callGetValue } from './call-get-value';
+import { runAndCatch } from '@carnesen/run-and-catch';
+import { USAGE } from './usage-error';
 
 const UNDEFINED_WAS_PASSED = 'undefined was passed';
+const EMPTY_ARRAY_WAS_PASSED = 'undefined was passed';
+const THROWN_INTENTIONALLY = 'thrown intentionally';
 
 const input: Input<string, false> = {
-  placeholder: '<foo>',
+  placeholder: '',
   getValue(argv) {
     if (typeof argv === 'undefined') {
       return UNDEFINED_WAS_PASSED;
+    }
+    if (argv.length === 0) {
+      return EMPTY_ARRAY_WAS_PASSED;
+    }
+    if (argv[0] === 'throw') {
+      throw new Error(THROWN_INTENTIONALLY);
+    }
+    if (argv[0] === 'throw-non-truthy') {
+      throw '';
     }
     return argv[0];
   },
@@ -17,54 +30,63 @@ const input: Input<string, false> = {
 const requiredInput: Input<string, true> = {
   placeholder: '<foo>',
   required: true,
-  getValue() {
-    return 'carl';
-  },
+  getValue: input.getValue,
   getDescription: () => '',
 };
 
 describe(callGetValue.name, () => {
-  it(`returns the return value of ${
-    input.getValue.name
-  } if an argv with length >= 1 is passed`, async () => {
-    const result = await callGetValue(input, ['foo']);
-    expect(result.value).toBe('foo');
+  it(`returns getValue(argv) if an argv with length >= 1 is passed`, async () => {
+    const argv = ['foo'];
+    expect(await callGetValue({ input, argv })).toBe(input.getValue(argv));
+    expect(await callGetValue({ input: requiredInput, argv })).toBe(
+      requiredInput.getValue(argv),
+    );
   });
 
-  it(`returns getValue(undefined) if an empty array is passed as argv`, async () => {
-    const result = await callGetValue(input, []);
-    expect(result.value).toBe(UNDEFINED_WAS_PASSED);
+  it(`if not required, returns getValue(argv) if argv is an empty array or undefined`, async () => {
+    expect(await callGetValue({ input, argv: [] })).toBe(input.getValue([]));
+    expect(await callGetValue({ input, argv: undefined })).toBe(
+      input.getValue(undefined),
+    );
   });
 
-  it(`returns getValue(undefined) if undefined is passed as argv`, async () => {
-    const result = await callGetValue(input, undefined);
-    expect(result.value).toBe(UNDEFINED_WAS_PASSED);
+  it(`if required, throws usage error "input is required" if argv is an empty array or undefined`, async () => {
+    for (const argv of [undefined, [] as string[]]) {
+      const exception = await runAndCatch(callGetValue, { input: requiredInput, argv });
+      expect(exception.code).toBe(USAGE);
+      expect(exception.message).toMatch(/input is required/i);
+      expect(exception.message).toMatch(requiredInput.placeholder);
+    }
   });
 
-  it(`returns value undefined if input and argv are undefined`, async () => {
-    const result = await callGetValue(undefined, undefined);
-    expect(result.value).toEqual(undefined);
+  it(`if throws "input is required", expect message to match snapshot`, async () => {
+    const exception = await runAndCatch(callGetValue, { input: requiredInput });
+    expect(exception.message).toMatchSnapshot();
   });
 
-  it(`returns value undefined if input is undefined and argv is an empty string`, async () => {
-    const result = await callGetValue(undefined, []);
-    expect(result.value).toEqual(undefined);
+  it(`if throws "input is required" with context, expect message to match snapshot`, async () => {
+    const exception = await runAndCatch(callGetValue, {
+      input: requiredInput,
+      context: 'context',
+    });
+    expect(exception.message).toMatchSnapshot();
   });
 
-  it(`returns value undefined if input is undefined and argv is an empty string`, async () => {
-    const result = await callGetValue(undefined, []);
-    expect(result.value).toEqual(undefined);
+  it(`throws if getValue does with a context/placeholder enhanced message`, async () => {
+    const exception = await runAndCatch(callGetValue, {
+      input,
+      argv: ['throw'],
+    });
+    expect(exception.message).toMatch(THROWN_INTENTIONALLY);
+    expect(exception.message).toMatch(input.placeholder);
+    expect(exception.message).toMatchSnapshot();
   });
 
-  it(`returns error message referencing the unexpected argument if input is undefined but argv has an item`, async () => {
-    const result = await callGetValue(undefined, ['foo']);
-    expect(result.errorMessage).toMatch(/unexpected argument/i);
-    expect(result.errorMessage).toMatch('foo');
-  });
-
-  it(`returns error message if input is "required" but argv is empty`, async () => {
-    const result = await callGetValue(requiredInput, []);
-    expect(result.errorMessage).toMatch(/required/i);
-    expect(result.errorMessage).toMatch(requiredInput.placeholder);
+  it(`just re-throws exception if getValue throws a non-truthy exception`, async () => {
+    const exception = await runAndCatch(callGetValue, {
+      input,
+      argv: ['throw-non-truthy'],
+    });
+    expect(exception).toBe('');
   });
 });

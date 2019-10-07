@@ -1,7 +1,7 @@
 import { Leaf, Branch } from './types';
 import { accumulateCommandStack } from './accumulate-command-stack';
-import { accumulateArgvObject } from './accumulate-argv-object';
-import { accumulateOptionsValues } from './accumulate-options-values';
+import { accumulateArgvs } from './accumulate-argvs';
+import { accumulateNamedValues } from './accumulate-options-values';
 
 import { UsageError } from './usage-error';
 import { TerseError } from './terse-error';
@@ -27,28 +27,36 @@ export function createArgvInterface(rootCommand: Branch | Leaf<any, any, any>) {
       commandNameAndArgsArgv,
       optionsArgvObject,
       escapedArgv,
-    } = accumulateArgvObject(...argv);
-    const argsArgv = accumulateCommandStack(rootCommand, commandNameAndArgsArgv);
+    } = accumulateArgvs(...argv);
+
+    const remainingCommandNameAndArgsArgv = accumulateCommandStack(
+      rootCommand,
+      commandNameAndArgsArgv,
+    );
 
     if (foundHelp) {
+      // e.g. cli branch0 branch1 --help
       throw new UsageError();
     }
 
     const lastCommand = LastCommand(rootCommand);
 
     if (lastCommand._type === BRANCH) {
-      if (argsArgv[0]) {
-        throw new UsageError(`Bad command "${argsArgv[0]}"`);
+      if (remainingCommandNameAndArgsArgv[0]) {
+        // e.g. cli branch0 branch1 bad-command-name
+        throw new UsageError(`Bad command "${remainingCommandNameAndArgsArgv[0]}"`);
       }
+      // e.g. cli branch0 branch1
       throw new UsageError();
     }
 
-    const { value: argsValue, errorMessage: argsErrorMessage } = await callGetValue(
-      lastCommand.args,
-      argsArgv,
-    );
-    if (argsErrorMessage) {
-      throw new UsageError(argsErrorMessage);
+    let argsValue: any = undefined;
+    if (lastCommand.args) {
+      argsValue = await callGetValue({
+        input: lastCommand.args,
+        argv: remainingCommandNameAndArgsArgv,
+        context: '',
+      });
     }
 
     const {
@@ -56,7 +64,7 @@ export function createArgvInterface(rootCommand: Branch | Leaf<any, any, any>) {
       unusedInputNames,
       missingInputNames,
       exceptionsRunningGetValue,
-    } = await accumulateOptionsValues(lastCommand, optionsArgvObject);
+    } = await accumulateNamedValues(lastCommand.options, optionsArgvObject);
     if (exceptionsRunningGetValue.length > 0) {
       const [inputName, ex] = exceptionsRunningGetValue[0];
       const message =
@@ -75,13 +83,13 @@ export function createArgvInterface(rootCommand: Branch | Leaf<any, any, any>) {
       throw new UsageError(`"--${inputName}" is required`);
     }
 
-    const { value: escapedValue, errorMessage: escapedErrorMessage } = await callGetValue(
-      lastCommand.escaped,
-      escapedArgv,
-    );
-
-    if (escapedErrorMessage) {
-      throw new UsageError(escapedErrorMessage);
+    let escapedValue: any = undefined;
+    if (lastCommand.escaped) {
+      escapedValue = await callGetValue({
+        input: lastCommand.escaped,
+        argv: escapedArgv,
+        context: '--',
+      });
     }
 
     const result = await lastCommand.action(argsValue, optionsValues, escapedValue);

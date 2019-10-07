@@ -1,39 +1,26 @@
-import { Leaf, AnyNamedInputs, NamedInputValues, AnyInput } from './types';
-import { OptionsArgvObject } from './accumulate-argv-object';
+import { AnyNamedInputs, NamedValues, AnyInput } from './types';
+import { NamedArgvs } from './accumulate-argvs';
 
-export async function accumulateOptionsValues(
-  leaf: Leaf<any, any, any>,
-  optionsArgvObject: OptionsArgvObject,
+export async function accumulateNamedValues(
+  options: AnyNamedInputs,
+  namedArgvs: NamedArgvs,
 ) {
-  const { options } = leaf;
-  let optionsValues: NamedInputValues<AnyNamedInputs> = {};
-  const restDashDashArgs = { ...optionsArgvObject };
-  const missingInputNames: string[] = [];
-  const exceptionsRunningGetValue: [string, any][] = [];
-  if (options) {
-    for (const [inputName, input] of Object.entries(options as {
-      [inputName: string]: AnyInput;
-    })) {
-      const rawValues = restDashDashArgs[inputName];
-      delete restDashDashArgs[inputName];
-      if (input.required && typeof rawValues === 'undefined') {
-        missingInputNames.push(inputName);
-      }
-      try {
-        const inputValue = await (input as AnyInput).getValue(rawValues);
-        optionsValues[inputName] = inputValue;
-      } catch (ex) {
-        optionsValues = {};
-        exceptionsRunningGetValue.push([inputName, ex]);
-        break;
-      }
+  const namedValues: NamedValues<AnyNamedInputs> = {};
+  const remainingNamedArgvs = { ...namedArgvs };
+  const missingNames: string[] = [];
+  for (const [name, input] of Object.entries(options)) {
+    const rawValues = remainingNamedArgvs[name];
+    delete remainingNamedArgvs[name];
+    if (input.required && typeof rawValues === 'undefined') {
+      missingNames.push(name);
     }
+    const inputValue = await (input as AnyInput).getValue(rawValues);
+    namedValues[name] = inputValue;
   }
-  const unusedInputNames = Object.keys(restDashDashArgs);
+  const unusedInputNames = Object.keys(remainingNamedArgvs);
   return {
-    optionsValues,
+    optionsValues: namedValues,
     unusedInputNames,
-    missingInputNames,
-    exceptionsRunningGetValue,
+    missingInputNames: missingNames,
   };
 }

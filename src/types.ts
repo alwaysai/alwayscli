@@ -1,12 +1,18 @@
 import { BRANCH, LEAF } from './constants';
 
-export type Argv<R extends boolean> = R extends true ? string[] : (string[] | undefined);
+export type Argv<TRequired extends boolean> = TRequired extends true
+  ? string[]
+  : (string[] | undefined);
 
-export type Input<V, R extends boolean = boolean> = {
+export type AnyArgv = Argv<boolean>;
+
+export type Input<TValue, TRequired extends boolean = boolean> = {
   placeholder: string;
-  required?: R;
+  required?: TRequired;
   hidden?: boolean;
-  getValue: ((argv: Argv<R>) => V) | ((argv: Argv<R>) => Promise<V>);
+  getValue:
+    | ((argv: Argv<TRequired>) => TValue)
+    | ((argv: Argv<TRequired>) => Promise<TValue>);
   getDescription: () => string | undefined;
 };
 
@@ -15,12 +21,10 @@ export type AnyInput = Input<any>;
 export type InputValue<T> = T extends Input<infer U, any> ? U : never;
 
 export type AnyNamedInputs = {
-  [argName: string]: AnyInput;
+  [name: string]: AnyInput;
 };
 
-export type NamedInputValues<T extends AnyNamedInputs> = {
-  [K in keyof T]: InputValue<T[K]>
-};
+export type NamedValues<T extends AnyNamedInputs> = { [K in keyof T]: InputValue<T[K]> };
 
 export type Command = Branch | Leaf<AnyInput, AnyNamedInputs, AnyInput>;
 
@@ -42,11 +46,7 @@ export type Leaf<T extends AnyInput, U extends AnyNamedInputs, V extends AnyInpu
   args?: T;
   options?: U;
   escaped?: V;
-  action: (
-    args: InputValue<T>,
-    options: NamedInputValues<U>,
-    escaped: InputValue<V>,
-  ) => any;
+  action: (args: InputValue<T>, options: NamedValues<U>, escaped: InputValue<V>) => any;
   version?: string;
 };
 
