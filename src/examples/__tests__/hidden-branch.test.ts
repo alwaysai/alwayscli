@@ -1,7 +1,7 @@
 import { root } from '../hidden-branch';
-import { ArgvInterface } from '../../argv-interface';
+import { CliArgvInterface } from '../../cli-argv-interface';
 
-const cli = ArgvInterface(root);
+const cli = CliArgvInterface(root);
 
 describe(root.name, () => {
   it('has a command "secret echo"', async () => {

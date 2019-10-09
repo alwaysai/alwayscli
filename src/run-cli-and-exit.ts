@@ -1,9 +1,9 @@
 import { CliLeaf, CliBranch } from './types';
 
-import { USAGE } from './usage-error';
-import { TERSE } from './terse-error';
+import { USAGE } from './cli-usage-error';
+import { TERSE } from './cli-terse-error';
 import { RED_ERROR } from './constants';
-import { ArgvInterface } from './argv-interface';
+import { CliArgvInterface } from './cli-argv-interface';
 import { UsageString } from './usage-string';
 
 export async function runCliAndExit(
@@ -21,7 +21,7 @@ export async function runCliAndExit(
     consoleLog = console.log,
     consoleError = console.error,
   } = options;
-  const argvInterface = ArgvInterface(rootCommand);
+  const argvInterface = CliArgvInterface(rootCommand);
   let exitCode = 0;
   try {
     const result = await argvInterface(...argv);

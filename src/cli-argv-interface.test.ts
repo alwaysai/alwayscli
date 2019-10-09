@@ -2,13 +2,13 @@ import { runAndCatch } from '@carnesen/run-and-catch';
 import { CliBranch } from './cli-branch';
 import { CliLeaf } from './cli-leaf';
 import { dummyInput } from './dummy-inputs-for-testing';
-import { ArgvInterface } from './argv-interface';
+import { CliArgvInterface } from './cli-argv-interface';
 import { findVersion } from './find-version';
-import { USAGE } from './usage-error';
+import { USAGE } from './cli-usage-error';
 
 const leafWithNamedInputs = CliLeaf({
   name: 'leaf-with-named-inputs',
-  options: {
+  namedInputs: {
     foo: dummyInput,
   },
   action(...args) {
@@ -18,7 +18,7 @@ const leafWithNamedInputs = CliLeaf({
 
 const leafWithPositionalInput = CliLeaf({
   name: 'leaf-with-positional-input',
-  args: dummyInput,
+  positionalInput: dummyInput,
   action(...args) {
     return args;
   },
@@ -26,7 +26,7 @@ const leafWithPositionalInput = CliLeaf({
 
 const leafWithEscapedInput = CliLeaf({
   name: 'leaf-with-escaped-input',
-  escaped: dummyInput,
+  escapedInput: dummyInput,
   action(...args) {
     return args;
   },
@@ -37,9 +37,9 @@ const root = CliBranch({
   subcommands: [leafWithPositionalInput, leafWithNamedInputs, leafWithEscapedInput],
 });
 
-const argvInterface = ArgvInterface(root);
+const argvInterface = CliArgvInterface(root);
 
-describe(ArgvInterface.name, () => {
+describe(CliArgvInterface.name, () => {
   it('returns version string from package.json if "-v" or "--version" is passed', async () => {
     const version = await findVersion();
     expect(await argvInterface('-v')).toBe(version);
@@ -100,6 +100,10 @@ describe(ArgvInterface.name, () => {
 
   it('Passes parsed escaped value as third argument of the "action" function', async () => {
     const result = await argvInterface(leafWithEscapedInput.name, '--');
-    expect(result).toEqual([undefined, {}, leafWithEscapedInput.escaped!.getValue([])]);
+    expect(result).toEqual([
+      undefined,
+      {},
+      leafWithEscapedInput.escapedInput!.getValue([]),
+    ]);
   });
 });

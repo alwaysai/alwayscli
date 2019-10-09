@@ -1,9 +1,5 @@
-import { UsageError } from './usage-error';
+import { CliUsageError } from './cli-usage-error';
 import redent = require('redent');
-
-export function wrapInSingleQuotes(str: string) {
-  return `'${str}'`;
-}
 
 export function wrapInSquareBrackets(str: string) {
   return `[${str}]`;
@@ -45,7 +41,7 @@ export function convertToNumber(rawValue: string) {
     value = Number(rawValue);
   }
   if (isNaN(value)) {
-    throw new UsageError(`"${rawValue}" is not a number`);
+    throw new CliUsageError(`"${rawValue}" is not a number`);
   }
   return value;
 }

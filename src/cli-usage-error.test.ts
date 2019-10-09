@@ -1,15 +1,15 @@
-import { UsageError, USAGE } from './usage-error';
+import { CliUsageError, USAGE } from './cli-usage-error';
 
-describe(UsageError.name, () => {
+describe(CliUsageError.name, () => {
   it('Constructs an error object with property "code" set to "USAGE"', () => {
-    const error = new UsageError();
+    const error = new CliUsageError();
     expect(error.code).toBe(USAGE);
     expect(error.message).toBe('');
   });
 
   it('Constructs an error object with property "code" set to "USAGE" with provided message', () => {
     const message = 'this is a message';
-    const error = new UsageError(message);
+    const error = new CliUsageError(message);
     expect(error.code).toBe(USAGE);
     expect(error.message).toBe(message);
   });

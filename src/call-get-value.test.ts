@@ -1,7 +1,7 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
 import { callGetValue } from './call-get-value';
-import { USAGE } from './usage-error';
+import { USAGE } from './cli-usage-error';
 import {
   dummyInput,
   dummyRequiredInput,

@@ -1,20 +1,14 @@
-import {
-  AnyNamedInputs,
-  CliLeaf,
-  ExcludeInternallyAssigned,
-  AnyInput,
-  CliInput,
-} from './types';
+import { AnyNamedInputs, CliLeaf, ExcludeCommandType, AnyInput, CliInput } from './types';
 import { LEAF } from './constants';
 
 export function CliLeaf<
   TPositional extends AnyInput = CliInput<undefined, false>,
   TNamed extends AnyNamedInputs = {},
   TEscaped extends AnyInput = CliInput<undefined, false>
->(config: ExcludeInternallyAssigned<CliLeaf<TPositional, TNamed, TEscaped>>) {
-  const leaf: CliLeaf<TPositional, TNamed, TEscaped> = {
+>(config: ExcludeCommandType<CliLeaf<TPositional, TNamed, TEscaped>>) {
+  const cliLeaf: CliLeaf<TPositional, TNamed, TEscaped> = {
     ...config,
-    _type: LEAF,
+    commandType: LEAF,
   };
-  return leaf;
+  return cliLeaf;
 }

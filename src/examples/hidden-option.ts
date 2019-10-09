@@ -1,6 +1,6 @@
 import { echoCliLeaf as echoCommand } from './echo';
 import { CliLeaf } from '../cli-leaf';
-import { CliFlagInput } from '../input-factories/cli-flag-input';
+import { CliFlagInput } from '../cli-flag-input';
 import { runCliAndExit } from '../run-cli-and-exit';
 
 const PIZZA_MESSAGE = `
@@ -22,7 +22,7 @@ export const root = CliLeaf({
     This CLI has a hidden option "--pizza". If an option is "hidden", it does not 
     appear in the command's usage documentation. Hidden options might be "easter eggs" 
     like in this example or experimental features, for example.`,
-  options: { pizza: CliFlagInput({ hidden: true }) },
+  namedInputs: { pizza: CliFlagInput({ hidden: true }) },
   action(messages, { pizza }, escaped) {
     if (pizza) {
       return PIZZA_MESSAGE;

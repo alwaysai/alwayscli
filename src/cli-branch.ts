@@ -1,12 +1,12 @@
-import { CliBranch, ExcludeInternallyAssigned } from './types';
+import { CliBranch, ExcludeCommandType } from './types';
 import { BRANCH } from './constants';
 
-type Config = ExcludeInternallyAssigned<CliBranch>;
+type Config = ExcludeCommandType<CliBranch>;
 
 export function CliBranch(config: Config) {
   const branch: CliBranch = {
     ...config,
-    _type: BRANCH,
+    commandType: BRANCH,
   };
   return branch;
 }

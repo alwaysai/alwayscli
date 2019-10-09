@@ -1,26 +1,25 @@
 // Arg type for custom arg types
-export { CliInput as Input } from './types';
+export { CliInput } from './types';
 
 // Command factories:
 export { CliBranch } from './cli-branch';
-export { CliLeaf as Leaf } from './cli-leaf';
+export { CliLeaf } from './cli-leaf';
 
-// Command-line interface factory
+// ArgvInterface
+export { CliArgvInterface } from './cli-argv-interface';
+
+// Command-line interface runner
 export { runCliAndExit } from './run-cli-and-exit';
 
-// Option factories:
-export { CliFlagInput as createFlagInput } from './input-factories/cli-flag-input';
-export { createJsonInput } from './input-factories/create-json-input';
-export { createNumberArrayInput } from './input-factories/create-number-array-input';
-export { createNumberInput } from './input-factories/create-number-input';
-export { createOneOfInput } from './input-factories/create-one-of-input';
-export { createStringArrayInput } from './input-factories/create-string-array-input';
-export { createStringInput } from './input-factories/create-string-input';
+// Input factories:
+export { CliFlagInput } from './cli-flag-input';
+export { CliJsonInput } from './cli-json-input';
+export { CliNumberArrayInput } from './cli-number-array-input';
+export { CliNumberInput } from './cli-number-input';
+export { CliOneOfInput } from './cli-one-of-input';
+export { CliStringArrayInput } from './cli-string-array-input';
+export { CliStringInput } from './cli-string-input';
 
 // Error constructors
-export { TerseError, TERSE } from './terse-error';
-export { UsageError, USAGE } from './usage-error';
-
-// Re-export for convenience
-export { runAndCatch } from '@carnesen/run-and-catch';
-export { runAndExit } from '@carnesen/run-and-exit';
+export { CliTerseError, TERSE } from './cli-terse-error';
+export { CliUsageError, USAGE } from './cli-usage-error';

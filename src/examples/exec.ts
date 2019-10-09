@@ -1,19 +1,19 @@
 import { execSync } from 'child_process';
-import { createStringInput } from '../input-factories/create-string-input';
+import { CliStringInput } from '../cli-string-input';
 import { CliLeaf } from '../cli-leaf';
-import { createStringArrayInput } from '../input-factories/create-string-array-input';
+import { CliStringArrayInput } from '../cli-string-array-input';
 import { runCliAndExit } from '../run-cli-and-exit';
 
 export const execCliLeaf = CliLeaf({
   name: 'exec',
   description: 'Run a shell command',
-  options: {
-    cwd: createStringInput({
+  namedInputs: {
+    cwd: CliStringInput({
       placeholder: '<path>',
       description: 'Current working directory of the child process',
     }),
   },
-  escaped: createStringArrayInput({
+  escapedInput: CliStringArrayInput({
     required: true,
     placeholder: '<command> [<arguments>]',
   }),

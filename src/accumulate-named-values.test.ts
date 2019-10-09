@@ -5,7 +5,7 @@ import {
   dummyInput,
   DUMMY_INPUT_THROW,
 } from './dummy-inputs-for-testing';
-import { USAGE } from './usage-error';
+import { USAGE } from './cli-usage-error';
 
 describe(accumulateNamedValues.name, () => {
   it(`returns object of named values`, async () => {

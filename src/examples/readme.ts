@@ -1,13 +1,13 @@
 import { CliLeaf } from '../cli-leaf';
-import { createNumberArrayInput } from '../input-factories/create-number-array-input';
-import { CliFlagInput } from '../input-factories/cli-flag-input';
+import { CliNumberArrayInput } from '../cli-number-array-input';
+import { CliFlagInput } from '../cli-flag-input';
 import { runCliAndExit } from '../run-cli-and-exit';
 
 export const multiplyCliLeaf = CliLeaf({
   name: 'multiply',
   description: 'Multiply numbers and print the result',
-  args: createNumberArrayInput({ required: true }),
-  options: {
+  positionalInput: CliNumberArrayInput({ required: true }),
+  namedInputs: {
     squared: CliFlagInput({
       description: 'Square the result before printing it',
     }),

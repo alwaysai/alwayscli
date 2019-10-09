@@ -1,7 +1,7 @@
 import { CliLeaf } from './cli-leaf';
 import { runCliAndExit } from './run-cli-and-exit';
-import { UsageError } from './usage-error';
-import { TerseError, TERSE } from './terse-error';
+import { CliUsageError } from './cli-usage-error';
+import { CliTerseError, TERSE } from './cli-terse-error';
 import { RED_ERROR } from './constants';
 import { CodedError } from '@carnesen/coded-error';
 
@@ -68,7 +68,7 @@ describe(runCliAndExit.name, () => {
 
   it('exits 1 and console.errors a usage string if action throws a UsageError', async () => {
     const { exitCode, errorMessage, logMessage } = await runMocked(() => {
-      throw new UsageError();
+      throw new CliUsageError();
     });
     expect(exitCode).toBe(1);
     expect(errorMessage).toMatch('Usage');
@@ -77,7 +77,7 @@ describe(runCliAndExit.name, () => {
 
   it('exits 1 and console.errors a red error message if action throws a TerseError', async () => {
     const { exitCode, errorMessage, logMessage } = await runMocked(() => {
-      throw new TerseError('foo');
+      throw new CliTerseError('foo');
     });
     expect(exitCode).toBe(1);
     expect(errorMessage).toMatch(RED_ERROR);
@@ -87,7 +87,7 @@ describe(runCliAndExit.name, () => {
 
   it('exits 1 and console.errors the full error if action throws a TerseError without a message', async () => {
     const { exitCode, errorMessage, logMessage } = await runMocked(() => {
-      throw new TerseError('');
+      throw new CliTerseError('');
     });
     expect(exitCode).toBe(1);
     expect(typeof errorMessage).toBe('object');

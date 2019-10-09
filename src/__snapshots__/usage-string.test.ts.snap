@@ -3,23 +3,43 @@
 exports[`UsageString Creates a usage string for a branch 1`] = `
 "Usage: cli <subcommand> ...
 
+   This is a CLI
+
 Subcommands:
 
    echo"
 `;
 
 exports[`UsageString Creates a usage string for a leaf 1`] = `
-"Usage: cli echo [<options>]
+"Usage: cli echo [<word>] [<options>] -- <str>
+
+<word>:
+
+   A word
 
 Options:
 
-   [--message <str>] : A message"
+   [--message <str>] : A string message please
+
+<str>:
+
+   Another word"
 `;
 
 exports[`UsageString Creates a usage string for a leaf without a parent branch 1`] = `
-"Usage: echo [<options>]
+"Usage: echo [<word>] [<options>] -- <str>
+
+<word>:
+
+   A word
 
 Options:
 
-   [--message <str>] : A message"
+   [--message <str>] : A string message please
+
+<str>:
+
+   Another word"
 `;
+
+exports[`UsageString Does not write usage for named inputs if there are none 1`] = `"Usage: foo"`;

@@ -1,7 +1,7 @@
 import { root } from '../hidden-leaf';
-import { ArgvInterface } from '../../argv-interface';
+import { CliArgvInterface } from '../../cli-argv-interface';
 
-const cli = ArgvInterface(root);
+const cli = CliArgvInterface(root);
 
 describe(root.name, () => {
   it('has a hidden leaf "hidden-echo"', async () => {

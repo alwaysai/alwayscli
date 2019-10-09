@@ -1,6 +1,6 @@
 export const USAGE = 'USAGE';
 
-export class UsageError extends Error {
+export class CliUsageError extends Error {
   public readonly code: typeof USAGE;
   constructor(message?: string) {
     super(message);

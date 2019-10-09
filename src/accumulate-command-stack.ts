@@ -1,11 +1,11 @@
-import { CliCommand } from './types';
+import { Command } from './types';
 import { LEAF } from './constants';
 
 export function accumulateCommandStack(
-  command: CliCommand,
+  command: Command,
   restCommandNamesAndPositionalArgv: string[],
 ): string[] {
-  if (command._type === LEAF) {
+  if (command.commandType === LEAF) {
     return restCommandNamesAndPositionalArgv;
   }
 

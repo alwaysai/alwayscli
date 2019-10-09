@@ -1,6 +1,6 @@
 export const TERSE = 'TERSE';
 
-export class TerseError extends Error {
+export class CliTerseError extends Error {
   public readonly code: typeof TERSE;
   constructor(message: string) {
     super(message);

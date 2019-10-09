@@ -1,5 +1,5 @@
-import { CliInput } from '../types';
-import { UsageError } from '../usage-error';
+import { CliInput } from './types';
+import { CliUsageError } from './cli-usage-error';
 
 type Config = Partial<{
   required: boolean;
@@ -9,21 +9,19 @@ type Config = Partial<{
   placeholder?: string;
 }>;
 
-const PLACEHOLDER = '<str>';
-
-export { createStringInput };
-function createStringInput(
+export { CliStringInput };
+function CliStringInput(
   config: Config & { defaultValue: string },
 ): CliInput<string, false>;
-function createStringInput(config: Config & { required: true }): CliInput<string, true>;
-function createStringInput(config?: Config): CliInput<string | undefined, false>;
-function createStringInput(config: Config = {}) {
+function CliStringInput(config: Config & { required: true }): CliInput<string, true>;
+function CliStringInput(config?: Config): CliInput<string | undefined, false>;
+function CliStringInput(config: Config = {}) {
   const {
     defaultValue,
-    required,
+    required = false,
     description,
-    placeholder = PLACEHOLDER,
-    hidden,
+    placeholder = '<str>',
+    hidden = false,
   } = config;
   const input: CliInput<string | undefined> = {
     hidden,
@@ -35,11 +33,11 @@ function createStringInput(config: Config = {}) {
       }
 
       if (argv.length > 1) {
-        throw new UsageError(`Expected just one ${PLACEHOLDER}`);
+        throw new CliUsageError(`Expected just one ${placeholder}`);
       }
 
       if (argv.length === 0) {
-        throw new UsageError(`Expected a ${PLACEHOLDER}`);
+        throw new CliUsageError(`Expected a ${placeholder}`);
       }
 
       return argv[0];

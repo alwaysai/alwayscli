@@ -1,6 +1,6 @@
 import redent = require('redent');
 
-import { CliCommand, AnyInput } from './types';
+import { Command, AnyInput } from './types';
 import { BRANCH, LEAF, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
@@ -10,7 +10,7 @@ import { mapCommand } from './map-command';
 
 const INDENT_SIZE = 3;
 
-export function UsageString(rootCommand: CliCommand, errorMessage?: string) {
+export function UsageString(rootCommand: Command, errorMessage?: string) {
   const lastCommand = LastCommand(rootCommand);
 
   const commandPathString = mapCommand(rootCommand, command => command.name).join(' ');
@@ -31,55 +31,52 @@ export function UsageString(rootCommand: CliCommand, errorMessage?: string) {
     }
   }
 
-  switch (lastCommand._type) {
-    case BRANCH:
-      firstParagraph += ' <subcommand> ...';
-      otherParagraphs.push('Subcommands:');
-      const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(lastCommand, []);
-      const items: Parameters<typeof createTextList> = nameAndDescriptionOfLeaves.map(
-        ({ path, description }) => ({
-          name: path.join(' '),
-          text: description,
-        }),
-      );
-      const subcommandsParagraph = redent(createTextList(...items), INDENT_SIZE);
-      otherParagraphs.push(subcommandsParagraph);
-      break;
-    case LEAF:
-      const { args, options, escaped } = lastCommand;
+  if (lastCommand.commandType === BRANCH) {
+    // BRANCH
+    firstParagraph += ' <subcommand> ...';
+    otherParagraphs.push('Subcommands:');
+    const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(lastCommand, []);
+    const items: Parameters<typeof createTextList> = nameAndDescriptionOfLeaves.map(
+      ({ path, description }) => ({
+        name: path.join(' '),
+        text: description,
+      }),
+    );
+    const subcommandsParagraph = redent(createTextList(...items), INDENT_SIZE);
+    otherParagraphs.push(subcommandsParagraph);
+  } else {
+    // LEAF
+    const { positionalInput, namedInputs, escapedInput } = lastCommand;
 
-      appendInputUsage(args);
+    appendInputUsage(positionalInput);
 
-      if (options) {
-        const entries = Object.entries(options).filter(([_, input]) => !input.hidden);
-        if (entries.length > 0) {
-          const optionsNotRequired = entries.every(
-            ([_, namedInput]) => !namedInput.required,
-          );
-          firstParagraph += optionsNotRequired ? ' [<options>]' : ' <options>';
-          otherParagraphs.push('Options:');
-          const items: Parameters<typeof createTextList> = entries.map(
-            ([inputName, input]) => {
-              let name = `--${inputName}`;
-              if (input.placeholder) {
-                name += ` ${input.placeholder}`;
-              }
-              if (!input.required) {
-                name = wrapInSquareBrackets(name);
-              }
-              const text = input.description;
-              return { name, text };
-            },
-          );
-          const optionsParagraph = redent(createTextList(...items), INDENT_SIZE);
-          otherParagraphs.push(optionsParagraph);
-        }
+    if (namedInputs) {
+      const entries = Object.entries(namedInputs).filter(([_, input]) => !input.hidden);
+      if (entries.length > 0) {
+        const optionsNotRequired = entries.every(
+          ([_, namedInput]) => !namedInput.required,
+        );
+        firstParagraph += optionsNotRequired ? ' [<options>]' : ' <options>';
+        otherParagraphs.push('Options:');
+        const items: Parameters<typeof createTextList> = entries.map(
+          ([inputName, input]) => {
+            let name = `--${inputName}`;
+            if (input.placeholder) {
+              name += ` ${input.placeholder}`;
+            }
+            if (!input.required) {
+              name = wrapInSquareBrackets(name);
+            }
+            const text = input.description;
+            return { name, text };
+          },
+        );
+        const optionsParagraph = redent(createTextList(...items), INDENT_SIZE);
+        otherParagraphs.push(optionsParagraph);
       }
+    }
 
-      appendInputUsage(escaped, '--');
-      break;
-    default:
-      throw new Error('Unexpected command type');
+    appendInputUsage(escapedInput, '--');
   }
 
   const paragraphs = [firstParagraph];

@@ -1,12 +1,12 @@
-import { CliCommand } from './types';
+import { Command } from './types';
 import { LEAF } from './constants';
 
-export function mapCommand<T>(command: CliCommand, callback: (command: CliCommand) => T) {
+export function mapCommand<T>(command: Command, callback: (command: Command) => T) {
   const result: T[] = [];
   let current = command;
   while (true) {
     result.push(callback(current));
-    if (current._type === LEAF || !current.next) {
+    if (current.commandType === LEAF || !current.next) {
       break;
     }
     current = current.next;

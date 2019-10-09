@@ -1,10 +1,10 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
 import { execCliLeaf } from '../exec';
-import { ArgvInterface } from '../../argv-interface';
-import { USAGE } from '../../usage-error';
+import { CliArgvInterface } from '../../cli-argv-interface';
+import { USAGE } from '../../cli-usage-error';
 
-const argvInterface = ArgvInterface(execCliLeaf);
+const argvInterface = CliArgvInterface(execCliLeaf);
 
 describe(execCliLeaf.name, () => {
   it('runs the provided command', async () => {
