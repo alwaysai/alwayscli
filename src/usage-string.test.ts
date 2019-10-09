@@ -1,10 +1,10 @@
-import { getUsage } from './get-usage';
-import { createBranch } from './create-branch';
+import { UsageString } from './usage-string';
+import { CliBranch } from './cli-branch';
 import { createStringInput } from './input-factories/create-string-input';
-import { createLeaf } from './create-leaf';
-import { Command } from './types';
+import { CliLeaf } from './cli-leaf';
+import { CliCommand } from './types';
 
-const leaf = createLeaf({
+const leaf = CliLeaf({
   name: 'echo',
   options: {
     message: createStringInput({ description: 'A message' }),
@@ -14,26 +14,26 @@ const leaf = createLeaf({
   },
 });
 
-const root = createBranch({
+const root = CliBranch({
   name: 'cli',
   subcommands: [leaf],
 });
 
-describe(getUsage.name, () => {
+describe(UsageString.name, () => {
   it('Creates a usage string for a branch', () => {
     root.next = undefined;
-    const usageString = getUsage(root);
+    const usageString = UsageString(root);
     expect(usageString).toMatchSnapshot();
   });
 
   it('Creates a usage string for a leaf', () => {
     root.next = leaf;
-    const usageString = getUsage(root);
+    const usageString = UsageString(root);
     expect(usageString).toMatchSnapshot();
   });
 
   it('Creates a usage string for a leaf without a parent branch', () => {
-    const usageString = getUsage(leaf as Command);
+    const usageString = UsageString(leaf as CliCommand);
     expect(usageString).toMatchSnapshot();
   });
 });

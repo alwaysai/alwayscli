@@ -1,6 +1,6 @@
 import redent = require('redent');
 
-import { Command, AnyInput } from './types';
+import { CliCommand, AnyInput } from './types';
 import { BRANCH, LEAF, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
@@ -10,7 +10,7 @@ import { mapCommand } from './map-command';
 
 const INDENT_SIZE = 3;
 
-export function getUsage(rootCommand: Command, errorMessage?: string) {
+export function UsageString(rootCommand: CliCommand, errorMessage?: string) {
   const lastCommand = LastCommand(rootCommand);
 
   const commandPathString = mapCommand(rootCommand, command => command.name).join(' ');
@@ -19,12 +19,11 @@ export function getUsage(rootCommand: Command, errorMessage?: string) {
 
   function appendInputUsage(input?: AnyInput, prefix?: string) {
     if (input && !input.hidden) {
-      const { placeholder, getDescription, required } = input;
+      const { placeholder, description, required } = input;
       if (prefix) {
         firstParagraph += ` ${prefix}`;
       }
       firstParagraph += ` ${required ? placeholder : wrapInSquareBrackets(placeholder)}`;
-      const description = getDescription && getDescription();
       if (description) {
         otherParagraphs.push(`${placeholder}:`);
         otherParagraphs.push(redent(regularizeText(description), INDENT_SIZE));
@@ -68,7 +67,7 @@ export function getUsage(rootCommand: Command, errorMessage?: string) {
               if (!input.required) {
                 name = wrapInSquareBrackets(name);
               }
-              const text = input.getDescription && input.getDescription();
+              const text = input.description;
               return { name, text };
             },
           );

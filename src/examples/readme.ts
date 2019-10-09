@@ -1,22 +1,19 @@
-import {
-  createCli,
-  createLeaf,
-  createFlagInput,
-  createNumberArrayInput,
-  runAndExit,
-} from '..';
+import { CliLeaf } from '../cli-leaf';
+import { createNumberArrayInput } from '../input-factories/create-number-array-input';
+import { CliFlagInput } from '../input-factories/cli-flag-input';
+import { runCliAndExit } from '../run-cli-and-exit';
 
-export const root = createLeaf({
+export const multiplyCliLeaf = CliLeaf({
   name: 'multiply',
   description: 'Multiply numbers and print the result',
   args: createNumberArrayInput({ required: true }),
   options: {
-    squared: createFlagInput({
+    squared: CliFlagInput({
       description: 'Square the result before printing it',
     }),
   },
-  action(args, { squared }) {
-    const multiplied = args.reduce((a, b) => a * b, 1);
+  action(numbers, { squared }) {
+    const multiplied = numbers.reduce((a, b) => a * b, 1);
     if (squared) {
       return multiplied * multiplied;
     }
@@ -24,8 +21,6 @@ export const root = createLeaf({
   },
 });
 
-export const cli = createCli(root);
-
 if (require.main === module) {
-  runAndExit(cli, ...process.argv.slice(2));
+  runCliAndExit(multiplyCliLeaf);
 }

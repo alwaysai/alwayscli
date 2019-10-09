@@ -1,6 +1,6 @@
 import parseJson = require('parse-json');
 
-import { Input } from '../types';
+import { CliInput } from '../types';
 import { UsageError } from '../usage-error';
 
 type Config = {
@@ -15,7 +15,7 @@ type Config = {
 // field like we do for some other input factories.
 export function createJsonInput(config: Config = {}) {
   const { placeholder = '<json>', required, description, hidden } = config;
-  const input: Input<any> = {
+  const input: CliInput<any> = {
     required,
     placeholder,
     hidden,
@@ -33,9 +33,7 @@ export function createJsonInput(config: Config = {}) {
         throw new UsageError(ex.message || 'Failed to parse JSON');
       }
     },
-    getDescription() {
-      return description;
-    },
+    description,
   };
   return input;
 }

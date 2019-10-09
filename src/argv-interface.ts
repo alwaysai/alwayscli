@@ -1,4 +1,4 @@
-import { Leaf, Branch } from './types';
+import { CliLeaf, CliBranch } from './types';
 import { accumulateCommandStack } from './accumulate-command-stack';
 import { accumulateArgvs } from './accumulate-argvs';
 import { accumulateNamedValues } from './accumulate-named-values';
@@ -9,8 +9,8 @@ import { findVersion } from './find-version';
 import { callGetValue } from './call-get-value';
 import { LastCommand } from './last-command';
 
-export function createArgvInterface(rootCommand: Branch | Leaf<any, any, any>) {
-  return async function argvInterface(argv: string[]) {
+export function ArgvInterface(rootCommand: CliBranch | CliLeaf<any, any, any>) {
+  return async function argvInterface(...argv: string[]) {
     if (['-v', '--version'].includes(argv[0])) {
       const version = await findVersion();
       if (!version) {

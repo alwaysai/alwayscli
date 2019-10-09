@@ -1,16 +1,13 @@
-import {
-  createCli,
-  createLeaf,
-  createStringInput,
-  createJsonInput,
-  createOneOfInput,
-  USAGE,
-  TERSE,
-} from '..';
-import { runAndExit } from '@carnesen/run-and-exit';
 import { CodedError } from '@carnesen/coded-error';
+import { CliLeaf } from '../cli-leaf';
+import { createStringInput } from '../input-factories/create-string-input';
+import { createOneOfInput } from '../input-factories/create-one-of-input';
+import { TERSE } from '../terse-error';
+import { USAGE } from '../usage-error';
+import { createJsonInput } from '../input-factories/create-json-input';
+import { runCliAndExit } from '../run-cli-and-exit';
 
-export const root = createLeaf({
+export const root = CliLeaf({
   name: 'throw',
   description: 'Throw a CodedError in the "action" function',
   options: {
@@ -31,8 +28,6 @@ export const root = createLeaf({
   },
 });
 
-export const cli = createCli(root);
-
 if (module === require.main) {
-  runAndExit(cli, ...process.argv.slice(2));
+  runCliAndExit(root);
 }

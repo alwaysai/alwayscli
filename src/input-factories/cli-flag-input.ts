@@ -1,13 +1,14 @@
-import { Input } from '../types';
+import { CliInput } from '../types';
 import { UsageError } from '../usage-error';
 
 type Config = { description?: string; hidden?: boolean };
 
-export function createFlagInput(config: Config = {}) {
-  const input: Input<boolean, false> = {
+export function CliFlagInput(config: Config = {}) {
+  const { description, hidden } = config;
+  const input: CliInput<boolean, false> = {
     placeholder: '',
     required: false,
-    hidden: config.hidden,
+    hidden,
     getValue(argv) {
       if (!argv) {
         return false;
@@ -17,9 +18,7 @@ export function createFlagInput(config: Config = {}) {
       }
       return true;
     },
-    getDescription() {
-      return config.description;
-    },
+    description,
   };
   return input;
 }

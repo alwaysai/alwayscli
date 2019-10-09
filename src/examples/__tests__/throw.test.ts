@@ -1,6 +1,9 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
-import { cli } from '../throw';
+import { root } from '../throw';
+import { ArgvInterface } from '../../argv-interface';
+
+const cli = ArgvInterface(root);
 
 describe('throw CLI', () => {
   it('throws', async () => {

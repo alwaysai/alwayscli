@@ -1,8 +1,10 @@
-import { createCli, createLeaf, createStringArrayInput, runAndExit } from '..';
 import { execSync } from 'child_process';
 import { createStringInput } from '../input-factories/create-string-input';
+import { CliLeaf } from '../cli-leaf';
+import { createStringArrayInput } from '../input-factories/create-string-array-input';
+import { runCliAndExit } from '../run-cli-and-exit';
 
-export const root = createLeaf({
+export const execCliLeaf = CliLeaf({
   name: 'exec',
   description: 'Run a shell command',
   options: {
@@ -22,8 +24,6 @@ export const root = createLeaf({
   },
 });
 
-export const cli = createCli(root);
-
 if (module === require.main) {
-  runAndExit(cli, ...process.argv.slice(2));
+  runCliAndExit(execCliLeaf);
 }

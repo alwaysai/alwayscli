@@ -1,4 +1,4 @@
-import { Input } from './types';
+import { CliInput } from './types';
 
 export const DUMMY_INPUT_UNDEFINED_WAS_PASSED = 'undefined was passed';
 export const DUMMY_INPUT_EMPTY_ARRAY_WAS_PASSED = 'undefined was passed';
@@ -6,7 +6,7 @@ export const DUMMY_INPUT_THROWN_INTENTIONALLY = 'thrown intentionally';
 export const DUMMY_INPUT_THROW = 'throw';
 export const DUMMY_INPUT_THROW_NON_TRUTHY = 'throw-non-truthy';
 
-export const dummyInput: Input<string, false> = {
+export const dummyInput: CliInput<string, false> = {
   placeholder: '',
   getValue(argv) {
     if (typeof argv === 'undefined') {
@@ -23,12 +23,10 @@ export const dummyInput: Input<string, false> = {
     }
     return argv[0];
   },
-  getDescription: () => '',
 };
 
-export const dummyRequiredInput: Input<string, true> = {
+export const dummyRequiredInput: CliInput<string, true> = {
   placeholder: '<foo>',
   required: true,
   getValue: dummyInput.getValue,
-  getDescription: () => '',
 };

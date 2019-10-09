@@ -17,11 +17,7 @@ describe(createNumberArrayInput.name, () => {
     [] as InputValue<typeof input>;
   });
 
-  it('getDescription returns description', () => {
-    expect(input.getDescription!()).toBe('foo bar baz');
-  });
-
-  it('getDescription returns undefined if there is no description', () => {
-    expect(createNumberArrayInput().getDescription!()).toBe(undefined);
+  it('description is description', () => {
+    expect(input.description).toBe('foo bar baz');
   });
 });

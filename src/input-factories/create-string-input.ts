@@ -1,4 +1,4 @@
-import { Input } from '../types';
+import { CliInput } from '../types';
 import { UsageError } from '../usage-error';
 
 type Config = Partial<{
@@ -14,9 +14,9 @@ const PLACEHOLDER = '<str>';
 export { createStringInput };
 function createStringInput(
   config: Config & { defaultValue: string },
-): Input<string, false>;
-function createStringInput(config: Config & { required: true }): Input<string, true>;
-function createStringInput(config?: Config): Input<string | undefined, false>;
+): CliInput<string, false>;
+function createStringInput(config: Config & { required: true }): CliInput<string, true>;
+function createStringInput(config?: Config): CliInput<string | undefined, false>;
 function createStringInput(config: Config = {}) {
   const {
     defaultValue,
@@ -25,7 +25,7 @@ function createStringInput(config: Config = {}) {
     placeholder = PLACEHOLDER,
     hidden,
   } = config;
-  const input: Input<string | undefined> = {
+  const input: CliInput<string | undefined> = {
     hidden,
     placeholder,
     required,
@@ -44,9 +44,7 @@ function createStringInput(config: Config = {}) {
 
       return argv[0];
     },
-    getDescription() {
-      return description;
-    },
+    description,
   };
   return input;
 }

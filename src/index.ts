@@ -1,15 +1,15 @@
 // Arg type for custom arg types
-export { Input } from './types';
+export { CliInput as Input } from './types';
 
 // Command factories:
-export { createBranch } from './create-branch';
-export { createLeaf } from './create-leaf';
+export { CliBranch } from './cli-branch';
+export { CliLeaf as Leaf } from './cli-leaf';
 
 // Command-line interface factory
-export { createCommandLineInterface as createCli } from './create-command-line-interface';
+export { runCliAndExit } from './run-cli-and-exit';
 
 // Option factories:
-export { createFlagInput } from './input-factories/create-flag-input';
+export { CliFlagInput as createFlagInput } from './input-factories/cli-flag-input';
 export { createJsonInput } from './input-factories/create-json-input';
 export { createNumberArrayInput } from './input-factories/create-number-array-input';
 export { createNumberInput } from './input-factories/create-number-input';

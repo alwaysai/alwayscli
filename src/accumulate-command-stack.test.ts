@@ -1,15 +1,15 @@
 import { accumulateCommandStack } from './accumulate-command-stack';
-import { createBranch } from './create-branch';
-import { createLeaf } from './create-leaf';
+import { CliBranch } from './cli-branch';
+import { CliLeaf } from './cli-leaf';
 
-const leaf = createLeaf({
+const leaf = CliLeaf({
   name: 'echo',
   action(foo) {
     return foo;
   },
 });
 
-const root = createBranch({
+const root = CliBranch({
   name: 'cli',
   subcommands: [leaf],
 });

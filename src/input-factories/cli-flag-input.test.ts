@@ -1,9 +1,9 @@
 import { InputValue } from '../types';
-import { createFlagInput } from './create-flag-input';
+import { CliFlagInput } from './cli-flag-input';
 
-const input = createFlagInput({ description: 'foo bar baz' });
+const input = CliFlagInput({ description: 'foo bar baz' });
 
-describe(createFlagInput.name, () => {
+describe(CliFlagInput.name, () => {
   it('getValue returns false if flag was not provided', () => {
     expect(input.getValue(undefined)).toBe(false);
   });
@@ -17,11 +17,11 @@ describe(createFlagInput.name, () => {
     true as InputValue<typeof input>;
   });
 
-  it('getDescription returns description', () => {
-    expect(input.getDescription!()).toBe('foo bar baz');
+  it('description is description', () => {
+    expect(input.description).toBe('foo bar baz');
   });
 
-  it('getDescription returns undefined if there is no description', () => {
-    expect(createFlagInput().getDescription!()).toBe(undefined);
+  it('description is undefined if there is no description', () => {
+    expect(CliFlagInput().description).toBe(undefined);
   });
 });

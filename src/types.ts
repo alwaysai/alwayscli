@@ -6,38 +6,40 @@ export type Argv<TRequired extends boolean> = TRequired extends true
 
 export type AnyArgv = Argv<boolean>;
 
-export type Input<TValue, TRequired extends boolean = boolean> = {
+export type CliInput<TValue, TRequired extends boolean = boolean> = {
   placeholder: string;
   required?: TRequired;
   hidden?: boolean;
   getValue:
     | ((argv: Argv<TRequired>) => TValue)
     | ((argv: Argv<TRequired>) => Promise<TValue>);
-  getDescription: () => string | undefined;
+  description?: string;
 };
 
-export type AnyInput = Input<any>;
+export type AnyInput = CliInput<any>;
 
-export type InputValue<T> = T extends Input<infer U, any> ? U : never;
+export type InputValue<T> = T extends CliInput<infer U, any> ? U : never;
 
 export type AnyNamedInputs = {
   [name: string]: AnyInput;
 };
 
-export type NamedValues<T extends AnyNamedInputs> = { [K in keyof T]: InputValue<T[K]> };
+export type NamedValues<TNamedInputs extends AnyNamedInputs> = {
+  [K in keyof TNamedInputs]: InputValue<TNamedInputs[K]>
+};
 
-export type Command = Branch | Leaf<AnyInput, AnyNamedInputs, AnyInput>;
+export type CliCommand = CliBranch | CliLeaf<AnyInput, AnyNamedInputs, AnyInput>;
 
-export type Branch = {
+export type CliBranch = {
   _type: typeof BRANCH;
   name: string;
   description?: string;
   hidden?: boolean;
-  subcommands: (Branch | Leaf<any, any, any>)[];
-  next?: Branch | Leaf<any, any, any>;
+  subcommands: (CliBranch | CliLeaf<any, any, any>)[];
+  next?: CliBranch | CliLeaf<any, any, any>;
 };
 
-export type Leaf<T extends AnyInput, U extends AnyNamedInputs, V extends AnyInput> = {
+export type CliLeaf<T extends AnyInput, U extends AnyNamedInputs, V extends AnyInput> = {
   _type: typeof LEAF;
   name: string;
   description?: string;
@@ -50,7 +52,7 @@ export type Leaf<T extends AnyInput, U extends AnyNamedInputs, V extends AnyInpu
 
 // The "_type" field is assigned internally by the framework.
 // This helper function is used to remove that field for the input
-// type of the createLeaf and createBranch factories.
+// type of the createLeaf and CliBranch factories.
 export type ExcludeInternallyAssigned<T extends { _type: any }> = Pick<
   T,
   Exclude<keyof T, '_type'>

@@ -1,8 +1,8 @@
-import { createCli, createBranch, runAndExit } from '..';
+import { echoCliLeaf as echoCommand } from './echo';
+import { CliBranch } from '../cli-branch';
+import { runCliAndExit } from '../run-cli-and-exit';
 
-import { root as echoCommand } from './echo';
-
-const nonHiddenBranch = createBranch({
+const nonHiddenCliBranch = CliBranch({
   name: 'non-hidden',
   description: `
     This is a normal non-hidden command branch.
@@ -10,7 +10,7 @@ const nonHiddenBranch = createBranch({
   subcommands: [echoCommand],
 });
 
-const hiddenBranch = createBranch({
+const hiddenCliBranch = CliBranch({
   name: 'secret',
   description: `
     This is a command branch that has hidden=true.
@@ -20,14 +20,12 @@ const hiddenBranch = createBranch({
   subcommands: [echoCommand],
 });
 
-export const root = createBranch({
+export const root = CliBranch({
   name: 'cli',
   description: 'This CLI has a "hidden" command branch called "secret".',
-  subcommands: [nonHiddenBranch, hiddenBranch],
+  subcommands: [nonHiddenCliBranch, hiddenCliBranch],
 });
 
-export const cli = createCli(root);
-
 if (module === require.main) {
-  runAndExit(cli, ...process.argv.slice(2));
+  runCliAndExit(root);
 }

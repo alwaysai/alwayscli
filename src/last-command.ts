@@ -1,7 +1,7 @@
-import { Command } from './types';
+import { CliCommand } from './types';
 import { LEAF } from './constants';
 
-export function LastCommand(command: Command): Command {
+export function LastCommand(command: CliCommand): CliCommand {
   if (command._type === LEAF) {
     return command;
   }

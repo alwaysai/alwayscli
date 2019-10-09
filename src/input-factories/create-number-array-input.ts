@@ -1,4 +1,4 @@
-import { Input } from '../types';
+import { CliInput } from '../types';
 import { convertToNumber } from '../util';
 import { UsageError } from '../usage-error';
 
@@ -12,11 +12,11 @@ type Config = Partial<{
 export { createNumberArrayInput };
 function createNumberArrayInput(
   config: Config & { required: true },
-): Input<number[], true>;
-function createNumberArrayInput(config?: Config): Input<number[] | undefined, boolean>;
+): CliInput<number[], true>;
+function createNumberArrayInput(config?: Config): CliInput<number[] | undefined, boolean>;
 function createNumberArrayInput(config: Config = {}) {
   const { required, description, placeholder = '<num0> [...]', hidden } = config;
-  const input: Input<number[] | undefined> = {
+  const input: CliInput<number[] | undefined> = {
     required,
     hidden,
     getValue(argv) {
@@ -30,9 +30,7 @@ function createNumberArrayInput(config: Config = {}) {
 
       return argv.map(convertToNumber);
     },
-    getDescription() {
-      return description;
-    },
+    description,
     placeholder,
   };
   return input;

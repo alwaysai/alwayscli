@@ -1,4 +1,4 @@
-import { Input } from '../types';
+import { CliInput } from '../types';
 import { UsageError } from '../usage-error';
 
 const PLACEHOLDER = '<str0> [...]';
@@ -13,11 +13,11 @@ type Config = Partial<{
 export { createStringArrayInput };
 function createStringArrayInput(
   config: Config & { required: true },
-): Input<string[], true>;
-function createStringArrayInput(config?: Config): Input<string[] | undefined, boolean>;
+): CliInput<string[], true>;
+function createStringArrayInput(config?: Config): CliInput<string[] | undefined, boolean>;
 function createStringArrayInput(config: Config = {}) {
   const { required, description, placeholder = PLACEHOLDER, hidden } = config;
-  const input: Input<string[] | undefined> = {
+  const input: CliInput<string[] | undefined> = {
     required,
     hidden,
     placeholder,
@@ -32,9 +32,7 @@ function createStringArrayInput(config: Config = {}) {
 
       return argv;
     },
-    getDescription() {
-      return description;
-    },
+    description,
   };
   return input;
 }

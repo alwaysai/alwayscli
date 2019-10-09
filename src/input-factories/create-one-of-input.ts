@@ -1,9 +1,9 @@
-import { Input } from '../types';
+import { CliInput } from '../types';
 import { UsageError } from '../usage-error';
 import { wrapInSingleQuotes, wrapInCurlyBrackets, regularizeText } from '../util';
 
-type Config<U extends string[]> = {
-  values: U;
+type Config<TValues extends string[]> = {
+  values: TValues;
   required?: boolean;
   description?: string;
   placeholder?: string;
@@ -14,13 +14,13 @@ export { createOneOfInput };
 
 function createOneOfInput<U extends string[]>(
   config: Config<U> & { defaultValue: U },
-): Input<U[number], false>;
+): CliInput<U[number], false>;
 function createOneOfInput<U extends string[]>(
   config: Config<U> & { required: true },
-): Input<U[number], true>;
+): CliInput<U[number], true>;
 function createOneOfInput<U extends string[]>(
   config: Config<U>,
-): Input<U[number] | undefined, false>;
+): CliInput<U[number] | undefined, false>;
 function createOneOfInput(config: Config<string[]>) {
   if (!Array.isArray(config.values)) {
     // This would only ever be thrown during development
@@ -31,7 +31,8 @@ function createOneOfInput(config: Config<string[]>) {
   const valuesString = wrapInCurlyBrackets(
     config.values.map(wrapInSingleQuotes).join(', '),
   );
-  const input: Input<string | undefined> = {
+
+  const input: CliInput<string | undefined> = {
     required: config.required,
     placeholder: config.placeholder || '<value>',
     hidden: config.hidden,
@@ -44,11 +45,7 @@ function createOneOfInput(config: Config<string[]>) {
       }
       return argv[0];
     },
-    getDescription() {
-      let description = regularizeText(config.description);
-      description += `\nAllowed values ${valuesString}`;
-      return description;
-    },
+    description: `${regularizeText(config.description)}\nAllowed values ${valuesString}`,
   };
   return input;
 }
