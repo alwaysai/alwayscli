@@ -1,7 +1,7 @@
 import redent = require('redent');
 
 import { Command, AnyInput } from './types';
-import { BRANCH, LEAF, RED_ERROR } from './constants';
+import { BRANCH, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
 import { getPathAndDescriptionOfLeaves } from './get-path-and-description-of-leaves';
