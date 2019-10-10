@@ -1,15 +1,16 @@
-import { createCli, createBranch, createLeaf, runAndExit } from '..';
+import { echoCliLeaf as echoCommand } from './echo';
+import { CliLeaf } from '../cli-leaf';
+import { CliBranch } from '../cli-branch';
+import { runCliAndExit } from '../run-cli-and-exit';
 
-import { root as echoCommand } from './echo';
-
-const hiddenEcho = createLeaf({
+const hiddenEcho = CliLeaf({
   ...echoCommand,
   name: 'hidden-echo',
   description: 'This command is a clone of "echo" but with "hidden" set to true',
   hidden: true,
 });
 
-export const root = createBranch({
+export const root = CliBranch({
   name: 'cli',
   description: `
     Non-hidden command "${echoCommand.name}" shows up in this usage documentation.
@@ -17,8 +18,6 @@ export const root = createBranch({
   subcommands: [hiddenEcho, echoCommand],
 });
 
-export const cli = createCli(root);
-
 if (module === require.main) {
-  runAndExit(cli, ...process.argv.slice(2));
+  runCliAndExit(root);
 }

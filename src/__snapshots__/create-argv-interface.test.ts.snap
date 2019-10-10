@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`createArgvInterface throws USAGE error "bad command" if last command is a branch and additional argv is present 1`] = `"Bad command \\"oops\\""`;
-
-exports[`createArgvInterface throws USAGE error "positional arguments" if last command is a leaf without positionalInput property and additional argv is present 1`] = `"Unexpected argument \\"oops\\" : Command \\"leaf-with-named-inputs\\" does not accept positional arguments"`;

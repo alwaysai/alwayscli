@@ -113,7 +113,7 @@ The function that defines your command logic. `action` can return a value synchr
 #### version
 (Optional) `string`. If provided, this string will be printed when the user does `cli --version` or `cli -v`. If this value is not provided, alwaysCLI will attempt to find a version string in your package.json file.
 
-### createBranch({name, description, subcommands, hidden?})
+### CliBranch({name, description, subcommands, hidden?})
 A factory function similar to `createLeaf`. Returns the newly-created `Branch` object.
 
 #### name

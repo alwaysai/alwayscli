@@ -1,4 +1,7 @@
-import { cli } from '../readme';
+import { multiplyCliLeaf } from '../readme';
+import { CliArgvInterface } from '../../cli-argv-interface';
+
+const cli = CliArgvInterface(multiplyCliLeaf);
 
 describe('readme example', () => {
   it('multiplies the provided numbers together', async () => {

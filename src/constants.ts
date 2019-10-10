@@ -1,5 +1,5 @@
 import chalk from 'chalk';
 
-export const LEAF = '__LEAF__';
-export const BRANCH = '__BRANCH__';
+export const CLI_LEAF = 'CLI_LEAF';
+export const CLI_BRANCH = 'CLI_BRANCH';
 export const RED_ERROR = chalk.red('Error:');

@@ -1,13 +1,13 @@
-import { createBranch } from './create-branch';
-import { createLeaf } from './create-leaf';
+import { CliBranch } from './cli-branch';
+import { CliLeaf } from './cli-leaf';
 import { LastCommand } from './last-command';
 
-const leaf = createLeaf({
+const leaf = CliLeaf({
   name: 'l',
   action() {},
 });
 
-const branch = createBranch({
+const branch = CliBranch({
   name: 'b',
   subcommands: [leaf],
 });

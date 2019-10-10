@@ -1,5 +1,5 @@
 import { AnyInput } from './types';
-import { UsageError } from './usage-error';
+import { CliUsageError } from './cli-usage-error';
 
 export async function callGetValue(input: AnyInput, argv?: string[], context?: string) {
   const { required, placeholder, getValue } = input;
@@ -8,7 +8,7 @@ export async function callGetValue(input: AnyInput, argv?: string[], context?: s
     prefix += ' : ';
   }
   if (required && (!argv || argv.length === 0)) {
-    throw new UsageError(`${prefix}Input is required`);
+    throw new CliUsageError(`${prefix}Input is required`);
   }
   try {
     return await getValue(argv);

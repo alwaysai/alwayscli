@@ -1,7 +1,7 @@
 import { AnyNamedInputs, NamedValues } from './types';
 import { NamedArgvs } from './accumulate-argvs';
 import { callGetValue } from './call-get-value';
-import { UsageError } from './usage-error';
+import { CliUsageError } from './cli-usage-error';
 
 export async function accumulateNamedValues(
   namedInputs: AnyNamedInputs,
@@ -20,7 +20,7 @@ export async function accumulateNamedValues(
   }
   const restNames = Object.keys(restNamedArgvs);
   if (restNames[0]) {
-    throw new UsageError(`--${restNames[0]} : Unknown named argument`);
+    throw new CliUsageError(`--${restNames[0]} : Unknown named argument`);
   }
   await Promise.all(asyncFuncs.map(asyncFunc => asyncFunc()));
   return namedValues;
