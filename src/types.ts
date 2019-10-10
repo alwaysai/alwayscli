@@ -1,4 +1,4 @@
-import { BRANCH, LEAF } from './constants';
+import { CLI_BRANCH, CLI_LEAF } from './constants';
 
 type Argv<TRequired extends boolean> = TRequired extends true
   ? string[]
@@ -29,7 +29,7 @@ export type NamedValues<TNamedInputs extends AnyNamedInputs> = {
 export type Command = CliBranch | CliLeaf<AnyInput, AnyNamedInputs, AnyInput>;
 
 export type CliBranch = {
-  commandType: typeof BRANCH;
+  commandType: typeof CLI_BRANCH;
   name: string;
   description?: string;
   hidden?: boolean;
@@ -42,7 +42,7 @@ export type CliLeaf<
   TNamed extends AnyNamedInputs,
   TEscaped extends AnyInput
 > = {
-  commandType: typeof LEAF;
+  commandType: typeof CLI_LEAF;
   name: string;
   action: (
     positionalValue: InputValue<TPositional>,

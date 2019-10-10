@@ -5,7 +5,7 @@ import {
   dummyInput,
   DUMMY_INPUT_THROW,
 } from './dummy-inputs-for-testing';
-import { USAGE } from './cli-usage-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
 
 describe(accumulateNamedValues.name, () => {
   it(`returns object of named values`, async () => {
@@ -35,7 +35,7 @@ describe(accumulateNamedValues.name, () => {
       { foo123: dummyInput },
       { foo1234: [] },
     );
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch('--foo1234 : Unknown named argument');
   });
 });

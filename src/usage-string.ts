@@ -1,7 +1,7 @@
 import redent = require('redent');
 
 import { Command, AnyInput } from './types';
-import { BRANCH, RED_ERROR } from './constants';
+import { CLI_BRANCH, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
 import { getPathAndDescriptionOfLeaves } from './get-path-and-description-of-leaves';
@@ -31,7 +31,7 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
     }
   }
 
-  if (lastCommand.commandType === BRANCH) {
+  if (lastCommand.commandType === CLI_BRANCH) {
     // BRANCH
     firstParagraph += ' <subcommand> ...';
     otherParagraphs.push('Subcommands:');

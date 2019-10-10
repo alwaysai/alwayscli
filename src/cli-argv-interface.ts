@@ -4,7 +4,7 @@ import { accumulateArgvs } from './accumulate-argvs';
 import { accumulateNamedValues } from './accumulate-named-values';
 import { CliUsageError } from './cli-usage-error';
 import { CliTerseError } from './cli-terse-error';
-import { BRANCH } from './constants';
+import { CLI_BRANCH } from './constants';
 import { findVersion } from './find-version';
 import { callGetValue } from './call-get-value';
 import { LastCommand } from './last-command';
@@ -41,7 +41,7 @@ export function CliArgvInterface(rootCommand: CliBranch | CliLeaf<any, any, any>
 
     const lastCommand = LastCommand(rootCommand);
 
-    if (lastCommand.commandType === BRANCH) {
+    if (lastCommand.commandType === CLI_BRANCH) {
       if (restCommandNamesAndPositionalArgv[0]) {
         // E.g. cli branch0 branch1 bad-command-name
         throw new CliUsageError(`Bad command "${restCommandNamesAndPositionalArgv[0]}"`);

@@ -1,6 +1,6 @@
 import { CliNumberArrayInput } from './cli-number-array-input';
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { USAGE } from './cli-usage-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
 
 const description = 'foo bar baz';
 const hidden = true;
@@ -20,7 +20,7 @@ describe(CliNumberArrayInput.name, () => {
 
   it('getValue throws USAGE error "expected one or more" if argv is an empty array', async () => {
     const exception = await runAndCatch(input.getValue, []);
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch(/expected one or more/i);
     expect(exception.message).toMatch(placeholder);
   });

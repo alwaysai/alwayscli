@@ -1,7 +1,7 @@
 import { CliLeaf, CliBranch } from './types';
 
-import { USAGE } from './cli-usage-error';
-import { TERSE } from './cli-terse-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
+import { CLI_TERSE_ERROR } from './cli-terse-error';
 import { RED_ERROR } from './constants';
 import { CliArgvInterface } from './cli-argv-interface';
 import { UsageString } from './usage-string';
@@ -34,9 +34,9 @@ export async function runCliAndExit(
       consoleError(
         `${RED_ERROR} Encountered non-truthy exception "${exception}". Please contact the author of this command-line interface`,
       );
-    } else if (exception.code === USAGE) {
+    } else if (exception.code === CLI_USAGE_ERROR) {
       consoleError(UsageString(rootCommand, exception.message));
-    } else if (exception.code === TERSE) {
+    } else if (exception.code === CLI_TERSE_ERROR) {
       if (!exception.message) {
         consoleError(exception);
       } else {

@@ -2,7 +2,7 @@ import { runAndCatch } from '@carnesen/run-and-catch';
 
 import { execCliLeaf } from '../exec';
 import { CliArgvInterface } from '../../cli-argv-interface';
-import { USAGE } from '../../cli-usage-error';
+import { CLI_USAGE_ERROR } from '../../cli-usage-error';
 
 const argvInterface = CliArgvInterface(execCliLeaf);
 
@@ -14,6 +14,6 @@ describe(execCliLeaf.name, () => {
 
   it('throws usage', async () => {
     const output = await runAndCatch(argvInterface);
-    expect(output.code).toBe(USAGE);
+    expect(output.code).toBe(CLI_USAGE_ERROR);
   });
 });

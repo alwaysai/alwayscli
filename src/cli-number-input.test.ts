@@ -1,6 +1,6 @@
 import { CliNumberInput } from './cli-number-input';
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { USAGE } from './cli-usage-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
 
 const description = 'foo bar baz';
 const hidden = true;
@@ -25,14 +25,14 @@ describe(CliNumberInput.name, () => {
 
   it('throws UsageError "expected just one" if argv has more than one element', async () => {
     const exception = await runAndCatch(input.getValue, ['0', '1']);
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch(/expected just one/i);
     expect(exception.message).toMatch(placeholder);
   });
 
   it('throws UsageError "expected a" if argv is an empty array', async () => {
     const exception = await runAndCatch(input.getValue, []);
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch(/expected a/i);
     expect(exception.message).toMatch(placeholder);
   });

@@ -1,7 +1,7 @@
 import { CliLeaf } from './cli-leaf';
 import { runCliAndExit } from './run-cli-and-exit';
 import { CliUsageError } from './cli-usage-error';
-import { CliTerseError, TERSE } from './cli-terse-error';
+import { CliTerseError, CLI_TERSE_ERROR } from './cli-terse-error';
 import { RED_ERROR } from './constants';
 import { CodedError } from '@carnesen/coded-error';
 
@@ -91,7 +91,7 @@ describe(runCliAndExit.name, () => {
     });
     expect(exitCode).toBe(1);
     expect(typeof errorMessage).toBe('object');
-    expect(errorMessage.code).toBe(TERSE);
+    expect(errorMessage.code).toBe(CLI_TERSE_ERROR);
     expect(logMessage).toBe(undefined);
   });
 

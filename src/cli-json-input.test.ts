@@ -1,5 +1,5 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { USAGE } from './cli-usage-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
 import { CliJsonInput } from './cli-json-input';
 
 const description = 'foo bar baz';
@@ -21,7 +21,7 @@ describe(CliJsonInput.name, () => {
   it('getValue throws a usage error "expected a single" if argv is an array with zero or more than one items', async () => {
     for (const argv of [[], ['', '']]) {
       const exception = await runAndCatch(input.getValue, argv);
-      expect(exception.code).toBe(USAGE);
+      expect(exception.code).toBe(CLI_USAGE_ERROR);
       expect(exception.message).toMatch(/expected a single/i);
       expect(exception.message).toMatch(placeholder);
     }
@@ -29,7 +29,7 @@ describe(CliJsonInput.name, () => {
 
   it('getValue throws a good usage error if the string in argv is not parsable', async () => {
     const exception = await runAndCatch(input.getValue, ['foo']);
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch("while parsing near 'foo'");
   });
 

@@ -21,5 +21,5 @@ export { CliStringArrayInput } from './cli-string-array-input';
 export { CliStringInput } from './cli-string-input';
 
 // Error constructors
-export { CliTerseError, TERSE } from './cli-terse-error';
-export { CliUsageError, USAGE } from './cli-usage-error';
+export { CliTerseError, CLI_TERSE_ERROR } from './cli-terse-error';
+export { CliUsageError, CLI_USAGE_ERROR } from './cli-usage-error';

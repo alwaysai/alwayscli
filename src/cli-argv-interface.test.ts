@@ -4,7 +4,7 @@ import { CliLeaf } from './cli-leaf';
 import { dummyInput } from './dummy-inputs-for-testing';
 import { CliArgvInterface } from './cli-argv-interface';
 import { findVersion } from './find-version';
-import { USAGE } from './cli-usage-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
 
 const leafWithNamedInputs = CliLeaf({
   name: 'leaf-with-named-inputs',
@@ -48,19 +48,19 @@ describe(CliArgvInterface.name, () => {
 
   it('throws USAGE error with empty message if --help is passed', async () => {
     const exception = await runAndCatch(argvInterface, '--help');
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toBeFalsy();
   });
 
   it('throws USAGE error with empty message if last command is a branch and no additional argv is present', async () => {
     const exception = await runAndCatch(argvInterface);
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toBeFalsy();
   });
 
   it('throws USAGE error "bad command" if last command is a branch and additional argv is present', async () => {
     const exception = await runAndCatch(argvInterface, 'oops');
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch(/bad command/i);
     expect(exception.message).toMatch('"oops"');
     expect(exception.message).toMatchSnapshot();
@@ -68,7 +68,7 @@ describe(CliArgvInterface.name, () => {
 
   it('throws USAGE error "positional arguments" if last command is a leaf without positionalInput property and additional argv is present', async () => {
     const exception = await runAndCatch(argvInterface, leafWithNamedInputs.name, 'oops');
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch('Unexpected argument "oops"');
     expect(exception.message).toMatch(leafWithNamedInputs.name);
     expect(exception.message).toMatch(/positional arguments/i);
@@ -93,7 +93,7 @@ describe(CliArgvInterface.name, () => {
       leafWithPositionalInput.name,
       '--',
     );
-    expect(exception.code).toBe(USAGE);
+    expect(exception.code).toBe(CLI_USAGE_ERROR);
     expect(exception.message).toMatch(leafWithPositionalInput.name);
     expect(exception.message).toMatch('does not allow "--"');
   });

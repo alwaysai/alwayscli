@@ -1,7 +1,7 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
 import { callGetValue } from './call-get-value';
-import { USAGE } from './cli-usage-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
 import {
   dummyInput,
   dummyRequiredInput,
@@ -29,7 +29,7 @@ describe(callGetValue.name, () => {
   it(`if required, throws usage error "input is required" if argv is an empty array or undefined`, async () => {
     for (const argv of [undefined, [] as string[]]) {
       const exception = await runAndCatch(callGetValue, dummyRequiredInput, argv);
-      expect(exception.code).toBe(USAGE);
+      expect(exception.code).toBe(CLI_USAGE_ERROR);
       expect(exception.message).toMatch(/input is required/i);
       expect(exception.message).toMatch(dummyRequiredInput.placeholder);
     }

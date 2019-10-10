@@ -1,5 +1,5 @@
 import { AnyNamedInputs, CliLeaf, ExcludeCommandType, AnyInput, CliInput } from './types';
-import { LEAF } from './constants';
+import { CLI_LEAF } from './constants';
 
 export function CliLeaf<
   TPositional extends AnyInput = CliInput<undefined, false>,
@@ -8,7 +8,7 @@ export function CliLeaf<
 >(config: ExcludeCommandType<CliLeaf<TPositional, TNamed, TEscaped>>) {
   const cliLeaf: CliLeaf<TPositional, TNamed, TEscaped> = {
     ...config,
-    commandType: LEAF,
+    commandType: CLI_LEAF,
   };
   return cliLeaf;
 }
