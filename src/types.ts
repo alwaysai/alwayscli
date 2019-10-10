@@ -1,14 +1,14 @@
 import { CLI_BRANCH, CLI_LEAF } from './constants';
 
-type Argv<TRequired extends boolean> = TRequired extends true
+type ArgvForGetValue<TRequired extends boolean> = TRequired extends true
   ? string[]
   : (string[] | undefined);
 
 export type CliInput<TValue, TRequired extends boolean = boolean> = {
   placeholder: string;
   getValue:
-    | ((argv: Argv<TRequired>) => TValue)
-    | ((argv: Argv<TRequired>) => Promise<TValue>);
+    | ((argv: ArgvForGetValue<TRequired>) => TValue)
+    | ((argv: ArgvForGetValue<TRequired>) => Promise<TValue>);
   description?: string;
   required?: TRequired;
   hidden?: boolean;
@@ -16,17 +16,15 @@ export type CliInput<TValue, TRequired extends boolean = boolean> = {
 
 export type AnyInput = CliInput<any>;
 
-export type InputValue<TInput> = TInput extends CliInput<infer U, any> ? U : never;
+export type ValueFromInput<TInput> = TInput extends CliInput<infer U, any> ? U : never;
 
 export type AnyNamedInputs = {
   [name: string]: AnyInput;
 };
 
 export type NamedValues<TNamedInputs extends AnyNamedInputs> = {
-  [K in keyof TNamedInputs]: InputValue<TNamedInputs[K]>
+  [K in keyof TNamedInputs]: ValueFromInput<TNamedInputs[K]>
 };
-
-export type Command = CliBranch | CliLeaf<AnyInput, AnyNamedInputs, AnyInput>;
 
 export type CliBranch = {
   commandType: typeof CLI_BRANCH;
@@ -38,23 +36,26 @@ export type CliBranch = {
 };
 
 export type CliLeaf<
-  TPositional extends AnyInput,
-  TNamed extends AnyNamedInputs,
-  TEscaped extends AnyInput
+  TPositionalInput extends AnyInput,
+  TNamedInputs extends AnyNamedInputs,
+  TEscapedInput extends AnyInput
 > = {
   commandType: typeof CLI_LEAF;
   name: string;
   action: (
-    positionalValue: InputValue<TPositional>,
-    namedValues: NamedValues<TNamed>,
-    escapedValue: InputValue<TEscaped>,
+    positionalValue: ValueFromInput<TPositionalInput>,
+    namedValues: NamedValues<TNamedInputs>,
+    escapedValue: ValueFromInput<TEscapedInput>,
   ) => any;
-  positionalInput?: TPositional;
-  namedInputs?: TNamed;
-  escapedInput?: TEscaped;
+  positionalInput?: TPositionalInput;
+  namedInputs?: TNamedInputs;
+  escapedInput?: TEscapedInput;
   description?: string;
   hidden?: boolean;
 };
+
+export type Command = CliBranch | CliLeaf<AnyInput, AnyNamedInputs, AnyInput>;
+export type AnyCommand = CliBranch | CliLeaf<any, any, any>;
 
 // The "commandType" field is assigned internally by the framework.
 // This helper function is used to remove that field for the input

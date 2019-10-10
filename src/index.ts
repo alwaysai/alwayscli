@@ -5,11 +5,11 @@ export { CliInput } from './types';
 export { CliBranch } from './cli-branch';
 export { CliLeaf } from './cli-leaf';
 
-// ArgvInterface
-export { CliArgvInterface } from './cli-argv-interface';
-
 // Command-line interface runner
 export { runCliAndExit } from './run-cli-and-exit';
+
+// CliArgvInterface
+export { CliArgvInterface, CliEnhancer } from './cli-argv-interface';
 
 // Input factories:
 export { CliFlagInput } from './cli-flag-input';
