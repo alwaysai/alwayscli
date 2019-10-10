@@ -2,7 +2,7 @@ import { runAndCatch } from '@carnesen/run-and-catch';
 import { CliBranch } from './cli-branch';
 import { CliLeaf } from './cli-leaf';
 import { dummyInput } from './dummy-inputs-for-testing';
-import { CliArgvInterface } from './cli-argv-interface';
+import { CliArgvInterface, CliEnhancer } from './cli-argv-interface';
 import { findVersion } from './find-version';
 import { CLI_USAGE_ERROR } from './cli-usage-error';
 
@@ -40,6 +40,16 @@ const root = CliBranch({
 const argvInterface = CliArgvInterface(root);
 
 describe(CliArgvInterface.name, () => {
+  it('calls the enhancer if provided', async () => {
+    const spy = jest.fn();
+    const enhancer: CliEnhancer = argvInterface => async (...argv: string[]) => {
+      spy(...argv);
+      await argvInterface(...argv);
+    };
+    const enhancedArgvInterface = CliArgvInterface(leafWithPositionalInput, { enhancer });
+    await enhancedArgvInterface('foo', 'bar');
+    expect(spy.mock.calls).toEqual([['foo', 'bar']]);
+  });
   it('returns version string from package.json if "-v" or "--version" is passed', async () => {
     const version = await findVersion();
     expect(await argvInterface('-v')).toBe(version);
