@@ -47,7 +47,7 @@ describe(UsageString.name, () => {
   });
 
   it('Writes an error message at the end if one is provided', () => {
-    const usageString = UsageString(root, 'foo');
+    const usageString = UsageString(root, { errorMessage: 'foo' });
     expect(usageString.endsWith(`${RED_ERROR} foo`)).toBe(true);
   });
 
@@ -57,5 +57,42 @@ describe(UsageString.name, () => {
       usageString,
     );
     expect(usageString).toMatchSnapshot();
+  });
+
+  it('Usage text does not include hidden subcommands unless showHidden is true', () => {
+    const leaf = CliLeaf({ name: 'foo', action() {} });
+    const hiddenLeaf = CliLeaf({ name: 'bar', hidden: true, action() {} });
+    const root = CliBranch({ name: 'whatever', subcommands: [leaf, hiddenLeaf] });
+    {
+      const usageString = UsageString(root);
+      expect(usageString).toMatch(leaf.name);
+      expect(usageString).not.toMatch(hiddenLeaf.name);
+    }
+    {
+      const usageString = UsageString(root, { showHidden: true });
+      expect(usageString).toMatch(leaf.name);
+      expect(usageString).toMatch(hiddenLeaf.name);
+    }
+  });
+
+  it('Usage text does not include hidden inputs unless showHidden is true', () => {
+    const root = CliLeaf({
+      name: 'foo',
+      namedInputs: {
+        bar: CliStringInput(),
+        baz: CliStringInput({ hidden: true }),
+      },
+      action() {},
+    });
+    {
+      const usageString = UsageString(root);
+      expect(usageString).toMatch('bar');
+      expect(usageString).not.toMatch('baz');
+    }
+    {
+      const usageString = UsageString(root, { showHidden: true });
+      expect(usageString).toMatch('bar');
+      expect(usageString).toMatch('baz');
+    }
   });
 });

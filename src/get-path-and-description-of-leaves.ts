@@ -9,9 +9,10 @@ type PathAndDescription = {
 export function getPathAndDescriptionOfLeaves(
   command: Command,
   path: string[],
+  showHidden: boolean,
 ): PathAndDescription[] {
-  if (command.hidden && path.length > 0) {
-    // ^^ conditional on path.length > 0 because we don't want to hide the usage
+  if (!showHidden && command.hidden && path.length > 0) {
+    // conditional on path.length > 0 ^^ because we don't want to hide the usage
     // for the current node, e.g. if a user does `cli hidden-command` it should
     // show the leaves underneath "hidden-command".
     return [];
@@ -27,7 +28,11 @@ export function getPathAndDescriptionOfLeaves(
   const returnValue: PathAndDescription[] = [];
   for (const subcommand of command.subcommands) {
     returnValue.push(
-      ...getPathAndDescriptionOfLeaves(subcommand, [...path, subcommand.name]),
+      ...getPathAndDescriptionOfLeaves(
+        subcommand,
+        [...path, subcommand.name],
+        showHidden,
+      ),
     );
   }
   return returnValue;

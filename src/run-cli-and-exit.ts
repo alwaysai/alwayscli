@@ -11,6 +11,7 @@ export async function runCliAndExit(
   options: Partial<{
     argv: string[];
     enhancer: CliEnhancer;
+    showHidden: boolean;
     processExit: (code?: number) => any;
     consoleLog: typeof console.log;
     consoleError: typeof console.error;
@@ -19,6 +20,7 @@ export async function runCliAndExit(
   const {
     argv = process.argv.slice(2),
     enhancer,
+    showHidden = false,
     processExit = process.exit,
     consoleLog = console.log,
     consoleError = console.error,
@@ -37,7 +39,9 @@ export async function runCliAndExit(
         `${RED_ERROR} Encountered non-truthy exception "${exception}". Please contact the author of this command-line interface`,
       );
     } else if (exception.code === CLI_USAGE_ERROR) {
-      consoleError(UsageString(rootCommand, exception.message));
+      consoleError(
+        UsageString(rootCommand, { errorMessage: exception.message, showHidden }),
+      );
     } else if (exception.code === CLI_TERSE_ERROR) {
       if (!exception.message) {
         consoleError(exception);

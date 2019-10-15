@@ -1,6 +1,6 @@
 import redent = require('redent');
 
-import { Command, AnyInput } from './types';
+import { AnyInput, AnyCommand } from './types';
 import { CLI_BRANCH, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
@@ -10,7 +10,10 @@ import { mapCommand } from './map-command';
 
 const INDENT_SIZE = 3;
 
-export function UsageString(rootCommand: Command, errorMessage?: string) {
+type Options = Partial<{ errorMessage: string; showHidden: boolean }>;
+
+export function UsageString(rootCommand: AnyCommand, options: Options = {}) {
+  const { errorMessage, showHidden = false } = options;
   const lastCommand = LastCommand(rootCommand);
 
   const commandPathString = mapCommand(rootCommand, command => command.name).join(' ');
@@ -35,7 +38,11 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
     // BRANCH
     firstParagraph += ' <subcommand> ...';
     otherParagraphs.push('Subcommands:');
-    const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(lastCommand, []);
+    const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(
+      lastCommand,
+      [],
+      showHidden,
+    );
     const items: Parameters<typeof createTextList> = nameAndDescriptionOfLeaves.map(
       ({ path, description }) => ({
         name: path.join(' '),
@@ -51,7 +58,9 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
     appendInputUsage(positionalInput);
 
     if (namedInputs) {
-      const entries = Object.entries(namedInputs).filter(([_, input]) => !input.hidden);
+      const entries = Object.entries(namedInputs).filter(
+        ([_, input]) => showHidden || !input.hidden,
+      );
       if (entries.length > 0) {
         const optionsNotRequired = entries.every(
           ([_, namedInput]) => !namedInput.required,

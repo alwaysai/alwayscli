@@ -1,3 +1,4 @@
+import { basename } from 'path';
 import { echoCliLeaf as echoCommand } from './echo';
 import { CliBranch } from '../cli-branch';
 import { runCliAndExit } from '../run-cli-and-exit';
@@ -22,10 +23,15 @@ const hiddenCliBranch = CliBranch({
 
 export const root = CliBranch({
   name: 'cli',
-  description: 'This CLI has a "hidden" command branch called "secret".',
+  description: `
+    This CLI has a "hidden" command branch called "secret".
+    For this CLI, you can see usage for the hidden inputs 
+    by setting SHOW_HIDDEN in your environment, e.g.
+      SHOW_HIDDEN=1 ${basename(process.argv[0])} ${basename(process.argv[1])}
+    `,
   subcommands: [nonHiddenCliBranch, hiddenCliBranch],
 });
 
 if (module === require.main) {
-  runCliAndExit(root);
+  runCliAndExit(root, { showHidden: Boolean(process.env.SHOW_HIDDEN) });
 }
