@@ -10,7 +10,7 @@ export function accumulateCommandStack(
   }
 
   const found = command.subcommands.find(
-    subcommand => subcommand.name === restCommandNamesAndPositionalArgv[0],
+    (subcommand) => subcommand.name === restCommandNamesAndPositionalArgv[0],
   );
 
   if (!found) {

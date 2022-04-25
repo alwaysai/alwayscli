@@ -13,7 +13,7 @@ const INDENT_SIZE = 3;
 export function UsageString(rootCommand: Command, errorMessage?: string) {
   const lastCommand = LastCommand(rootCommand);
 
-  const commandPathString = mapCommand(rootCommand, command => command.name).join(' ');
+  const commandPathString = mapCommand(rootCommand, (command) => command.name).join(' ');
   let firstParagraph = `Usage: ${commandPathString}`;
   const otherParagraphs: string[] = [];
 

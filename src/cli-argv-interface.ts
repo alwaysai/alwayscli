@@ -34,12 +34,8 @@ export function CliArgvInterface(
       return version;
     }
 
-    const {
-      foundHelp,
-      commandNamesAndPositionalArgv,
-      namedArgvs,
-      escapedArgv,
-    } = accumulateArgvs(argv);
+    const { foundHelp, commandNamesAndPositionalArgv, namedArgvs, escapedArgv } =
+      accumulateArgvs(argv);
 
     const restCommandNamesAndPositionalArgv = accumulateCommandStack(
       rootCommand,
@@ -80,9 +76,7 @@ export function CliArgvInterface(
       argsValue = await callGetValue(lastCommand.positionalInput, positionalArgv);
     } else if (restCommandNamesAndPositionalArgv.length > 0) {
       throw new CliUsageError(
-        `Unexpected argument "${restCommandNamesAndPositionalArgv[0]}" : Command "${
-          lastCommand.name
-        }" does not accept positional arguments`,
+        `Unexpected argument "${restCommandNamesAndPositionalArgv[0]}" : Command "${lastCommand.name}" does not accept positional arguments`,
       );
     }
 

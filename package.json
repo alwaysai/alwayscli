@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
@@ -21,26 +21,26 @@
     "postversion": "npm publish"
   },
   "dependencies": {
-    "@carnesen/run-and-catch": "0.0.0",
-    "@carnesen/run-and-exit": "0.2.0",
+    "@carnesen/run-and-catch": "0.4.3",
+    "@carnesen/run-and-exit": "1.0.0",
     "@types/parse-json": "4.0.0",
-    "chalk": "2.4.2",
-    "parse-json": "5.0.0",
-    "read-pkg-up": "7.0.0",
-    "redent": "3.0.0"
+    "chalk": "5.0.1",
+    "parse-json": "6.0.2",
+    "read-pkg-up": "9.1.0",
+    "redent": "4.0.0"
   },
   "devDependencies": {
-    "@alwaysai/tsconfig": "0.0.0",
-    "@alwaysai/tslint-config": "0.0.3",
-    "@carnesen/coded-error": "0.1.0",
-    "@types/jest": "24.0.18",
-    "@types/node": "12.7.9",
-    "jest": "24.9.0",
-    "rimraf": "3.0.0",
-    "ts-jest": "24.1.0",
-    "ts-node": "8.4.1",
-    "tslint": "5.20.0",
-    "typescript": "3.6.3"
+    "@alwaysai/tsconfig": "0.0.1",
+    "@alwaysai/tslint-config": "0.0.4",
+    "@carnesen/coded-error": "0.4.0",
+    "@types/jest": "27.4.1",
+    "@types/node": "17.0.25",
+    "jest": "27.5.1",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "tslint": "5.20.1",
+    "typescript": "4.6.3"
   },
   "files": [
     "src",

@@ -35,7 +35,11 @@ export function CliJsonInput(config: Config = {}) {
         const parsed = parseJson(argv[0]);
         return parsed;
       } catch (exception) {
-        throw new CliUsageError(exception.message);
+        if (exception instanceof Error) {
+          throw new CliUsageError(exception.message);
+        } else {
+          throw exception;
+        }
       }
     },
     description,

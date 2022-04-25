@@ -16,7 +16,7 @@ export function regularizeText(text?: string) {
   const trailingCarriageReturnRegExp = /\r$/;
   const lines = text
     .split('\n')
-    .map(line => line.replace(trailingCarriageReturnRegExp, ''));
+    .map((line) => line.replace(trailingCarriageReturnRegExp, ''));
   const regularizedLines: string[] = [];
   for (const line of lines) {
     if (regularizedLines.length > 0 || line.trim().length > 0) {

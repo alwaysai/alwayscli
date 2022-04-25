@@ -2,7 +2,7 @@ import { CLI_BRANCH, CLI_LEAF } from './constants';
 
 type ArgvForGetValue<TRequired extends boolean> = TRequired extends true
   ? string[]
-  : (string[] | undefined);
+  : string[] | undefined;
 
 export type CliInput<TValue, TRequired extends boolean = boolean> = {
   placeholder: string;
@@ -14,7 +14,7 @@ export type CliInput<TValue, TRequired extends boolean = boolean> = {
   hidden?: boolean;
 };
 
-export type AnyInput = CliInput<any>;
+export type AnyInput = CliInput<any, true> | CliInput<any, false>;
 
 export type ValueFromInput<TInput> = TInput extends CliInput<infer U, any> ? U : never;
 
@@ -23,7 +23,7 @@ export type AnyNamedInputs = {
 };
 
 export type NamedValues<TNamedInputs extends AnyNamedInputs> = {
-  [K in keyof TNamedInputs]: ValueFromInput<TNamedInputs[K]>
+  [K in keyof TNamedInputs]: ValueFromInput<TNamedInputs[K]>;
 };
 
 export type CliBranch = {
@@ -38,7 +38,7 @@ export type CliBranch = {
 export type CliLeaf<
   TPositionalInput extends AnyInput,
   TNamedInputs extends AnyNamedInputs,
-  TEscapedInput extends AnyInput
+  TEscapedInput extends AnyInput,
 > = {
   commandType: typeof CLI_LEAF;
   name: string;
