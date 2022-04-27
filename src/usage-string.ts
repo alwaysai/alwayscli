@@ -1,6 +1,6 @@
 import redent = require('redent');
 
-import { Command, AnyInput } from './types';
+import { CliInput, Command } from './types';
 import { CLI_BRANCH, RED_ERROR } from './constants';
 import { createTextList } from './create-text-list';
 import { regularizeText, wrapInSquareBrackets } from './util';
@@ -17,7 +17,7 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
   let firstParagraph = `Usage: ${commandPathString}`;
   const otherParagraphs: string[] = [];
 
-  function appendInputUsage(input?: AnyInput, prefix?: string) {
+  function appendInputUsage(input?: CliInput<any>, prefix?: string) {
     if (input && !input.hidden) {
       const { placeholder, description, required } = input;
       if (prefix) {
