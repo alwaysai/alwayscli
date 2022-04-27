@@ -14,7 +14,7 @@ function createTextListParagraph(item: Item, targetNameLength: number = 0) {
     firstLine += ` : ${lines[0]}`;
   }
   const padding = ''.padEnd(targetNameLength + 3);
-  const paddedLines = lines.slice(1).map((line) => `${padding}${line}`);
+  const paddedLines = lines.slice(1).map((line: string) => `${padding}${line}`);
   return [firstLine, ...paddedLines].join('\n');
 }
 
