@@ -1,4 +1,4 @@
-import redent = require('redent');
+import redent from 'redent';
 
 import { CliInput, Command } from './types';
 import { CLI_BRANCH, RED_ERROR } from './constants';
