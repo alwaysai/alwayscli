@@ -1,4 +1,4 @@
-import readPkgUp = require('read-pkg-up');
+import { readPackageUp } from 'read-pkg-up';
 import { dirname } from 'path';
 
 export async function findVersion() {
@@ -9,7 +9,7 @@ export async function findVersion() {
     return undefined;
   }
 
-  const found = await readPkgUp({
+  const found = await readPackageUp({
     cwd: dirname(mainModule.filename),
     normalize: false,
   });

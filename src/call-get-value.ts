@@ -1,7 +1,11 @@
 import { CliInput } from './types';
 import { CliUsageError } from './cli-usage-error';
 
-export async function callGetValue(input: CliInput<any>, argv?: string[], context?: string) {
+export async function callGetValue(
+  input: CliInput<any>,
+  argv?: string[],
+  context?: string,
+) {
   const { required, placeholder, getValue } = input;
   let prefix = [context, placeholder].filter(Boolean).join(' ');
   if (prefix) {
@@ -13,7 +17,11 @@ export async function callGetValue(input: CliInput<any>, argv?: string[], contex
   try {
     return await getValue(argv);
   } catch (exception) {
-    if (exception instanceof Error && exception && typeof exception.message === 'string') {
+    if (
+      exception instanceof Error &&
+      exception &&
+      typeof exception.message === 'string'
+    ) {
       exception.message = `${prefix}${exception.message}`;
     }
     throw exception;

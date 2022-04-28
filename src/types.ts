@@ -15,7 +15,7 @@ export type CliInput<TValue, TRequired extends boolean = boolean> = {
 };
 
 // FIXME: Update typescript version had trouble inferring type when AnyInput was used
-//export type AnyInput = CliInput<any>;
+// export type AnyInput = CliInput<any>;
 
 export type ValueFromInput<TInput> = TInput extends CliInput<infer U, any> ? U : never;
 
