@@ -1,5 +1,5 @@
 import { CliUsageError } from './cli-usage-error';
-import redent from 'redent';
+import redent = require('redent');
 
 export function wrapInSquareBrackets(str: string) {
   return `[${str}]`;

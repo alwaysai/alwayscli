@@ -25,9 +25,8 @@
     "@carnesen/run-and-exit": "1.0.0",
     "@types/parse-json": "4.0.0",
     "chalk": "4.1.2",
-    "parse-json": "6.0.2",
     "read-pkg-up": "7.0.1",
-    "redent": "4.0.0"
+    "redent": "3.0.0"
   },
   "devDependencies": {
     "@alwaysai/tsconfig": "0.0.1",

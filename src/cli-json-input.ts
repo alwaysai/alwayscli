@@ -1,5 +1,3 @@
-import parseJson = require('parse-json');
-
 import { CliInput } from './types';
 import { CliUsageError } from './cli-usage-error';
 
@@ -32,7 +30,7 @@ export function CliJsonInput(config: Config = {}) {
         throw new CliUsageError(`Expected a single ${placeholder} string`);
       }
       try {
-        const parsed = parseJson(argv[0]);
+        const parsed = JSON.parse(argv[0]);
         return parsed;
       } catch (exception) {
         if (exception instanceof Error) {
