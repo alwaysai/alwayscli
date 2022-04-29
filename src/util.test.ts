@@ -1,5 +1,5 @@
 import { convertToNumber, regularizeText } from './util';
-import { CliUsageError } from './cli-usage-error';
+import { CliUsageError, CLI_USAGE_ERROR } from './cli-usage-error';
 
 describe(convertToNumber.name, () => {
   it('converts the provided string to a number', () => {
@@ -7,14 +7,16 @@ describe(convertToNumber.name, () => {
   });
 
   it('throws a usage error if the string value cannot be converted', () => {
-    expect(() => convertToNumber('foo')).toThrow(new CliUsageError('not a number'));
-    /*try {
+    try {
       convertToNumber('foo');
       throw new Error('This line should never be reached');
     } catch (ex) {
-      expect(ex.code).toBe(CLI_USAGE_ERROR);
-      expect(ex.message).toMatch('not a number');
-    }*/
+      expect(ex).toBeInstanceOf(CliUsageError);
+      if (ex instanceof CliUsageError) {
+        expect(ex.code).toBe(CLI_USAGE_ERROR);
+        expect(ex.message).toMatch(/not a number/);
+      }
+    }
   });
 });
 
