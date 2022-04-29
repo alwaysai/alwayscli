@@ -23,7 +23,6 @@
   "dependencies": {
     "@carnesen/run-and-catch": "0.4.3",
     "@carnesen/run-and-exit": "1.0.0",
-    "@types/parse-json": "4.0.0",
     "chalk": "4.1.2",
     "read-pkg-up": "7.0.1",
     "redent": "3.0.0"
