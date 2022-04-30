@@ -2,7 +2,7 @@ import { CLI_BRANCH, CLI_LEAF } from './constants';
 
 type ArgvForGetValue<TRequired extends boolean> = TRequired extends true
   ? string[]
-  : (string[] | undefined);
+  : string[] | undefined;
 
 export type CliInput<TValue, TRequired extends boolean = boolean> = {
   placeholder: string;
@@ -14,16 +14,17 @@ export type CliInput<TValue, TRequired extends boolean = boolean> = {
   hidden?: boolean;
 };
 
-export type AnyInput = CliInput<any>;
+// FIXME: Update typescript version had trouble inferring type when AnyInput was used
+// export type AnyInput = CliInput<any>;
 
 export type ValueFromInput<TInput> = TInput extends CliInput<infer U, any> ? U : never;
 
 export type AnyNamedInputs = {
-  [name: string]: AnyInput;
+  [name: string]: CliInput<any>;
 };
 
 export type NamedValues<TNamedInputs extends AnyNamedInputs> = {
-  [K in keyof TNamedInputs]: ValueFromInput<TNamedInputs[K]>
+  [K in keyof TNamedInputs]: ValueFromInput<TNamedInputs[K]>;
 };
 
 export type CliBranch = {
@@ -36,9 +37,9 @@ export type CliBranch = {
 };
 
 export type CliLeaf<
-  TPositionalInput extends AnyInput,
+  TPositionalInput extends CliInput<any>,
   TNamedInputs extends AnyNamedInputs,
-  TEscapedInput extends AnyInput
+  TEscapedInput extends CliInput<any>,
 > = {
   commandType: typeof CLI_LEAF;
   name: string;
@@ -54,7 +55,7 @@ export type CliLeaf<
   hidden?: boolean;
 };
 
-export type Command = CliBranch | CliLeaf<AnyInput, AnyNamedInputs, AnyInput>;
+export type Command = CliBranch | CliLeaf<CliInput<any>, AnyNamedInputs, CliInput<any>>;
 export type AnyCommand = CliBranch | CliLeaf<any, any, any>;
 
 // The "commandType" field is assigned internally by the framework.

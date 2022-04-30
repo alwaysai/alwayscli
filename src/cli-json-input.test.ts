@@ -30,7 +30,7 @@ describe(CliJsonInput.name, () => {
   it('getValue throws a good usage error if the string in argv is not parsable', async () => {
     const exception = await runAndCatch(input.getValue, ['foo']);
     expect(exception.code).toBe(CLI_USAGE_ERROR);
-    expect(exception.message).toMatch("while parsing near 'foo'");
+    expect(exception.message).toMatch(/Unexpected token/);
   });
 
   it('attaches config properties', () => {

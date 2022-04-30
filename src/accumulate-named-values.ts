@@ -22,6 +22,6 @@ export async function accumulateNamedValues(
   if (restNames[0]) {
     throw new CliUsageError(`--${restNames[0]} : Unknown named argument`);
   }
-  await Promise.all(asyncFuncs.map(asyncFunc => asyncFunc()));
+  await Promise.all(asyncFuncs.map((asyncFunc) => asyncFunc()));
   return namedValues;
 }

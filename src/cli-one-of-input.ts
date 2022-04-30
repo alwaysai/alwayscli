@@ -45,9 +45,7 @@ function CliOneOfInput(config: Config<string[]>) {
 
       if (!config.values.includes(argv[0])) {
         throw new CliUsageError(
-          `Invalid argument "${
-            argv[0]
-          }". Expected ${placeholder} to be one of ${valuesString}`,
+          `Invalid argument "${argv[0]}". Expected ${placeholder} to be one of ${valuesString}`,
         );
       }
       return argv[0];
