@@ -21,7 +21,7 @@ export async function runCliAndExit(
     processExit: (code?: number) => any;
     consoleLog: typeof console.log;
     consoleError: typeof console.error;
-    postRun?: () => void;
+    postRun?: () => Promise<void>;
   }> = {},
 ) {
   const {
@@ -62,7 +62,7 @@ export async function runCliAndExit(
       consoleError(exception);
     }
   } finally {
-    postRun?.();
+    await postRun?.();
     processExit(exitCode);
   }
 }
