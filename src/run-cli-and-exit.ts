@@ -1,9 +1,9 @@
-import { CliLeaf, CliBranch } from './types';
+import { CliBranch, CliLeaf } from './types';
 
-import { CLI_USAGE_ERROR } from './cli-usage-error';
-import { CLI_TERSE_ERROR } from './cli-terse-error';
-import { RED_ERROR } from './constants';
 import { CliArgvInterface, CliEnhancer } from './cli-argv-interface';
+import { CLI_TERSE_ERROR } from './cli-terse-error';
+import { CLI_USAGE_ERROR } from './cli-usage-error';
+import { RED_ERROR } from './constants';
 import { UsageString } from './usage-string';
 
 function isErrnoException(error: any): error is NodeJS.ErrnoException {
@@ -21,6 +21,7 @@ export async function runCliAndExit(
     processExit: (code?: number) => any;
     consoleLog: typeof console.log;
     consoleError: typeof console.error;
+    postRun?: () => Promise<void>;
   }> = {},
 ) {
   const {
@@ -29,6 +30,7 @@ export async function runCliAndExit(
     processExit = process.exit,
     consoleLog = console.log,
     consoleError = console.error,
+    postRun,
   } = options;
   const argvInterface = CliArgvInterface(rootCommand, { enhancer });
   let exitCode = 0;
@@ -60,6 +62,7 @@ export async function runCliAndExit(
       consoleError(exception);
     }
   } finally {
+    await postRun?.();
     processExit(exitCode);
   }
 }

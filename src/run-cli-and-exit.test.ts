@@ -1,9 +1,9 @@
-import { CliLeaf } from './cli-leaf';
-import { runCliAndExit } from './run-cli-and-exit';
-import { CliUsageError } from './cli-usage-error';
-import { CliTerseError, CLI_TERSE_ERROR } from './cli-terse-error';
-import { RED_ERROR } from './constants';
 import { CodedError } from '@carnesen/coded-error';
+import { CliLeaf } from './cli-leaf';
+import { CliTerseError, CLI_TERSE_ERROR } from './cli-terse-error';
+import { CliUsageError } from './cli-usage-error';
+import { RED_ERROR } from './constants';
+import { runCliAndExit } from './run-cli-and-exit';
 
 async function runMocked(action: () => any) {
   const result = {
@@ -131,5 +131,20 @@ describe(runCliAndExit.name, () => {
       }),
       { processExit: jest.fn(), argv: [] },
     );
+  });
+
+  it("passes a postRun argument and assures it's been called", async () => {
+    const postRunMock = jest.fn();
+    await runCliAndExit(
+      CliLeaf({
+        name: 'cli',
+        action() {},
+      }),
+      {
+        processExit: jest.fn(),
+        postRun: postRunMock,
+      },
+    );
+    expect(postRunMock).toHaveBeenCalled();
   });
 });
