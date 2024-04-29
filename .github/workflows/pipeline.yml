@@ -1,0 +1,75 @@
+name: alwaysai/codecs
+
+on:
+  push:
+    branches:
+      - EI-1236
+    tags:
+      - major
+      - minor
+      - patch
+
+
+jobs:
+  build:
+    name: Run on ${{ matrix.os }} - nodejs ${{ matrix.node_version }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ubuntu, macOS, windows]
+        node_version: [16, 18, 20]
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: setup Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: '${{ matrix.node_version }}'
+      - name: install dependencies
+        run: npm install
+      - name: lint
+        run: npm run lint
+      - name: run unit tests
+        run: npm run test:unit
+      - name: build
+        run: npm run build:clean
+
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    needs: build
+    if: >
+      github.event_name == 'push' &&
+      github.ref_type == 'tag' &&
+      (
+        github.ref == 'refs/tags/major' ||
+        github.ref == 'refs/tags/minor' ||
+        github.ref == 'refs/tags/patch'
+      )
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: npm prepare
+        run: npm install
+      - name: setup git
+        run: |
+          git config user.email "dev@alwaysai.co"
+          git config user.name "GitHub Actions"
+      - name: extract tag name
+        id: extract_tag
+        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+      - name: npm version ${{ steps.extract_tag.outputs.TAG_NAME }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.AAI_NPM_TOKEN_GITHUB_ACTIONS }}
+        run: npm version ${{ steps.extract_tag.outputs.TAG_NAME }}
+      - name: git push
+        run: |
+          git push origin HEAD:master
+          git push --tags
+      - name: remove tag ${{ steps.extract_tag.outputs.TAG_NAME }}
+        run: git push origin --delete ${{ steps.extract_tag.outputs.TAG_NAME }}
