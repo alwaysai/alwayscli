@@ -1,9 +1,9 @@
-import { UsageString } from './usage-string';
-import { CliBranch } from './cli-branch';
-import { CliStringInput } from './cli-string-input';
-import { CliLeaf } from './cli-leaf';
-import { Command } from './types';
-import { RED_ERROR } from './constants';
+import { CliBranch } from '../src/cli-branch';
+import { CliLeaf } from '../src/cli-leaf';
+import { CliStringInput } from '../src/cli-string-input';
+import { RED_ERROR } from '../src/constants';
+import { Command } from '../src/types';
+import { UsageString } from '../src/usage-string';
 
 const messageInput = CliStringInput({ description: 'A string message please' });
 const positionalInput = CliStringInput({

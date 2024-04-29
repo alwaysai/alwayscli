@@ -1,6 +1,6 @@
-import { accumulateCommandStack } from './accumulate-command-stack';
-import { CliBranch } from './cli-branch';
-import { CliLeaf } from './cli-leaf';
+import { accumulateCommandStack } from '../src/accumulate-command-stack';
+import { CliBranch } from '../src/cli-branch';
+import { CliLeaf } from '../src/cli-leaf';
 
 const leaf = CliLeaf({
   name: 'echo',

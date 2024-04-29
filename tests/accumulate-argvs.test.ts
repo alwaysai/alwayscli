@@ -1,4 +1,4 @@
-import { accumulateArgvs } from './accumulate-argvs';
+import { accumulateArgvs } from '../src/accumulate-argvs';
 
 type Datum = {
   argv: string[];

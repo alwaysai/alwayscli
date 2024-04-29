@@ -1,4 +1,4 @@
-import { createTextList } from './create-text-list';
+import { createTextList } from '../src/create-text-list';
 
 describe(createTextList.name, () => {
   it('Creates a usage string for a branch', () => {

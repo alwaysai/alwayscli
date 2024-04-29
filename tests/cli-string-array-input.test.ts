@@ -1,6 +1,6 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
-import { CliStringArrayInput } from './cli-string-array-input';
+import { CliStringArrayInput } from '../src/cli-string-array-input';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
 
 const description = 'foo bar baz';
 const hidden = true;

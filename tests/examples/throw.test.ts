@@ -1,7 +1,7 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
-import { root } from '../throw';
-import { CliArgvInterface } from '../../cli-argv-interface';
+import { CliArgvInterface } from '../../src/cli-argv-interface';
+import { root } from '../../src/examples/throw';
 
 const cli = CliArgvInterface(root);
 

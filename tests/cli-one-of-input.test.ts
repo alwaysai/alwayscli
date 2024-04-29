@@ -1,6 +1,6 @@
-import { CliOneOfInput } from './cli-one-of-input';
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
+import { CliOneOfInput } from '../src/cli-one-of-input';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
 
 const description = 'foo bar baz';
 const hidden = true;

@@ -1,4 +1,4 @@
-import { CliTerseError, CLI_TERSE_ERROR } from './cli-terse-error';
+import { CLI_TERSE_ERROR, CliTerseError } from '../src/cli-terse-error';
 
 describe(CliTerseError.name, () => {
   it('Constructs an error object with property "code" set to "TERSE" with provided message', () => {

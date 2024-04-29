@@ -1,8 +1,8 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
-import { execCliLeaf } from '../exec';
-import { CliArgvInterface } from '../../cli-argv-interface';
-import { CLI_USAGE_ERROR } from '../../cli-usage-error';
+import { CliArgvInterface } from '../../src/cli-argv-interface';
+import { CLI_USAGE_ERROR } from '../../src/cli-usage-error';
+import { execCliLeaf } from '../../src/examples/exec';
 
 const argvInterface = CliArgvInterface(execCliLeaf);
 

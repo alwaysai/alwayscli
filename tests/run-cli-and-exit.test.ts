@@ -1,9 +1,9 @@
 import { CodedError } from '@carnesen/coded-error';
-import { CliLeaf } from './cli-leaf';
-import { CliTerseError, CLI_TERSE_ERROR } from './cli-terse-error';
-import { CliUsageError } from './cli-usage-error';
-import { RED_ERROR } from './constants';
-import { runCliAndExit } from './run-cli-and-exit';
+import { CliLeaf } from '../src/cli-leaf';
+import { CLI_TERSE_ERROR, CliTerseError } from '../src/cli-terse-error';
+import { CliUsageError } from '../src/cli-usage-error';
+import { RED_ERROR } from '../src/constants';
+import { runCliAndExit } from '../src/run-cli-and-exit';
 
 async function runMocked(action: () => any) {
   const result = {

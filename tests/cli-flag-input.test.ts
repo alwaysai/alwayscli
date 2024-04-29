@@ -1,6 +1,6 @@
-import { CliFlagInput } from './cli-flag-input';
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
+import { CliFlagInput } from '../src/cli-flag-input';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
 
 const description = 'foo bar baz';
 const hidden = true;

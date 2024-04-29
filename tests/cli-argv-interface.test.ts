@@ -1,10 +1,10 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { CliBranch } from './cli-branch';
-import { CliLeaf } from './cli-leaf';
-import { dummyInput } from './dummy-inputs-for-testing';
-import { CliArgvInterface, CliEnhancer } from './cli-argv-interface';
-import { findVersion } from './find-version';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
+import { CliArgvInterface, CliEnhancer } from '../src/cli-argv-interface';
+import { CliBranch } from '../src/cli-branch';
+import { CliLeaf } from '../src/cli-leaf';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
+import { dummyInput } from '../src/dummy-inputs-for-testing';
+import { findVersion } from '../src/find-version';
 
 const leafWithNamedInputs = CliLeaf({
   name: 'leaf-with-named-inputs',

@@ -1,11 +1,11 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { accumulateNamedValues } from './accumulate-named-values';
+import { accumulateNamedValues } from '../src/accumulate-named-values';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
 import {
-  dummyRequiredInput,
+  DUMMY_INPUT_THROW,
   dummyInput,
-  DUMMY_INPUT_THROW
-} from './dummy-inputs-for-testing';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
+  dummyRequiredInput
+} from '../src/dummy-inputs-for-testing';
 
 describe(accumulateNamedValues.name, () => {
   it(`returns object of named values`, async () => {

@@ -1,26 +1,26 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
-import { CliStringInput } from './cli-string-input';
+import { CliNumberInput } from '../src/cli-number-input';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
 
 const description = 'foo bar baz';
 const hidden = true;
 const placeholder = '<special>';
 const required = false;
 
-const input = CliStringInput({ required, description, hidden, placeholder });
+const input = CliNumberInput({ required, description, hidden, placeholder });
 
-describe(CliStringInput.name, () => {
+describe(CliNumberInput.name, () => {
   it('returns `undefined` if argv is `undefined` and no defaultValue has been provided', () => {
     expect(input.getValue(undefined)).toBe(undefined);
   });
 
   it('returns defaultValue if argv is `undefined` and defaultValue has been provided', () => {
-    const input = CliStringInput({ defaultValue: '0' });
-    expect(input.getValue(undefined)).toBe('0');
+    const input = CliNumberInput({ defaultValue: 0 });
+    expect(input.getValue(undefined)).toBe(0);
   });
 
   it('getValue returns the zeroth element of argv', () => {
-    expect(input.getValue(['1'])).toBe('1');
+    expect(input.getValue(['1'])).toBe(1);
   });
 
   it('throws UsageError "expected just one" if argv has more than one element', async () => {
@@ -45,6 +45,6 @@ describe(CliStringInput.name, () => {
   });
 
   it('config is not required', () => {
-    CliStringInput();
+    CliNumberInput();
   });
 });

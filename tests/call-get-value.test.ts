@@ -1,14 +1,14 @@
 import { runAndCatch } from '@carnesen/run-and-catch';
 
-import { callGetValue } from './call-get-value';
-import { CLI_USAGE_ERROR } from './cli-usage-error';
+import { callGetValue } from '../src/call-get-value';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
 import {
-  dummyInput,
-  dummyRequiredInput,
-  DUMMY_INPUT_THROWN_INTENTIONALLY,
   DUMMY_INPUT_THROW,
-  DUMMY_INPUT_THROW_NON_TRUTHY
-} from './dummy-inputs-for-testing';
+  DUMMY_INPUT_THROWN_INTENTIONALLY,
+  DUMMY_INPUT_THROW_NON_TRUTHY,
+  dummyInput,
+  dummyRequiredInput
+} from '../src/dummy-inputs-for-testing';
 
 describe(callGetValue.name, () => {
   it(`returns getValue(argv) if an argv with length >= 1 is passed`, async () => {
