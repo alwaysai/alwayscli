@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`callGetValue if throws "input is required" with context, expect message to match snapshot 1`] = `"context <foo> : Input is required"`;
-
-exports[`callGetValue if throws "input is required", expect message to match snapshot 1`] = `"<foo> : Input is required"`;
-
-exports[`callGetValue throws if getValue does with a context/placeholder enhanced message 1`] = `"thrown intentionally"`;

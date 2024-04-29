@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`createTextList Creates a usage string for a branch 1`] = `
-"foo    : hi
-            bye
-barrio : bye"
-`;
