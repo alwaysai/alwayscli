@@ -26,34 +26,13 @@ yarn-error.log*
 .env
 .env.*
 
-# Google Cloud files
-app.yaml
-dispatch.yaml
-.gcloudignore
-
 #Build generated
 dist/
 build/
 built/
 lib/
 tmp/
-
-# Serverless generated files
-.serverless/
-
-### SublimeText ###
-# cache files for sublime text
-*.tmlanguage.cache
-*.tmPreferences.cache
-*.stTheme.cache
-
-# workspace files are user-specific
-*.sublime-workspace
-
-# project files should be checked into the repository, unless a significant
-# proportion of contributors will probably not be using SublimeText
-# *.sublime-project
-
+test/__snapshots__/
 
 ### VisualStudioCode ###
 .vscode/*
@@ -64,13 +43,6 @@ tmp/
 
 ### Vim ###
 *.sw[a-p]
-
-### WebStorm/IntelliJ ###
-/.idea
-modules.xml
-*.ipr
-*.iml
-
 
 ### System Files ###
 *.DS_Store
@@ -121,35 +93,6 @@ yarn-error.log*
 # dotenv environment variables file(s)
 .env
 .env.*
-
-# Google Cloud files
-app.yaml
-dispatch.yaml
-.gcloudignore
-
-#Build generated
-dist/
-build/
-built/
-lib/
-tmp/
-
-# Serverless generated files
-.serverless/
-
-### SublimeText ###
-# cache files for sublime text
-*.tmlanguage.cache
-*.tmPreferences.cache
-*.stTheme.cache
-
-# workspace files are user-specific
-*.sublime-workspace
-
-# project files should be checked into the repository, unless a significant
-# proportion of contributors will probably not be using SublimeText
-# *.sublime-project
-
 
 ### VisualStudioCode ###
 .vscode/*
