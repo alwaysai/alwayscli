@@ -10,18 +10,18 @@ export const execCliLeaf = CliLeaf({
   namedInputs: {
     cwd: CliStringInput({
       placeholder: '<path>',
-      description: 'Current working directory of the child process',
-    }),
+      description: 'Current working directory of the child process'
+    })
   },
   escapedInput: CliStringArrayInput({
     required: true,
-    placeholder: '<command> [<arguments>]',
+    placeholder: '<command> [<arguments>]'
   }),
   action(_, { cwd }, escaped) {
     const command = escaped.join(' ');
     const output = execSync(command, { cwd, encoding: 'utf8' });
     return output;
-  },
+  }
 });
 
 if (module === require.main) {

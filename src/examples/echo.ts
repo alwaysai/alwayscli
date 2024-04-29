@@ -13,7 +13,7 @@ export const echoCliLeaf = CliLeaf({
   action(messages) {
     const text = messages.join(' ');
     return text;
-  },
+  }
 });
 
 if (module === require.main) {

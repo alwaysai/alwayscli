@@ -7,7 +7,7 @@ const nonHiddenCliBranch = CliBranch({
   description: `
     This is a normal non-hidden command branch.
     Its "description" shows up in command usage docs.`,
-  subcommands: [echoCommand],
+  subcommands: [echoCommand]
 });
 
 const hiddenCliBranch = CliBranch({
@@ -17,13 +17,13 @@ const hiddenCliBranch = CliBranch({
     It does not show up in the list of "subcommands",
     but it is otherwise fully functional.`,
   hidden: true,
-  subcommands: [echoCommand],
+  subcommands: [echoCommand]
 });
 
 export const root = CliBranch({
   name: 'cli',
   description: 'This CLI has a "hidden" command branch called "secret".',
-  subcommands: [nonHiddenCliBranch, hiddenCliBranch],
+  subcommands: [nonHiddenCliBranch, hiddenCliBranch]
 });
 
 if (module === require.main) {

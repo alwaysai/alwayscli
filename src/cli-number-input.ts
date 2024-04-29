@@ -12,9 +12,11 @@ type Config = Partial<{
 
 export { CliNumberInput };
 function CliNumberInput(
-  config: Config & { defaultValue: number },
+  config: Config & { defaultValue: number }
 ): CliInput<number, false>;
-function CliNumberInput(config: Config & { required: true }): CliInput<number, true>;
+function CliNumberInput(
+  config: Config & { required: true }
+): CliInput<number, true>;
 function CliNumberInput(config?: Config): CliInput<number | undefined, boolean>;
 function CliNumberInput(config: Config = {}) {
   const {
@@ -22,7 +24,7 @@ function CliNumberInput(config: Config = {}) {
     description,
     defaultValue,
     placeholder = '<num>',
-    hidden = false,
+    hidden = false
   } = config;
   const input: CliInput<number | undefined> = {
     required,
@@ -43,7 +45,7 @@ function CliNumberInput(config: Config = {}) {
       return convertToNumber(argv[0]);
     },
     description,
-    placeholder,
+    placeholder
   };
   return input;
 }

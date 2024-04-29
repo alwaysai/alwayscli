@@ -1,7 +1,10 @@
 import { Command } from './types';
 import { CLI_LEAF } from './constants';
 
-export function mapCommand<T>(command: Command, callback: (command: Command) => T) {
+export function mapCommand<T>(
+  command: Command,
+  callback: (command: Command) => T
+) {
   const result: T[] = [];
   let current = command;
   while (true) {

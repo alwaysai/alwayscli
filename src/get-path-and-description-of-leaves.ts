@@ -8,7 +8,7 @@ type PathAndDescription = {
 
 export function getPathAndDescriptionOfLeaves(
   command: Command,
-  path: string[],
+  path: string[]
 ): PathAndDescription[] {
   if (command.hidden && path.length > 0) {
     // ^^ conditional on path.length > 0 because we don't want to hide the usage
@@ -20,14 +20,14 @@ export function getPathAndDescriptionOfLeaves(
     return [
       {
         path,
-        description: command.description,
-      },
+        description: command.description
+      }
     ];
   }
   const returnValue: PathAndDescription[] = [];
   for (const subcommand of command.subcommands) {
     returnValue.push(
-      ...getPathAndDescriptionOfLeaves(subcommand, [...path, subcommand.name]),
+      ...getPathAndDescriptionOfLeaves(subcommand, [...path, subcommand.name])
     );
   }
   return returnValue;

@@ -9,17 +9,17 @@ async function runMocked(action: () => any) {
   const result = {
     consoleLog: jest.fn(),
     consoleError: jest.fn(),
-    processExit: jest.fn(),
+    processExit: jest.fn()
   };
   await runCliAndExit(
     CliLeaf({
       name: 'cli',
-      action,
+      action
     }),
     {
       argv: [],
-      ...result,
-    },
+      ...result
+    }
   );
 
   expect(result.processExit.mock.calls.length).toBe(1);
@@ -27,7 +27,7 @@ async function runMocked(action: () => any) {
   const exitCode = result.processExit.mock.calls[0][0];
 
   expect(
-    result.consoleError.mock.calls.length + result.consoleLog.mock.calls.length,
+    result.consoleError.mock.calls.length + result.consoleLog.mock.calls.length
   ).toBeLessThanOrEqual(1);
   let errorMessage: any = undefined;
   let logMessage: any = undefined;
@@ -127,9 +127,9 @@ describe(runCliAndExit.name, () => {
     runCliAndExit(
       CliLeaf({
         name: 'cli',
-        action() {},
+        action() {}
       }),
-      { processExit: jest.fn(), argv: [] },
+      { processExit: jest.fn(), argv: [] }
     );
   });
 
@@ -138,12 +138,12 @@ describe(runCliAndExit.name, () => {
     await runCliAndExit(
       CliLeaf({
         name: 'cli',
-        action() {},
+        action() {}
       }),
       {
         processExit: jest.fn(),
-        postRun: postRunMock,
-      },
+        postRun: postRunMock
+      }
     );
     expect(postRunMock).toHaveBeenCalled();
   });

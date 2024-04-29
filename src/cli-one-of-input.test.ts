@@ -12,7 +12,7 @@ const input = CliOneOfInput({
   description,
   hidden,
   placeholder,
-  required,
+  required
 });
 
 describe(CliOneOfInput.name, () => {

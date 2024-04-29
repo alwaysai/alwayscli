@@ -11,9 +11,11 @@ type Config = Partial<{
 
 export { CliStringInput };
 function CliStringInput(
-  config: Config & { defaultValue: string },
+  config: Config & { defaultValue: string }
 ): CliInput<string, false>;
-function CliStringInput(config: Config & { required: true }): CliInput<string, true>;
+function CliStringInput(
+  config: Config & { required: true }
+): CliInput<string, true>;
 function CliStringInput(config?: Config): CliInput<string | undefined, false>;
 function CliStringInput(config: Config = {}) {
   const {
@@ -21,7 +23,7 @@ function CliStringInput(config: Config = {}) {
     required = false,
     description,
     placeholder = '<str>',
-    hidden = false,
+    hidden = false
   } = config;
   const input: CliInput<string | undefined> = {
     hidden,
@@ -42,7 +44,7 @@ function CliStringInput(config: Config = {}) {
 
       return argv[0];
     },
-    description,
+    description
   };
   return input;
 }

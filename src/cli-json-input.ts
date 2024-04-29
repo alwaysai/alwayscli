@@ -16,7 +16,7 @@ export function CliJsonInput(config: Config = {}) {
     placeholder = '<json>',
     required = false,
     description,
-    hidden = false,
+    hidden = false
   } = config;
   const input: CliInput<any> = {
     required,
@@ -40,7 +40,7 @@ export function CliJsonInput(config: Config = {}) {
         }
       }
     },
-    description,
+    description
   };
   return input;
 }

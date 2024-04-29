@@ -9,8 +9,8 @@ export const multiplyCliLeaf = CliLeaf({
   positionalInput: CliNumberArrayInput({ required: true }),
   namedInputs: {
     squared: CliFlagInput({
-      description: 'Square the result before printing it',
-    }),
+      description: 'Square the result before printing it'
+    })
   },
   action(numbers, { squared }) {
     const multiplied = numbers.reduce((a, b) => a * b, 1);
@@ -18,7 +18,7 @@ export const multiplyCliLeaf = CliLeaf({
       return multiplied * multiplied;
     }
     return multiplied;
-  },
+  }
 });
 
 if (require.main === module) {

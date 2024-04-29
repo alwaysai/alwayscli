@@ -28,7 +28,7 @@ export const root = CliLeaf({
       return PIZZA_MESSAGE;
     }
     return echoCommand.action(messages, {}, escaped);
-  },
+  }
 });
 
 if (module === require.main) {

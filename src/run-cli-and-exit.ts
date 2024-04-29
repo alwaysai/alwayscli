@@ -22,7 +22,7 @@ export async function runCliAndExit(
     consoleLog: typeof console.log;
     consoleError: typeof console.error;
     postRun?: () => Promise<void>;
-  }> = {},
+  }> = {}
 ) {
   const {
     argv = process.argv.slice(2),
@@ -30,7 +30,7 @@ export async function runCliAndExit(
     processExit = process.exit,
     consoleLog = console.log,
     consoleError = console.error,
-    postRun,
+    postRun
   } = options;
   const argvInterface = CliArgvInterface(rootCommand, { enhancer });
   let exitCode = 0;
@@ -43,17 +43,26 @@ export async function runCliAndExit(
     exitCode = 1;
     if (!exception) {
       consoleError(
-        `${RED_ERROR} Encountered non-truthy exception "${exception}". Please contact the author of this command-line interface`,
+        `${RED_ERROR} Encountered non-truthy exception "${exception}". Please contact the author of this command-line interface`
       );
-    } else if (isErrnoException(exception) && exception.code === CLI_USAGE_ERROR) {
+    } else if (
+      isErrnoException(exception) &&
+      exception.code === CLI_USAGE_ERROR
+    ) {
       consoleError(UsageString(rootCommand, exception.message));
-    } else if (isErrnoException(exception) && exception.code === CLI_TERSE_ERROR) {
+    } else if (
+      isErrnoException(exception) &&
+      exception.code === CLI_TERSE_ERROR
+    ) {
       if (!exception.message) {
         consoleError(exception);
       } else {
         consoleError(`${RED_ERROR} ${exception.message}`);
       }
-    } else if (isErrnoException(exception) && typeof exception.code === 'number') {
+    } else if (
+      isErrnoException(exception) &&
+      typeof exception.code === 'number'
+    ) {
       exitCode = exception.code;
       if (exception.message) {
         consoleError(exception.message);

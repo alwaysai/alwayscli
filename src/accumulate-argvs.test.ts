@@ -12,8 +12,8 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: ['foo', 'bar'],
       foundHelp: false,
       namedArgvs: { baz: ['jane', 'doe'] },
-      escapedArgv: undefined,
-    },
+      escapedArgv: undefined
+    }
   },
   {
     argv: ['foo', 'bar', '--baz', 'jane', '--baz', 'doe'],
@@ -21,8 +21,8 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: ['foo', 'bar'],
       foundHelp: false,
       namedArgvs: { baz: ['jane', 'doe'] },
-      escapedArgv: undefined,
-    },
+      escapedArgv: undefined
+    }
   },
   {
     argv: ['--', '--foo', '--bar'],
@@ -30,8 +30,8 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: [],
       foundHelp: false,
       namedArgvs: {},
-      escapedArgv: ['--foo', '--bar'],
-    },
+      escapedArgv: ['--foo', '--bar']
+    }
   },
   {
     argv: ['--'],
@@ -39,8 +39,8 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: [],
       foundHelp: false,
       namedArgvs: {},
-      escapedArgv: [],
-    },
+      escapedArgv: []
+    }
   },
   {
     argv: ['--foo'],
@@ -48,8 +48,8 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: [],
       foundHelp: false,
       namedArgvs: { foo: [] },
-      escapedArgv: undefined,
-    },
+      escapedArgv: undefined
+    }
   },
   {
     argv: ['foo', 'bar', '--help', 'baz'],
@@ -57,8 +57,8 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: ['foo', 'bar', 'baz'],
       foundHelp: true,
       namedArgvs: {},
-      escapedArgv: undefined,
-    },
+      escapedArgv: undefined
+    }
   },
   {
     argv: ['--', '--help', 'baz'],
@@ -66,9 +66,9 @@ const data: Datum[] = [
       commandNamesAndPositionalArgv: [],
       foundHelp: false,
       namedArgvs: {},
-      escapedArgv: ['--help', 'baz'],
-    },
-  },
+      escapedArgv: ['--help', 'baz']
+    }
+  }
 ];
 
 describe(accumulateArgvs.name, () => {

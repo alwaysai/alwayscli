@@ -6,25 +6,31 @@ import { Command } from './types';
 import { RED_ERROR } from './constants';
 
 const messageInput = CliStringInput({ description: 'A string message please' });
-const positionalInput = CliStringInput({ description: 'A word', placeholder: '<word>' });
-const escapedInput = CliStringInput({ description: 'Another word', required: true });
+const positionalInput = CliStringInput({
+  description: 'A word',
+  placeholder: '<word>'
+});
+const escapedInput = CliStringInput({
+  description: 'Another word',
+  required: true
+});
 
 const leaf = CliLeaf({
   name: 'echo',
   positionalInput,
   namedInputs: {
-    message: messageInput,
+    message: messageInput
   },
   escapedInput,
   action(foo) {
     return foo;
-  },
+  }
 });
 
 const root = CliBranch({
   name: 'cli',
   description: 'This is a CLI',
-  subcommands: [leaf],
+  subcommands: [leaf]
 });
 
 describe(UsageString.name, () => {
@@ -53,9 +59,9 @@ describe(UsageString.name, () => {
 
   it('Does not write usage for named inputs if there are none', () => {
     const usageString = UsageString(CliLeaf({ name: 'foo', action() {} }));
-    expect(UsageString(CliLeaf({ name: 'foo', action() {}, namedInputs: {} }))).toBe(
-      usageString,
-    );
+    expect(
+      UsageString(CliLeaf({ name: 'foo', action() {}, namedInputs: {} }))
+    ).toBe(usageString);
     expect(usageString).toMatchSnapshot();
   });
 });

@@ -4,7 +4,7 @@ import { CliUsageError } from './cli-usage-error';
 export async function callGetValue(
   input: CliInput<any>,
   argv?: string[],
-  context?: string,
+  context?: string
 ) {
   const { required, placeholder, getValue } = input;
   let prefix = [context, placeholder].filter(Boolean).join(' ');

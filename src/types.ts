@@ -17,7 +17,9 @@ export type CliInput<TValue, TRequired extends boolean = boolean> = {
 // FIXME: Update typescript version had trouble inferring type when AnyInput was used
 // export type AnyInput = CliInput<any>;
 
-export type ValueFromInput<TInput> = TInput extends CliInput<infer U, any> ? U : never;
+export type ValueFromInput<TInput> = TInput extends CliInput<infer U, any>
+  ? U
+  : never;
 
 export type AnyNamedInputs = {
   [name: string]: CliInput<any>;
@@ -39,14 +41,14 @@ export type CliBranch = {
 export type CliLeaf<
   TPositionalInput extends CliInput<any>,
   TNamedInputs extends AnyNamedInputs,
-  TEscapedInput extends CliInput<any>,
+  TEscapedInput extends CliInput<any>
 > = {
   commandType: typeof CLI_LEAF;
   name: string;
   action: (
     positionalValue: ValueFromInput<TPositionalInput>,
     namedValues: NamedValues<TNamedInputs>,
-    escapedValue: ValueFromInput<TEscapedInput>,
+    escapedValue: ValueFromInput<TEscapedInput>
   ) => any;
   positionalInput?: TPositionalInput;
   namedInputs?: TNamedInputs;
@@ -55,7 +57,9 @@ export type CliLeaf<
   hidden?: boolean;
 };
 
-export type Command = CliBranch | CliLeaf<CliInput<any>, AnyNamedInputs, CliInput<any>>;
+export type Command =
+  | CliBranch
+  | CliLeaf<CliInput<any>, AnyNamedInputs, CliInput<any>>;
 export type AnyCommand = CliBranch | CliLeaf<any, any, any>;
 
 // The "commandType" field is assigned internally by the framework.

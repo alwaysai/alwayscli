@@ -6,12 +6,12 @@ const leaf = CliLeaf({
   name: 'echo',
   action(foo) {
     return foo;
-  },
+  }
 });
 
 const root = CliBranch({
   name: 'cli',
-  subcommands: [leaf],
+  subcommands: [leaf]
 });
 
 describe(accumulateCommandStack.name, () => {

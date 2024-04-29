@@ -7,7 +7,12 @@ const hidden = true;
 const placeholder = '<special>';
 const required = false;
 
-const input = CliNumberArrayInput({ description, hidden, placeholder, required });
+const input = CliNumberArrayInput({
+  description,
+  hidden,
+  placeholder,
+  required
+});
 
 describe(CliNumberArrayInput.name, () => {
   it('getValue returns is argv converted to numbers', () => {

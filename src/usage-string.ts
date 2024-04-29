@@ -13,7 +13,10 @@ const INDENT_SIZE = 3;
 export function UsageString(rootCommand: Command, errorMessage?: string) {
   const lastCommand = LastCommand(rootCommand);
 
-  const commandPathString = mapCommand(rootCommand, (command) => command.name).join(' ');
+  const commandPathString = mapCommand(
+    rootCommand,
+    (command) => command.name
+  ).join(' ');
   let firstParagraph = `Usage: ${commandPathString}`;
   const otherParagraphs: string[] = [];
 
@@ -23,7 +26,9 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
       if (prefix) {
         firstParagraph += ` ${prefix}`;
       }
-      firstParagraph += ` ${required ? placeholder : wrapInSquareBrackets(placeholder)}`;
+      firstParagraph += ` ${
+        required ? placeholder : wrapInSquareBrackets(placeholder)
+      }`;
       if (description) {
         otherParagraphs.push(`${placeholder}:`);
         otherParagraphs.push(redent(regularizeText(description), INDENT_SIZE));
@@ -35,13 +40,15 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
     // BRANCH
     firstParagraph += ' <subcommand> ...';
     otherParagraphs.push('Subcommands:');
-    const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(lastCommand, []);
-    const items: Parameters<typeof createTextList> = nameAndDescriptionOfLeaves.map(
-      ({ path, description }) => ({
-        name: path.join(' '),
-        text: description,
-      }),
+    const nameAndDescriptionOfLeaves = getPathAndDescriptionOfLeaves(
+      lastCommand,
+      []
     );
+    const items: Parameters<typeof createTextList> =
+      nameAndDescriptionOfLeaves.map(({ path, description }) => ({
+        name: path.join(' '),
+        text: description
+      }));
     const subcommandsParagraph = redent(createTextList(...items), INDENT_SIZE);
     otherParagraphs.push(subcommandsParagraph);
   } else {
@@ -51,10 +58,12 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
     appendInputUsage(positionalInput);
 
     if (namedInputs) {
-      const entries = Object.entries(namedInputs).filter(([_, input]) => !input.hidden);
+      const entries = Object.entries(namedInputs).filter(
+        ([_, input]) => !input.hidden
+      );
       if (entries.length > 0) {
         const optionsNotRequired = entries.every(
-          ([_, namedInput]) => !namedInput.required,
+          ([_, namedInput]) => !namedInput.required
         );
         firstParagraph += optionsNotRequired ? ' [<options>]' : ' <options>';
         otherParagraphs.push('Options:');
@@ -69,7 +78,7 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
             }
             const text = input.description;
             return { name, text };
-          },
+          }
         );
         const optionsParagraph = redent(createTextList(...items), INDENT_SIZE);
         otherParagraphs.push(optionsParagraph);

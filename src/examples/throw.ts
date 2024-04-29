@@ -13,19 +13,19 @@ export const root = CliLeaf({
   namedInputs: {
     message: CliStringInput({
       description: 'A message',
-      required: true,
+      required: true
     }),
     code: CliOneOfInput({
       values: [CLI_USAGE_ERROR, CLI_TERSE_ERROR],
-      description: `A string "code" attached to the error.`,
+      description: `A string "code" attached to the error.`
     }),
     data: CliJsonInput({
-      description: 'An arbitrary "data" field on the error object',
-    }),
+      description: 'An arbitrary "data" field on the error object'
+    })
   },
   action(_, { message, code, data }) {
     throw new CodedError(message, code, data);
-  },
+  }
 });
 
 if (module === require.main) {

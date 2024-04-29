@@ -5,7 +5,7 @@ import { CliUsageError } from './cli-usage-error';
 
 export async function accumulateNamedValues(
   namedInputs: AnyNamedInputs,
-  namedArgvs: NamedArgvs,
+  namedArgvs: NamedArgvs
 ) {
   const namedValues: NamedValues<AnyNamedInputs> = {};
   const restNamedArgvs = { ...namedArgvs };

@@ -10,15 +10,17 @@ type Config = Partial<{
 
 export { CliStringArrayInput };
 function CliStringArrayInput(
-  config: Config & { required: true },
+  config: Config & { required: true }
 ): CliInput<string[], true>;
-function CliStringArrayInput(config?: Config): CliInput<string[] | undefined, boolean>;
+function CliStringArrayInput(
+  config?: Config
+): CliInput<string[] | undefined, boolean>;
 function CliStringArrayInput(config: Config = {}) {
   const {
     required = false,
     description,
     placeholder = '<str0> [...]',
-    hidden = false,
+    hidden = false
   } = config;
   const input: CliInput<string[] | undefined> = {
     required,
@@ -35,7 +37,7 @@ function CliStringArrayInput(config: Config = {}) {
 
       return argv;
     },
-    description,
+    description
   };
   return input;
 }

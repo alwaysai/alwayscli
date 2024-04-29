@@ -22,11 +22,11 @@ export const dummyInput: CliInput<string, false> = {
       throw '';
     }
     return argv[0];
-  },
+  }
 };
 
 export const dummyRequiredInput: CliInput<string, true> = {
   placeholder: '<foo>',
   required: true,
-  getValue: dummyInput.getValue,
+  getValue: dummyInput.getValue
 };

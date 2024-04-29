@@ -13,13 +13,13 @@ type Config<TValues extends string[]> = {
 export { CliOneOfInput };
 
 function CliOneOfInput<U extends string[]>(
-  config: Config<U> & { defaultValue: U },
+  config: Config<U> & { defaultValue: U }
 ): CliInput<U[number], false>;
 function CliOneOfInput<U extends string[]>(
-  config: Config<U> & { required: true },
+  config: Config<U> & { required: true }
 ): CliInput<U[number], true>;
 function CliOneOfInput<U extends string[]>(
-  config: Config<U>,
+  config: Config<U>
 ): CliInput<U[number] | undefined, false>;
 function CliOneOfInput(config: Config<string[]>) {
   const valuesString = wrapInCurlyBrackets(config.values.join(', '));
@@ -27,7 +27,7 @@ function CliOneOfInput(config: Config<string[]>) {
     required = false,
     description,
     placeholder = '<value>',
-    hidden = false,
+    hidden = false
   } = config;
 
   const input: CliInput<string | undefined> = {
@@ -40,17 +40,21 @@ function CliOneOfInput(config: Config<string[]>) {
       }
 
       if (argv.length !== 1) {
-        throw new CliUsageError(`Expected ${placeholder} to be one of ${valuesString}`);
+        throw new CliUsageError(
+          `Expected ${placeholder} to be one of ${valuesString}`
+        );
       }
 
       if (!config.values.includes(argv[0])) {
         throw new CliUsageError(
-          `Invalid argument "${argv[0]}". Expected ${placeholder} to be one of ${valuesString}`,
+          `Invalid argument "${argv[0]}". Expected ${placeholder} to be one of ${valuesString}`
         );
       }
       return argv[0];
     },
-    description: `${regularizeText(description)}\nAllowed values ${valuesString}`,
+    description: `${regularizeText(
+      description
+    )}\nAllowed values ${valuesString}`
   };
   return input;
 }

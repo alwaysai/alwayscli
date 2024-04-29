@@ -8,7 +8,7 @@ const pkg = require('../../package.json');
 export const examples = CliBranch({
   name: 'examples',
   description: `Examples that demonstrate ${pkg.name} features`,
-  subcommands: [echo, readme, throw_],
+  subcommands: [echo, readme, throw_]
 });
 
 if (module === require.main) {

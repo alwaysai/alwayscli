@@ -50,6 +50,6 @@ export function accumulateArgvs(argv: string[]) {
     foundHelp,
     commandNamesAndPositionalArgv,
     namedArgvs,
-    escapedArgv,
+    escapedArgv
   };
 }

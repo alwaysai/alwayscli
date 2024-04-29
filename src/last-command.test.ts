@@ -4,12 +4,12 @@ import { LastCommand } from './last-command';
 
 const leaf = CliLeaf({
   name: 'l',
-  action() {},
+  action() {}
 });
 
 const branch = CliBranch({
   name: 'b',
-  subcommands: [leaf],
+  subcommands: [leaf]
 });
 
 describe(LastCommand.name, () => {
