@@ -32,7 +32,7 @@ build/
 built/
 lib/
 tmp/
-test/__snapshots__/
+tests/__snapshots__/
 
 ### VisualStudioCode ###
 .vscode/*
