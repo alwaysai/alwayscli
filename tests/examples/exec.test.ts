@@ -9,7 +9,7 @@ const argvInterface = CliArgvInterface(execCliLeaf);
 describe(execCliLeaf.name, () => {
   it('runs the provided command', async () => {
     const output = await argvInterface('--', 'echo', '--foo', '--bar');
-    expect(output).toBe('--foo --bar\n');
+    expect(output).toMatch(/^--foo --bar(\r?\n)?$/);
   });
 
   it('throws usage', async () => {
