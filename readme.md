@@ -60,7 +60,7 @@ With arguments:
 $ ts-node readme.ts 1 2 3
 6
 $ ts-node readme.ts 1 2 3 --squared
-36 
+36
 ```
 The `if (require.main === module)` conditional is Node.js for "if this file is the entry point", which is `true` when you do `ts-node readme.ts`, but not when you do `import { root } from './readme.ts'` for unit tests for example.
 
@@ -88,7 +88,7 @@ If this "leaf" is a subcommand, `name` is the string that the user will pass as 
 (Optional) A string that will be included in `Usage:` if present.
 
 #### positionalInput
-(Optional) An `Input` for 
+(Optional) An `Input` for
 
 #### namedInputs
 (Optional) An object of named `Input`s, for example:
@@ -132,11 +132,18 @@ Returns a function of the form `(...args: string[]) => Promise<any>` that can be
 A `Leaf` or `Branch`
 
 ### ArgvInterface
-`cli` is a function that takes command-line arguments (strings) as input and returns a `Promise` representing the execution of the arguments. We export `cli` so that we can unit test it [like so](src/examples/__tests__/readme.test.ts). 
+`cli` is a function that takes command-line arguments (strings) as input and returns a `Promise` representing the execution of the arguments. We export `cli` so that we can unit test it [like so](src/examples/__tests__/readme.test.ts).
 
 ## More information
 This library has a couple dozen unit tests with >90% coverage. If you want to see more examples of how things works, check out the `.test.ts` files in the [src](src) directory. Also check out [src/examples](src/examples). If you encounter any bugs or have any questions or feature requests, please don't hesitate to file an issue or submit a pull request on this project's repository on GitHub.
 
-## License
+## Release procedure
+To release the package to [npmjs.org](https://www.npmjs.com/package/@alwaysai/alwayscli) follow the steps:
+- publish new version: <code>npm run publish:<major|minor|patch></code>
+- check the [github pipeline](https://github.com/alwaysai/alwayscli/actions) running, if successful a new version will be created and published to npmjs.org
+- to get the auto-generated commit and tags, simply pull: <code>git pull</code>
 
-MIT © [alwaysAI, Inc.](https://alwaysai.co)
+## Pipeline is lintng, unit testing and building package on:
+- [x] Ubuntu latest / Node.js: 16.x, 18.x, 20.x
+- [x] MacOS latest / Node.js: 16.x, 18.x, 20.x
+- [x] Windows latest / Node.js: 16.x, 18.x, 20.x
