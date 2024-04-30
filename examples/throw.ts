@@ -1,11 +1,11 @@
 import { CodedError } from '@carnesen/coded-error';
-import { CliLeaf } from '../cli-leaf';
-import { CliStringInput } from '../cli-string-input';
-import { CliOneOfInput } from '../cli-one-of-input';
-import { CLI_TERSE_ERROR } from '../cli-terse-error';
-import { CLI_USAGE_ERROR } from '../cli-usage-error';
-import { CliJsonInput } from '../cli-json-input';
-import { runCliAndExit } from '../run-cli-and-exit';
+import { CliLeaf } from '../src/cli-leaf';
+import { CliStringInput } from '../src/cli-string-input';
+import { CliOneOfInput } from '../src/cli-one-of-input';
+import { CLI_TERSE_ERROR } from '../src/cli-terse-error';
+import { CLI_USAGE_ERROR } from '../src/cli-usage-error';
+import { CliJsonInput } from '../src/cli-json-input';
+import { runCliAndExit } from '../src/run-cli-and-exit';
 
 export const root = CliLeaf({
   name: 'throw',

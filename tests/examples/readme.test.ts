@@ -1,5 +1,5 @@
 import { CliArgvInterface } from '../../src/cli-argv-interface';
-import { multiplyCliLeaf } from '../../src/examples/readme';
+import { multiplyCliLeaf } from '../../examples/readme';
 
 const cli = CliArgvInterface(multiplyCliLeaf);
 

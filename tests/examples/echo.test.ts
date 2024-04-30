@@ -1,5 +1,5 @@
 import { CliArgvInterface } from '../../src/cli-argv-interface';
-import { echoCliLeaf } from '../../src/examples/echo';
+import { echoCliLeaf } from '../../examples/echo';
 
 describe(echoCliLeaf.name, () => {
   it('" "-joins and returns the provided positional args', async () => {

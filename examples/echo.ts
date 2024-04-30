@@ -1,6 +1,6 @@
-import { CliLeaf } from '../cli-leaf';
-import { CliStringArrayInput } from '../cli-string-array-input';
-import { runCliAndExit } from '../run-cli-and-exit';
+import { CliLeaf } from '../src/cli-leaf';
+import { CliStringArrayInput } from '../src/cli-string-array-input';
+import { runCliAndExit } from '../src/run-cli-and-exit';
 
 // This is a single-action CLI that mimics the "echo" utility. Its root command
 // is imported by a number of other examples in this directory.

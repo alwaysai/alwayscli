@@ -2,7 +2,7 @@ import { runAndCatch } from '@carnesen/run-and-catch';
 
 import { CliArgvInterface } from '../../src/cli-argv-interface';
 import { CLI_USAGE_ERROR } from '../../src/cli-usage-error';
-import { execCliLeaf } from '../../src/examples/exec';
+import { execCliLeaf } from '../../examples/exec';
 
 const argvInterface = CliArgvInterface(execCliLeaf);
 

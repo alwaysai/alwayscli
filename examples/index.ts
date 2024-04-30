@@ -2,7 +2,7 @@ import { runCliAndExit, CliBranch } from '..';
 import { echoCliLeaf as echo } from './echo';
 import { multiplyCliLeaf as readme } from './readme';
 import { root as throw_ } from './throw';
-import pkg from '../../package.json';
+import pkg from '../package.json';
 
 export const examples = CliBranch({
   name: 'examples',

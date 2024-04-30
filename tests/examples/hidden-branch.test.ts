@@ -1,5 +1,5 @@
 import { CliArgvInterface } from '../../src/cli-argv-interface';
-import { root } from '../../src/examples/hidden-branch';
+import { root } from '../../examples/hidden-branch';
 
 const cli = CliArgvInterface(root);
 

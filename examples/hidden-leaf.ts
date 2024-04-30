@@ -1,7 +1,7 @@
 import { echoCliLeaf as echoCommand } from './echo';
-import { CliLeaf } from '../cli-leaf';
-import { CliBranch } from '../cli-branch';
-import { runCliAndExit } from '../run-cli-and-exit';
+import { CliLeaf } from '../src/cli-leaf';
+import { CliBranch } from '../src/cli-branch';
+import { runCliAndExit } from '../src/run-cli-and-exit';
 
 const hiddenEcho = CliLeaf({
   ...echoCommand,

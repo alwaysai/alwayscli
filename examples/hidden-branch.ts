@@ -1,6 +1,6 @@
 import { echoCliLeaf as echoCommand } from './echo';
-import { CliBranch } from '../cli-branch';
-import { runCliAndExit } from '../run-cli-and-exit';
+import { CliBranch } from '../src/cli-branch';
+import { runCliAndExit } from '../src/run-cli-and-exit';
 
 const nonHiddenCliBranch = CliBranch({
   name: 'non-hidden',

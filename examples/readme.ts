@@ -1,7 +1,7 @@
-import { CliLeaf } from '../cli-leaf';
-import { CliNumberArrayInput } from '../cli-number-array-input';
-import { CliFlagInput } from '../cli-flag-input';
-import { runCliAndExit } from '../run-cli-and-exit';
+import { CliLeaf } from '../src/cli-leaf';
+import { CliNumberArrayInput } from '../src/cli-number-array-input';
+import { CliFlagInput } from '../src/cli-flag-input';
+import { runCliAndExit } from '../src/run-cli-and-exit';
 
 export const multiplyCliLeaf = CliLeaf({
   name: 'multiply',
