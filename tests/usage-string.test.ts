@@ -43,7 +43,7 @@ describe(UsageString.name, () => {
   it('Creates a usage string for a leaf', () => {
     root.next = leaf;
     const usageString = UsageString(root);
-    expect(usageString).toMatch(messageInput.description!);
+    expect(usageString).toMatch(messageInput?.description ?? '');
     expect(usageString).toMatchSnapshot();
   });
 
@@ -58,9 +58,11 @@ describe(UsageString.name, () => {
   });
 
   it('Does not write usage for named inputs if there are none', () => {
-    const usageString = UsageString(CliLeaf({ name: 'foo', action() {} }));
+    const usageString = UsageString(
+      CliLeaf({ name: 'foo', action: jest.fn() })
+    );
     expect(
-      UsageString(CliLeaf({ name: 'foo', action() {}, namedInputs: {} }))
+      UsageString(CliLeaf({ name: 'foo', action: jest.fn(), namedInputs: {} }))
     ).toBe(usageString);
     expect(usageString).toMatchSnapshot();
   });

@@ -17,5 +17,5 @@ export const echoCliLeaf = CliLeaf({
 });
 
 if (module === require.main) {
-  runCliAndExit(echoCliLeaf);
+  runCliAndExit(echoCliLeaf).catch(console.error);
 }

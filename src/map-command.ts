@@ -7,7 +7,7 @@ export function mapCommand<T>(
 ) {
   const result: T[] = [];
   let current = command;
-  while (true) {
+  while (current) {
     result.push(callback(current));
     if (current.commandType === CLI_LEAF || !current.next) {
       break;

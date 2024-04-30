@@ -3,7 +3,7 @@ import { CLI_LEAF } from './constants';
 
 export function CliLeaf<
   TPositional extends CliInput<any> = CliInput<undefined, false>,
-  TNamed extends AnyNamedInputs = {},
+  TNamed extends AnyNamedInputs = AnyNamedInputs,
   TEscaped extends CliInput<any> = CliInput<undefined, false>
 >(config: ExcludeCommandType<CliLeaf<TPositional, TNamed, TEscaped>>) {
   const cliLeaf: CliLeaf<TPositional, TNamed, TEscaped> = {

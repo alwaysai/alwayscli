@@ -17,13 +17,18 @@ export const execCliLeaf = CliLeaf({
     required: true,
     placeholder: '<command> [<arguments>]'
   }),
-  action(_, { cwd }, escaped) {
+  async action(_, { cwd }, escaped) {
     const command = escaped.join(' ');
-    const output = execSync(command, { cwd, encoding: 'utf8' });
-    return output;
+    try {
+      const output = execSync(command, { cwd, encoding: 'utf8' });
+      return output;
+    } catch (error) {
+      console.error(error);
+      return '';
+    }
   }
 });
 
 if (module === require.main) {
-  runCliAndExit(execCliLeaf);
+  runCliAndExit(execCliLeaf).catch(console.error);
 }

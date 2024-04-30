@@ -29,5 +29,5 @@ export const root = CliLeaf({
 });
 
 if (module === require.main) {
-  runCliAndExit(root);
+  runCliAndExit(root).catch(console.error);
 }

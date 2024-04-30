@@ -4,7 +4,7 @@ import { LastCommand } from '../src/last-command';
 
 const leaf = CliLeaf({
   name: 'l',
-  action() {}
+  action: jest.fn()
 });
 
 const branch = CliBranch({

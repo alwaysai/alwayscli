@@ -22,5 +22,5 @@ export const multiplyCliLeaf = CliLeaf({
 });
 
 if (require.main === module) {
-  runCliAndExit(multiplyCliLeaf);
+  runCliAndExit(multiplyCliLeaf).catch(console.error);
 }

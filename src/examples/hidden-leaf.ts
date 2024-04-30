@@ -20,5 +20,5 @@ export const root = CliBranch({
 });
 
 if (module === require.main) {
-  runCliAndExit(root);
+  runCliAndExit(root).catch(console.error);
 }

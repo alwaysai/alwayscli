@@ -136,7 +136,7 @@ describe(CliArgvInterface.name, () => {
     expect(result).toEqual([
       undefined,
       {},
-      leafWithEscapedInput.escapedInput!.getValue([])
+      leafWithEscapedInput.escapedInput?.getValue([])
     ]);
   });
 });

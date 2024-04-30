@@ -59,10 +59,12 @@ export function UsageString(rootCommand: Command, errorMessage?: string) {
 
     if (namedInputs) {
       const entries = Object.entries(namedInputs).filter(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, input]) => !input.hidden
       );
       if (entries.length > 0) {
         const optionsNotRequired = entries.every(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           ([_, namedInput]) => !namedInput.required
         );
         firstParagraph += optionsNotRequired ? ' [<options>]' : ' <options>';

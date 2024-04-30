@@ -44,7 +44,7 @@ async function runMocked(action: () => any) {
 
 describe(runCliAndExit.name, () => {
   it('exits 0 and does not console.log if action succeeds', async () => {
-    const { exitCode, errorMessage, logMessage } = await runMocked(() => {});
+    const { exitCode, errorMessage, logMessage } = await runMocked(jest.fn());
     expect(exitCode).toBe(0);
     expect(errorMessage).toBe(undefined);
     expect(logMessage).toBe(undefined);
@@ -127,10 +127,10 @@ describe(runCliAndExit.name, () => {
     runCliAndExit(
       CliLeaf({
         name: 'cli',
-        action() {}
+        action: jest.fn()
       }),
       { processExit: jest.fn(), argv: [] }
-    );
+    ).catch(console.error);
   });
 
   it("passes a postRun argument and assures it's been called", async () => {
@@ -138,7 +138,7 @@ describe(runCliAndExit.name, () => {
     await runCliAndExit(
       CliLeaf({
         name: 'cli',
-        action() {}
+        action: jest.fn()
       }),
       {
         processExit: jest.fn(),
