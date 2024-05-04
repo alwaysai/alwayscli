@@ -3,7 +3,7 @@ name: alwaysai/codecs
 on:
   push:
     branches:
-      - main
+      - EI-1236
     tags:
       - major
       - minor
@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, macOS, windows]
-        node_version: [16, 18, 20]
+        node_version: [16, 18, 20, 22]
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
