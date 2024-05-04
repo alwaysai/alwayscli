@@ -34,7 +34,7 @@
     "redent": "3.0.0"
   },
   "devDependencies": {
-    "@alwaysai/eslint-config": "^0.1.0",
+    "@alwaysai/eslint-config": "^0.1.3",
     "@alwaysai/tsconfig": "0.0.1",
     "@carnesen/coded-error": "0.4.0",
     "@carnesen/run-and-catch": "^0.4.3",
