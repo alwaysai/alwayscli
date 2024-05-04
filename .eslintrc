@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "@alwaysai/eslint-config"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "examples/*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.eslint.json"
+      },
+      "env": { "jest": true }
+    }
+  ]
+}

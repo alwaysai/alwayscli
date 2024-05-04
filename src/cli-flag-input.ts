@@ -18,7 +18,7 @@ export function CliFlagInput(config: Config = {}) {
       }
       return true;
     },
-    description,
+    description
   };
   return input;
 }

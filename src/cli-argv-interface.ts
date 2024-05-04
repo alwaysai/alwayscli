@@ -15,7 +15,7 @@ export type CliEnhancer = (argvInterface: ArgvInterface) => ArgvInterface;
 
 export function CliArgvInterface(
   rootCommand: AnyCommand,
-  options: Partial<{ enhancer: CliEnhancer }> = {},
+  options: Partial<{ enhancer: CliEnhancer }> = {}
 ) {
   const { enhancer } = options;
 
@@ -34,12 +34,16 @@ export function CliArgvInterface(
       return version;
     }
 
-    const { foundHelp, commandNamesAndPositionalArgv, namedArgvs, escapedArgv } =
-      accumulateArgvs(argv);
+    const {
+      foundHelp,
+      commandNamesAndPositionalArgv,
+      namedArgvs,
+      escapedArgv
+    } = accumulateArgvs(argv);
 
     const restCommandNamesAndPositionalArgv = accumulateCommandStack(
       rootCommand,
-      commandNamesAndPositionalArgv,
+      commandNamesAndPositionalArgv
     );
 
     if (foundHelp) {
@@ -55,7 +59,9 @@ export function CliArgvInterface(
     if (lastCommand.commandType === CLI_BRANCH) {
       if (restCommandNamesAndPositionalArgv[0]) {
         // E.g. cli branch0 branch1 bad-command-name
-        throw new CliUsageError(`Bad command "${restCommandNamesAndPositionalArgv[0]}"`);
+        throw new CliUsageError(
+          `Bad command "${restCommandNamesAndPositionalArgv[0]}"`
+        );
       }
       // E.g. cli branch0 branch1
       throw new CliUsageError();
@@ -73,28 +79,39 @@ export function CliArgvInterface(
         restCommandNamesAndPositionalArgv.length > 0
           ? restCommandNamesAndPositionalArgv
           : undefined;
-      argsValue = await callGetValue(lastCommand.positionalInput, positionalArgv);
+      argsValue = await callGetValue(
+        lastCommand.positionalInput,
+        positionalArgv
+      );
     } else if (restCommandNamesAndPositionalArgv.length > 0) {
       throw new CliUsageError(
-        `Unexpected argument "${restCommandNamesAndPositionalArgv[0]}" : Command "${lastCommand.name}" does not accept positional arguments`,
+        `Unexpected argument "${restCommandNamesAndPositionalArgv[0]}" : Command "${lastCommand.name}" does not accept positional arguments`
       );
     }
 
     const namedValues = await accumulateNamedValues(
       lastCommand.namedInputs || {},
-      namedArgvs,
+      namedArgvs
     );
 
     let escapedValue: any = undefined;
     if (lastCommand.escapedInput) {
-      escapedValue = await callGetValue(lastCommand.escapedInput, escapedArgv, '--');
+      escapedValue = await callGetValue(
+        lastCommand.escapedInput,
+        escapedArgv,
+        '--'
+      );
     } else if (escapedArgv) {
       throw new CliUsageError(
-        `Command "${lastCommand.name}" does not allow "--" as an argument`,
+        `Command "${lastCommand.name}" does not allow "--" as an argument`
       );
     }
 
-    const result = await lastCommand.action(argsValue, namedValues, escapedValue);
+    const result = await lastCommand.action(
+      argsValue,
+      namedValues,
+      escapedValue
+    );
     return result;
   }
 }

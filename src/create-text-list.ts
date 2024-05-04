@@ -5,7 +5,7 @@ type Item = {
   text?: string;
 };
 
-function createTextListParagraph(item: Item, targetNameLength: number = 0) {
+function createTextListParagraph(item: Item, targetNameLength = 0) {
   const { name, text } = item;
   const lines = regularizeText(text).split('\n');
   const paddedName = name.padEnd(targetNameLength);
@@ -20,6 +20,8 @@ function createTextListParagraph(item: Item, targetNameLength: number = 0) {
 
 export function createTextList(...items: Item[]) {
   const targetNameLength = Math.max(...items.map(({ name }) => name.length));
-  const paragraphs = items.map((item) => createTextListParagraph(item, targetNameLength));
+  const paragraphs = items.map((item) =>
+    createTextListParagraph(item, targetNameLength)
+  );
   return paragraphs.join('\n');
 }

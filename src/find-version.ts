@@ -11,7 +11,7 @@ export async function findVersion() {
 
   const found = await readPkgUp({
     cwd: dirname(mainModule.filename),
-    normalize: false,
+    normalize: false
   });
 
   if (!found) {

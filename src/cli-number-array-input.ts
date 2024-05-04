@@ -11,15 +11,17 @@ type Config = Partial<{
 
 export { CliNumberArrayInput };
 function CliNumberArrayInput(
-  config: Config & { required: true },
+  config: Config & { required: true }
 ): CliInput<number[], true>;
-function CliNumberArrayInput(config?: Config): CliInput<number[] | undefined, boolean>;
+function CliNumberArrayInput(
+  config?: Config
+): CliInput<number[] | undefined, boolean>;
 function CliNumberArrayInput(config: Config = {}) {
   const {
     required = false,
     description,
     placeholder = '<num0> [...]',
-    hidden = false,
+    hidden = false
   } = config;
   const input: CliInput<number[] | undefined> = {
     required,
@@ -30,13 +32,15 @@ function CliNumberArrayInput(config: Config = {}) {
       }
 
       if (argv.length === 0) {
-        throw new CliUsageError(`Expected one or more arguments ${placeholder}`);
+        throw new CliUsageError(
+          `Expected one or more arguments ${placeholder}`
+        );
       }
 
       return argv.map(convertToNumber);
     },
     description,
-    placeholder,
+    placeholder
   };
   return input;
 }
