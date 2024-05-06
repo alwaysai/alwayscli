@@ -16,7 +16,7 @@
     "clean": "rimraf lib packages coverage",
     "build:clean": "npm run clean && npm run build",
     "build:watch": "tsc --project . --watch",
-    "examples": "ts-node src/examples/index.ts",
+    "examples": "ts-node examples/index.ts",
     "lint": "eslint . --ext .ts",
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run lint && npm run test:unit && npm run build:clean && npm run examples -- echo ok",
