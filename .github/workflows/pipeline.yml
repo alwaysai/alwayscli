@@ -69,7 +69,7 @@ jobs:
         run: npm version ${{ steps.extract_tag.outputs.TAG_NAME }}
       - name: git push
         run: |
-          git push origin HEAD:master
+          git push origin HEAD:main
           git push --tags
       - name: remove tag ${{ steps.extract_tag.outputs.TAG_NAME }}
         run: git push origin --delete ${{ steps.extract_tag.outputs.TAG_NAME }}
