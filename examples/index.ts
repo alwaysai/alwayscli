@@ -1,12 +1,12 @@
-import { runCliAndExit, CliBranch } from '..';
+import { runCliAndExit, CliBranch } from '../src/index';
 import { echoCliLeaf as echo } from './echo';
 import { multiplyCliLeaf as readme } from './readme';
 import { root as throw_ } from './throw';
-import pkg from '../package.json';
+import { name as packageName } from '../package.json';
 
 export const examples = CliBranch({
   name: 'examples',
-  description: `Examples that demonstrate ${pkg.name} features`,
+  description: `Examples that demonstrate ${packageName} features`,
   subcommands: [echo, readme, throw_]
 });
 
